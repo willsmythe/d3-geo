@@ -3,7 +3,7 @@ import {default as geoStream} from "./stream";
 
 var lengthSum;
 
-var noop = function() { };
+var noop = function() {};
 
 var length = {
   sphere: noop,
@@ -31,7 +31,9 @@ function lengthLineStart() {
         cosPhi = Math.cos(phi),
         t = Math.abs((lambda *= deg2rad) - lambda0),
         cosDeltaLambda = Math.cos(t);
-    lengthSum += Math.atan2(Math.sqrt((t = cosPhi * Math.sin(t)) * t + (t = cosPhi0 * sinPhi - sinPhi0 * cosPhi * cosDeltaLambda) * t), sinPhi0 * sinPhi + cosPhi0 * cosPhi * cosDeltaLambda);
+    lengthSum += Math.atan2(
+      Math.sqrt((t = cosPhi * Math.sin(t)) * t + (t = cosPhi0 * sinPhi - sinPhi0 * cosPhi * cosDeltaLambda) * t), 
+      sinPhi0 * sinPhi + cosPhi0 * cosPhi * cosDeltaLambda);
     lambda0 = lambda, sinPhi0 = sinPhi, cosPhi0 = cosPhi;
   }
 }
