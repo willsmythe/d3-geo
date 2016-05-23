@@ -4,9 +4,9 @@ var tape = require("tape"),
 tape("stream does not allow null input", function(test) {
     try {
         d3.geoStream(null);
-        test.fail("expected error");
-    } catch (expected) {
         test.pass();
+    } catch (e) {
+        test.fail("should not have thrown an error");
     }
     test.end();
 });
