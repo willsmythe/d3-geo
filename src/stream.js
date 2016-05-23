@@ -66,4 +66,4 @@ export default function(object, listener) {
   } else {
     d3_geo_streamGeometry(object, listener);
   }
-};
+}
