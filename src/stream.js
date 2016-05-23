@@ -5,42 +5,42 @@ function streamGeometry(geometry, listener) {
 }
 
 var streamObjectType = {
-  Feature: function (feature, listener) {
+  Feature: function(feature, listener) {
     streamGeometry(feature.geometry, listener);
   },
-  FeatureCollection: function (object, listener) {
+  FeatureCollection: function(object, listener) {
     var features = object.features, i = -1, n = features.length;
     while (++i < n) streamGeometry(features[i].geometry, listener);
   }
 };
 
 var streamGeometryType = {
-  Sphere: function (object, listener) {
+  Sphere: function(object, listener) {
     listener.sphere();
   },
-  Point: function (object, listener) {
+  Point: function(object, listener) {
     object = object.coordinates;
     listener.point(object[0], object[1], object[2]);
   },
-  MultiPoint: function (object, listener) {
+  MultiPoint: function(object, listener) {
     var coordinates = object.coordinates, i = -1, n = coordinates.length;
     while (++i < n) object = coordinates[i], listener.point(object[0], object[1], object[2]);
   },
-  LineString: function (object, listener) {
+  LineString: function(object, listener) {
     streamLine(object.coordinates, listener, 0);
   },
-  MultiLineString: function (object, listener) {
+  MultiLineString: function(object, listener) {
     var coordinates = object.coordinates, i = -1, n = coordinates.length;
     while (++i < n) streamLine(coordinates[i], listener, 0);
   },
-  Polygon: function (object, listener) {
+  Polygon: function(object, listener) {
     streamPolygon(object.coordinates, listener);
   },
-  MultiPolygon: function (object, listener) {
+  MultiPolygon: function(object, listener) {
     var coordinates = object.coordinates, i = -1, n = coordinates.length;
     while (++i < n) streamPolygon(coordinates[i], listener);
   },
-  GeometryCollection: function (object, listener) {
+  GeometryCollection: function(object, listener) {
     var geometries = object.geometries, i = -1, n = geometries.length;
     while (++i < n) streamGeometry(geometries[i], listener);
   }
@@ -60,7 +60,7 @@ function streamPolygon(coordinates, listener) {
   listener.polygonEnd();
 }
 
-export default function (object, listener) {
+export default function(object, listener) {
   if (object && streamObjectType.hasOwnProperty(object.type)) {
     streamObjectType[object.type](object, listener);
   } else {
