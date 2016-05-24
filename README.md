@@ -19,9 +19,7 @@ var stream = d3_geo.geoStream();
 
 ## API Reference
 
-<a href="#geoStream" name="geoStream">#</a> d3.<b>geoStream</b>()
-
-<a name="stream" href="#stream">#</a> d3.geo.<b>stream</b>(<i>object</i>, <i>listener</i>)
+<a href="#geoStream" name="geoStream">#</a> d3.<b>geoStream</b>(<i>object</i>, <i>listener</i>)
 
 Streams the specified [GeoJSON](http://geojson.org) *object* to the specified stream *listener*. (Despite the name “stream”, these method calls are currently synchronous.) While both features and geometry objects are supported as input, the stream interface only describes the geometry, and thus additional feature properties are not visible to listeners.
 
