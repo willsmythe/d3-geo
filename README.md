@@ -74,3 +74,9 @@ Indicates the end of a polygon.
 <a name="stream_sphere" href="#stream_sphere">#</a> listener.<b>sphere</b>()
 
 Indicates the sphere (the globe; the unit sphere centered at ⟨0,0,0⟩).
+
+## Spherical Math
+
+<a name="geoLength" href="#geoLength">#</a> d3.<b>geoLength</b>(<i>feature</i>)
+
+Returns the great-arc length of the specified *feature* in [radians](http://mathworld.wolfram.com/Radian.html). For polygons, returns the perimeter of the exterior ring plus that of any interior rings.
