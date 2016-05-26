@@ -45,7 +45,15 @@ Returns the great-arc length of the specified *feature* in [radians](http://math
 
 <a name="geoRotation" href="#geoRotation">#</a> d3.<b>geoRotation</b>(<i>angles</i>)
 
-… TODO I’m not sure we want to have this anymore? Rotation may be in d3-geo-projection.
+Specifies a rotation in the form of an array, [λ, φ, γ]. The elements of the array are angles in degrees, and specify a rotation in the following order: longitudinal, latitudinal and about the origin. If the last element of the array, γ, is omitted, this defaults to 0.  Returns a function, which rotates a given location as described below.
+
+<a name="_rotation" href="#_rotation">#</a> <b>rotation</b>(<i>location</i>)
+
+Rotates a given location according to the angles specified for this rotation, in the order described above.  A location is specified as an array [<i>longitude</i>, <i>latitude</i>], with coordinates expressed in degrees.  Returns a new array representing the rotated location.
+
+<a name="rotation_invert" href="#rotation_invert">#</a> rotation.<b>invert</b>(<i>location</i>)
+
+Rotates a given location according to the angles specified for this rotation, but with the order described above reversed.  A location is specified as an array [<i>longitude</i>, <i>latitude</i>], with coordinates expressed in degrees.  Returns a new array representing the rotated location.
 
 ### Shapes
 
