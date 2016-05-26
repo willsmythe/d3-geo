@@ -1,3 +1,4 @@
+export {default as geoCentroid} from "./src/centroid";
 export {default as geoCircle} from "./src/circle";
 export {default as geoDistance} from "./src/distance";
 export {default as geoInterpolate} from "./src/interpolate";
