@@ -165,7 +165,6 @@ Indicates the end of a polygon.
 
 Indicates the sphere (the globe; the unit sphere centered at ⟨0,0,0⟩).
 
-
 <a href="#geoStream" name="geoStream">#</a> d3.<b>geoStream</b>(<i>object</i>, <i>listener</i>)
 
 Streams the specified [GeoJSON](http://geojson.org) *object* to the specified stream *listener*. (Despite the name “stream”, these method calls are currently synchronous.) While both features and geometry objects are supported as input, the stream interface only describes the geometry, and thus additional feature properties are not visible to listeners.
