@@ -1,5 +1,10 @@
-module.exports = function(actual, expected, delta) {
-  var lowerBound = expected - delta,
-      upperBound = expected + delta;
-  return typeof (actual) === 'number' && actual >= lowerBound && actual <= upperBound;
-}
+var tape = require("tape");
+
+tape.Test.prototype.inDelta = function(actual, expected) {
+  this._assert(expected - 1e-6 < actual && actual < expected + 1e-6, {
+    message: "should be in delta",
+    operator: "inDelta",
+    actual: actual,
+    expected: expected
+  });
+};
