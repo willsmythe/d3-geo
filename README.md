@@ -33,7 +33,7 @@ var stream = d3_geo.geoStream();
 
 <a name="geoDistance" href="#geoDistance">#</a> d3.<b>geoDistance</b>(<i>a</i>, <i>b</i>)
 
-…
+Returns the great-arc distance in radians between the two points <i>a</i> and <i>b</i>. Each point is specified as an array [<i>longitude</i>, <i>latitude</i>], with coordinates expressed in decimal degrees.
 
 <a name="geoLength" href="#geoLength">#</a> d3.<b>geoLength</b>(<i>feature</i>)
 
