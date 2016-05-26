@@ -1,5 +1,5 @@
 import {deg2rad} from "./math";
-import {noop} from "./utilities";
+import noop from "./noop";
 import geoStream from "./stream";
 
 var lengthSum;
