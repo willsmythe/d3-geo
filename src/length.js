@@ -1,9 +1,8 @@
 import {deg2rad} from "./math";
+import {noop} from "./utilities";
 import geoStream from "./stream";
 
 var lengthSum;
-
-var noop = function() {};
 
 var length = {
   sphere: noop,
