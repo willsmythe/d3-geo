@@ -45,11 +45,11 @@ export default function() {
   };
 
   graticule.extent = function(_) {
-    if (!arguments.length) return graticule.minorExtent();
-    return graticule.majorExtent(_).minorExtent(_);
+    if (!arguments.length) return graticule.extentMinor();
+    return graticule.extentMajor(_).extentMinor(_);
   };
 
-  graticule.majorExtent = function(_) {
+  graticule.extentMajor = function(_) {
     if (!arguments.length) return [[X0, Y0], [X1, Y1]];
     X0 = +_[0][0], X1 = +_[1][0];
     Y0 = +_[0][1], Y1 = +_[1][1];
@@ -58,7 +58,7 @@ export default function() {
     return graticule.precision(precision);
   };
 
-  graticule.minorExtent = function(_) {
+  graticule.extentMinor = function(_) {
     if (!arguments.length) return [[x0, y0], [x1, y1]];
     x0 = +_[0][0], x1 = +_[1][0];
     y0 = +_[0][1], y1 = +_[1][1];
@@ -68,17 +68,17 @@ export default function() {
   };
 
   graticule.step = function(_) {
-    if (!arguments.length) return graticule.minorStep();
-    return graticule.majorStep(_).minorStep(_);
+    if (!arguments.length) return graticule.stepMinor();
+    return graticule.stepMajor(_).stepMinor(_);
   };
 
-  graticule.majorStep = function(_) {
+  graticule.stepMajor = function(_) {
     if (!arguments.length) return [DX, DY];
     DX = +_[0], DY = +_[1];
     return graticule;
   };
 
-  graticule.minorStep = function(_) {
+  graticule.stepMinor = function(_) {
     if (!arguments.length) return [dx, dy];
     dx = +_[0], dy = +_[1];
     return graticule;
@@ -95,6 +95,6 @@ export default function() {
   };
 
   return graticule
-      .majorExtent([[-180, -90 + 1e-6], [180, 90 - 1e-6]])
-      .minorExtent([[-180, -80 - 1e-6], [180, 80 + 1e-6]]);
+      .extentMajor([[-180, -90 + 1e-6], [180, 90 - 1e-6]])
+      .extentMinor([[-180, -80 - 1e-6], [180, 80 + 1e-6]]);
 }
