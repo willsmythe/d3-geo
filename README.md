@@ -30,7 +30,7 @@ var stream = d3.geoStream();
 
 <a name="geoCentroid" href="#geoCentroid">#</a> d3.<b>geoCentroid</b>(<i>feature</i>)
 
-…
+Returns the spherical centroid of the specified *feature*. See also [path.centroid](#path_centroid), which computes the projected centroid on the Cartesian plane.
 
 <a name="geoDistance" href="#geoDistance">#</a> d3.<b>geoDistance</b>(<i>a</i>, <i>b</i>)
 
