@@ -1,5 +1,5 @@
 import {deg2rad} from "./math";
-import {default as geoStream} from "./stream";
+import geoStream from "./stream";
 
 var lengthSum;
 
