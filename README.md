@@ -37,7 +37,7 @@ var stream = d3_geo.geoStream();
 
 <a name="geoLength" href="#geoLength">#</a> d3.<b>geoLength</b>(<i>feature</i>)
 
-…
+Returns the great-arc length of the specified *feature* in [radians](http://mathworld.wolfram.com/Radian.html). For polygons, returns the perimeter of the exterior ring plus that of any interior rings.
 
 <a name="geoInterpolate" href="#geoInterpolate">#</a> d3.<b>geoInterpolate</b>(<i>a</i>, <i>b</i>)
 
