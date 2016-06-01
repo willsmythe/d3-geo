@@ -1,6 +1,6 @@
 import {deg2rad} from "./math";
 import noop from "./noop";
-import geoStream from "./stream";
+import stream from "./stream";
 
 var sum;
 
@@ -46,6 +46,6 @@ function lineStart() {
 
 export default function(object) {
   sum = 0;
-  geoStream(object, length);
+  stream(object, length);
   return sum;
 }
