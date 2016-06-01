@@ -1,5 +1,5 @@
 var tape = require("tape"),
-  d3 = require("../");
+    d3 = require("../");
 
 tape("geoStream(object) ignores unknown types", function(test) {
   d3.geoStream({type: "Unknown"}, {});
