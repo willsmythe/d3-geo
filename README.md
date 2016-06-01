@@ -41,7 +41,7 @@ Returns the great-arc length of the specified *feature* in [radians](http://math
 
 <a name="geoInterpolate" href="#geoInterpolate">#</a> d3.<b>geoInterpolate</b>(<i>a</i>, <i>b</i>)
 
-…
+Returns an interpolator given the two locations *a* and *b*. Each location must be represented as a two-element array of [<i>longitude</i>, <i>latitude</i>]. The returned interpolator is a function which takes a single parameter *t* as input, where *t* ranges from 0 to 1. A value of 0 returns the location *a*, while a value of 1 returns the location *b*. Intermediate values interpolate from *a* to *b* along the spanning great arc.
 
 <a name="geoRotation" href="#geoRotation">#</a> d3.<b>geoRotation</b>(<i>angles</i>)
 
