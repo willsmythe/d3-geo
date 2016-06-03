@@ -71,47 +71,47 @@ Returns an interpolator given the two locations *a* and *b*. Each location must 
 
 <a name="geoGraticule" href="#geoGraticule">#</a> d3.<b>geoGraticule</b>()
 
-…
+Constructs a feature generator for creating graticules.
 
 <a name="_graticule" href="#_graticule">#</a> <i>graticule</i>()
 
-…
+Returns a MultiLineString geometry object representing all meridians and parallels for this graticule.
 
 <a name="graticule_lines" href="#graticule_lines">#</a> <i>graticule</i>.<b>lines</b>()
 
-…
+Returns an array of LineString geometry objects, one for each meridian or parallel for this graticule.
 
 <a name="graticule_outline" href="#graticule_outline">#</a> <i>graticule</i>.<b>outline</b>()
 
-…
+Returns a Polygon geometry object representing the outline of this graticule, i.e. along the meridians and parallels defining its extent.
 
 <a name="graticule_extent" href="#graticule_extent">#</a> <i>graticule</i>.<b>extent</b>([<i>extent</i>])
 
-…
+If *extent* is specified, sets the major and minor extents of this graticule.  If *extent* is not specified, returns the current minor extent, which defaults to ⟨⟨-180°, -80° - ε⟩, ⟨180°, 80° + ε⟩⟩.
 
 <a name="graticule_extentMajor" href="#graticule_extentMajor">#</a> <i>graticule</i>.<b>extentMajor</b>([<i>extent</i>])
 
-… N.B. Renamed from D3 3.x.
+If *extent* is specified, sets the major extent of this graticule.  If *extent* is not specified, returns the current major extent, which defaults to ⟨⟨-180°, -90° + ε⟩, ⟨180°, 90° - ε⟩⟩.
 
 <a name="graticule_extentMinor" href="#graticule_extentMinor">#</a> <i>graticule</i>.<b>extentMinor</b>([<i>extent</i>])
 
-… N.B. Renamed from D3 3.x.
+If *extent* is specified, sets the minor extent of this graticule.  If *extent* is not specified, returns the current minor extent, which defaults to ⟨⟨-180°, -80° - ε⟩, ⟨180°, 80° + ε⟩⟩.
 
 <a name="graticule_step" href="#graticule_step">#</a> <i>graticule</i>.<b>step</b>([<i>step</i>])
 
-…
+If *step* is specified, sets the major and minor step for this graticule.  If *step* is not specified, returns the current minor step, which defaults to ⟨10°, 10°⟩.
 
 <a name="graticule_stepMajor" href="#graticule_stepMajor">#</a> <i>graticule</i>.<b>stepMajor</b>([<i>step</i>])
 
-… N.B. Renamed from D3 3.x.
+If *step* is specified, sets the major step for this graticule.  If *step* is not specified, returns the current major step, which defaults to ⟨90°, 360°⟩.
 
 <a name="graticule_stepMinor" href="#graticule_stepMinor">#</a> <i>graticule</i>.<b>stepMinor</b>([<i>step</i>])
 
-… N.B. Renamed from D3 3.x.
+If *step* is specified, sets the minor step for this graticule.  If *step* is not specified, returns the current minor step, which defaults to ⟨10°, 10°⟩.
 
 <a name="graticule_precision" href="#graticule_precision">#</a> <i>graticule</i>.<b>precision</b>([<i>angle</i>])
 
-…
+If *precision* is specified, sets the precision for this graticule, in degrees.  If *precision* is not specified, returns the current precision, which defaults to 2.5°.
 
 ### Streams
 

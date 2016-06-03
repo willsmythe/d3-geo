@@ -32,5 +32,8 @@
     "rollup": "0.26",
     "tape": "4",
     "uglify-js": "2"
+  },
+  "dependencies": {
+    "d3-array": "^0.7.1"
   }
 }
