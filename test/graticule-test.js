@@ -1,33 +1,37 @@
 var tape = require("tape"),
     array = require("d3-array"),
     d3 = require("../");
-  
+
 require("./inDelta");
 
-tape("extent sets extentMinor and extentMajor", function(test) {
+tape("graticule.extent(…) sets extentMinor and extentMajor", function(test) {
   var g = d3.geoGraticule().extent([[-90, -45], [90, 45]]);
   test.deepEqual(g.extentMinor(), [[-90, -45], [90, 45]]);
   test.deepEqual(g.extentMajor(), [[-90, -45], [90, 45]]);
   test.end();
 });
-tape("extent gets extentMinor", function(test) {
+
+tape("graticule.extent() gets extentMinor", function(test) {
   var g = d3.geoGraticule().extentMinor([[-90, -45], [90, 45]]);
   test.deepEqual(g.extent(), [[-90, -45], [90, 45]]);
   test.end();
 });
-tape("extentMajor default longitude ranges from 180°W (inclusive) to 180°E (exclusive)", function(test) {
+
+tape("graticule.extentMajor() default longitude ranges from 180°W (inclusive) to 180°E (exclusive)", function(test) {
   var extent = d3.geoGraticule().extentMajor();
   test.equal(extent[0][0], -180);
   test.equal(extent[1][0], +180);
   test.end();
 });
-tape("extentMajor default latitude ranges from 90°S (exclusive) to 90°N (exclusive)", function(test) {
+
+tape("graticule.extentMajor() default latitude ranges from 90°S (exclusive) to 90°N (exclusive)", function(test) {
   var extent = d3.geoGraticule().extentMajor();
   test.equal(extent[0][1], -90 + 1e-6);
   test.equal(extent[1][1], +90 - 1e-6);
   test.end();
 });
-tape("extentMajor coerces input values to numbers", function(test) {
+
+tape("graticule.extentMajor(…) coerces input values to numbers", function(test) {
   var g = d3.geoGraticule().extentMajor([["-90", "-45"], ["+90", "+45"]]),
       extent = g.extentMajor();
   test.strictEqual(extent[0][0], -90);
@@ -36,19 +40,22 @@ tape("extentMajor coerces input values to numbers", function(test) {
   test.strictEqual(extent[1][1], +45);
   test.end();
 });
-tape("extentMinor default longitude ranges from 180°W (inclusive) to 180°E (exclusive)", function(test) {
+
+tape("graticule.extentMinor() default longitude ranges from 180°W (inclusive) to 180°E (exclusive)", function(test) {
   var extent = d3.geoGraticule().extentMinor();
   test.equal(extent[0][0], -180);
   test.equal(extent[1][0], +180);
   test.end();
 });
-tape("extentMinor default latitude ranges from 80°S (inclusive) to 80°N (inclusive)", function(test) {
+
+tape("graticule.extentMinor() default latitude ranges from 80°S (inclusive) to 80°N (inclusive)", function(test) {
   var extent = d3.geoGraticule().extentMinor();
   test.equal(extent[0][1], -80 - 1e-6);
   test.equal(extent[1][1], +80 + 1e-6);
   test.end();
 });
-tape("extentMinor coerces input values to numbers", function(test) {
+
+tape("graticule.extentMinor(…) coerces input values to numbers", function(test) {
   var g = d3.geoGraticule().extentMinor([["-90", "-45"], ["+90", "+45"]]),
       extent = g.extentMinor();
   test.strictEqual(extent[0][0], -90);
@@ -57,40 +64,47 @@ tape("extentMinor coerces input values to numbers", function(test) {
   test.strictEqual(extent[1][1], +45);
   test.end();
 });
-tape("step sets stepMinor and stepMajor", function(test) {
+
+tape("graticule.step(…) sets the minor and major step", function(test) {
   var g = d3.geoGraticule().step([22.5, 22.5]);
   test.deepEqual(g.stepMinor(), [22.5, 22.5]);
   test.deepEqual(g.stepMajor(), [22.5, 22.5]);
   test.end();
 });
-tape("step gets stepMinor", function(test) {
+
+tape("graticule.step() gets the minor step", function(test) {
   var g = d3.geoGraticule().stepMinor([22.5, 22.5]);
   test.deepEqual(g.step(), [22.5, 22.5]);
   test.end();
 });
-tape("stepMinor defaults to 10°, 10°", function(test) {
+
+tape("graticule.stepMinor() defaults to 10°, 10°", function(test) {
   test.deepEqual(d3.geoGraticule().stepMinor(), [10, 10]);
   test.end();
 });
-tape("stepMinor coerces input values to numbers", function(test) {
+
+tape("graticule.stepMinor(…) coerces input values to numbers", function(test) {
   var g = d3.geoGraticule().stepMinor(["45", "11.25"]),
       step = g.stepMinor();
   test.strictEqual(step[0], 45);
   test.strictEqual(step[1], 11.25);
   test.end();
 });
-tape("stepMajor defaults to 90°, 360°", function(test) {
+
+tape("graticule.stepMajor() defaults to 90°, 360°", function(test) {
   test.deepEqual(d3.geoGraticule().stepMajor(), [90, 360]);
   test.end();
 });
-tape("stepMajor coerces input values to numbers", function(test) {
+
+tape("graticule.stepMajor(…) coerces input values to numbers", function(test) {
   var g = d3.geoGraticule().stepMajor(["45", "11.25"]),
       step = g.stepMajor();
   test.strictEqual(step[0], 45);
   test.strictEqual(step[1], 11.25);
   test.end();
 });
-tape("lines default longitude ranges from 180°W (inclusive) to 180°E (exclusive)", function(test) {
+
+tape("graticule.lines() default longitude ranges from 180°W (inclusive) to 180°E (exclusive)", function(test) {
   var lines = d3.geoGraticule().lines()
       .filter(function(line) { return line.coordinates[0][0] === line.coordinates[1][0]; })
       .sort(function(a, b) { return a.coordinates[0][0] - b.coordinates[0][0]; });
@@ -98,7 +112,8 @@ tape("lines default longitude ranges from 180°W (inclusive) to 180°E (exclusiv
   test.equal(lines[lines.length - 1].coordinates[0][0], +170);
   test.end();
 });
-tape("lines default latitude ranges from 90°S (exclusive) to 90°N (exclusive)", function(test) {
+
+tape("graticule.lines() default latitude ranges from 90°S (exclusive) to 90°N (exclusive)", function(test) {
   var lines = d3.geoGraticule().lines()
       .filter(function(line) { return line.coordinates[0][1] === line.coordinates[1][1]; })
       .sort(function(a, b) { return a.coordinates[0][1] - b.coordinates[0][1]; });
@@ -106,7 +121,8 @@ tape("lines default latitude ranges from 90°S (exclusive) to 90°N (exclusive)"
   test.equal(lines[lines.length - 1].coordinates[0][1], +80);
   test.end();
 });
-tape("lines default minor longitude lines extend from 80°S to 80°N", function(test) {
+
+tape("graticule.lines() default minor longitude lines extend from 80°S to 80°N", function(test) {
   var lines = d3.geoGraticule().lines()
       .filter(function(line) { return line.coordinates[0][0] === line.coordinates[1][0]; })
       .filter(function(line) { return Math.abs(line.coordinates[0][0] % 90) > 1e-6; });
@@ -115,7 +131,8 @@ tape("lines default minor longitude lines extend from 80°S to 80°N", function(
   });
   test.end();
 });
-tape("lines default major longitude lines extend from 90°S to 90°N", function(test) {
+
+tape("graticule.lines() default major longitude lines extend from 90°S to 90°N", function(test) {
   var lines = d3.geoGraticule().lines()
       .filter(function(line) { return line.coordinates[0][0] === line.coordinates[1][0]; })
       .filter(function(line) { return Math.abs(line.coordinates[0][0] % 90) < 1e-6; });
@@ -124,7 +141,8 @@ tape("lines default major longitude lines extend from 90°S to 90°N", function(
   });
   test.end();
 });
-tape("lines default latitude lines extend from 180°W to 180°E", function(test) {
+
+tape("graticule.lines() default latitude lines extend from 180°W to 180°E", function(test) {
   var lines = d3.geoGraticule().lines()
       .filter(function(line) { return line.coordinates[0][1] === line.coordinates[1][1]; });
   lines.forEach(function(line) {
@@ -132,7 +150,8 @@ tape("lines default latitude lines extend from 180°W to 180°E", function(test)
   });
   test.end();
 });
-tape("lines returns an array of LineStrings", function(test) {
+
+tape("graticule.lines() returns an array of LineStrings", function(test) {
   test.deepEqual(d3.geoGraticule()
       .extent([[-90, -45], [90, 45]])
       .step([45, 45])
@@ -147,7 +166,8 @@ tape("lines returns an array of LineStrings", function(test) {
   ]);
   test.end();
 });
-tape("graticule returns a MultiLineString of all lines", function(test) {
+
+tape("graticule() returns a MultiLineString of all lines", function(test) {
   var g = d3.geoGraticule()
       .extent([[-90, -45], [90, 45]])
       .step([45, 45])
@@ -158,7 +178,8 @@ tape("graticule returns a MultiLineString of all lines", function(test) {
   });
   test.end();
 });
-tape("outline returns a Polygon encompassing the major extent", function(test) {
+
+tape("graticule.outline() returns a Polygon encompassing the major extent", function(test) {
   test.deepEqual(d3.geoGraticule()
       .extentMajor([[-90, -45], [90, 45]])
       .precision(3)
