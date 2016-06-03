@@ -8,7 +8,7 @@ function rotationIdentity(lambda, phi) {
 rotationIdentity.invert = rotationIdentity;
 
 // Note: |deltaLambda| must be < 2pi
-function rotation(deltaLambda, deltaPhi, deltaGamma) {
+export function rotation(deltaLambda, deltaPhi, deltaGamma) {
   return deltaLambda ? (deltaPhi || deltaGamma ? compose(rotationLambda(deltaLambda), rotationPhiGamma(deltaPhi, deltaGamma))
     : rotationLambda(deltaLambda))
     : (deltaPhi || deltaGamma ? rotationPhiGamma(deltaPhi, deltaGamma)
