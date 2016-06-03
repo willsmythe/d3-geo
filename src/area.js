@@ -3,10 +3,11 @@ import {atan2, cos, fourPi, quarterPi, radians, sin} from "./math";
 import noop from "./noop";
 import stream from "./stream";
 
-var areaSum,
-    areaRingSum = adder();
+var areaSum;
 
-var area = {
+export var areaRingSum = adder();
+
+export var area = {
   sphere: function() { areaSum += fourPi; },
   point: noop,
   lineStart: noop,
