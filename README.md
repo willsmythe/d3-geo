@@ -60,23 +60,23 @@ Rotates a given location according to the angles specified for this rotation, bu
 
 <a name="geoCircle" href="#geoCircle">#</a> d3.<b>geoCircle</b>()
 
-…
+Constructs a feature generator for creating circles centered at a given geographic location with a given radius in degrees.
 
 <a name="_circle" href="#_circle">#</a> <i>circle</i>(<i>arguments…</i>)
 
-…
+Returns a GeoJSON Polygon approximating a circle. The center accessor specifies how to determine the center for the given *arguments*; the default accessor uses the constant ⟨0°,0°⟩.
 
-<a name="circle_origin" href="#circle_origin">#</a> <i>circle</i>.<b>origin</b>([<i>origin</i>])
+<a name="circle_center" href="#circle_center">#</a> <i>circle</i>.<b>center</b>([<i>center</i>])
 
-… TODO Rename to center?
+If *center* is specified, sets the circle center (or origin).  A two-element coordinate array should be specified, or an accessor function.  If *center* is not specified, returns the current center (or origin), which defaults to ⟨0°,0°⟩.
 
-<a name="circle_angle" href="#circle_angle">#</a> <i>circle</i>.<b>angle</b>([<i>angle</i>])
+<a name="circle_radius" href="#circle_radius">#</a> <i>circle</i>.<b>radius</b>([<i>radius</i>])
 
-… TODO Rename to radius?
+If *radius* is specified, sets the angular radius of the circle in degrees.  If *radius* is not specified, returns the current radius, which defaults to 90°.
 
 <a name="circle_precision" href="#circle_precision">#</a> <i>circle</i>.<b>precision</b>([<i>angle</i>])
 
-…
+If *precision* is specified, sets the precision of the interpolated circle segments in degrees.  These interpolated segments are inserted when a feature is clipped by the circle. If *precision* is not specified, returns the current precision, which defaults to 6°.
 
 <a name="geoGraticule" href="#geoGraticule">#</a> d3.<b>geoGraticule</b>()
 
