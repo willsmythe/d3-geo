@@ -1,18 +1,18 @@
 import compose from "./compose";
 import {asin, atan2, cos, degrees, pi, radians, sin, tau} from "./math";
 
-function identityRotation(lambda, phi) {
+function rotationIdentity(lambda, phi) {
   return [lambda > pi ? lambda - tau : lambda < -pi ? lambda + tau : lambda, phi];
 }
 
-identityRotation.invert = identityRotation;
+rotationIdentity.invert = rotationIdentity;
 
 // Note: |deltaLambda| must be < 2pi
 function rotation(deltaLambda, deltaPhi, deltaGamma) {
   return deltaLambda ? (deltaPhi || deltaGamma ? compose(rotationLambda(deltaLambda), rotationPhiGamma(deltaPhi, deltaGamma))
     : rotationLambda(deltaLambda))
     : (deltaPhi || deltaGamma ? rotationPhiGamma(deltaPhi, deltaGamma)
-    : identityRotation);
+    : rotationIdentity);
 }
 
 function forwardRotationLambda(deltaLambda) {
