@@ -46,15 +46,15 @@ Returns an interpolator given the two locations *a* and *b*. Each location must 
 
 <a name="geoRotation" href="#geoRotation">#</a> d3.<b>geoRotation</b>(<i>angles</i>)
 
-Specifies a rotation in the form of an array, [λ, φ, γ]. The elements of the array are angles in degrees, and specify a rotation in the following order: longitudinal, latitudinal and about the origin. If the last element of the array, γ, is omitted, this defaults to 0.  Returns a function, which rotates a given location as described below.
+Returns a rotation operator for the given *angles*, which must be a two- or three-element array of numbers [λ, φ, γ] specifying the rotation angles in degrees about [each spherical axis](http://bl.ocks.org/mbostock/4282586). If the rotation angle γ is omitted, it defaults to 0.
 
 <a name="_rotation" href="#_rotation">#</a> <b>rotation</b>(<i>location</i>)
 
-Rotates a given location according to the angles specified for this rotation, in the order described above.  A location is specified as an array [<i>longitude</i>, <i>latitude</i>], with coordinates expressed in degrees.  Returns a new array representing the rotated location.
+Rotates a given location according to the angles specified for this rotation, in the order described above. A location is specified as an array [*longitude*, *latitude*], with coordinates expressed in degrees. Returns a new array representing the rotated location.
 
 <a name="rotation_invert" href="#rotation_invert">#</a> rotation.<b>invert</b>(<i>location</i>)
 
-Rotates a given location according to the angles specified for this rotation, but with the order described above reversed.  A location is specified as an array [<i>longitude</i>, <i>latitude</i>], with coordinates expressed in degrees.  Returns a new array representing the rotated location.
+Rotates a given location according to the angles specified for this rotation, but with the order described above reversed. A location is specified as an array [*longitude*, *latitude*], with coordinates expressed in degrees. Returns a new array representing the rotated location.
 
 ### Shapes
 
@@ -96,31 +96,31 @@ Returns a Polygon geometry object representing the outline of this graticule, i.
 
 <a name="graticule_extent" href="#graticule_extent">#</a> <i>graticule</i>.<b>extent</b>([<i>extent</i>])
 
-If *extent* is specified, sets the major and minor extents of this graticule.  If *extent* is not specified, returns the current minor extent, which defaults to ⟨⟨-180°, -80° - ε⟩, ⟨180°, 80° + ε⟩⟩.
+If *extent* is specified, sets the major and minor extents of this graticule. If *extent* is not specified, returns the current minor extent, which defaults to ⟨⟨-180°, -80° - ε⟩, ⟨180°, 80° + ε⟩⟩.
 
 <a name="graticule_extentMajor" href="#graticule_extentMajor">#</a> <i>graticule</i>.<b>extentMajor</b>([<i>extent</i>])
 
-If *extent* is specified, sets the major extent of this graticule.  If *extent* is not specified, returns the current major extent, which defaults to ⟨⟨-180°, -90° + ε⟩, ⟨180°, 90° - ε⟩⟩.
+If *extent* is specified, sets the major extent of this graticule. If *extent* is not specified, returns the current major extent, which defaults to ⟨⟨-180°, -90° + ε⟩, ⟨180°, 90° - ε⟩⟩.
 
 <a name="graticule_extentMinor" href="#graticule_extentMinor">#</a> <i>graticule</i>.<b>extentMinor</b>([<i>extent</i>])
 
-If *extent* is specified, sets the minor extent of this graticule.  If *extent* is not specified, returns the current minor extent, which defaults to ⟨⟨-180°, -80° - ε⟩, ⟨180°, 80° + ε⟩⟩.
+If *extent* is specified, sets the minor extent of this graticule. If *extent* is not specified, returns the current minor extent, which defaults to ⟨⟨-180°, -80° - ε⟩, ⟨180°, 80° + ε⟩⟩.
 
 <a name="graticule_step" href="#graticule_step">#</a> <i>graticule</i>.<b>step</b>([<i>step</i>])
 
-If *step* is specified, sets the major and minor step for this graticule.  If *step* is not specified, returns the current minor step, which defaults to ⟨10°, 10°⟩.
+If *step* is specified, sets the major and minor step for this graticule. If *step* is not specified, returns the current minor step, which defaults to ⟨10°, 10°⟩.
 
 <a name="graticule_stepMajor" href="#graticule_stepMajor">#</a> <i>graticule</i>.<b>stepMajor</b>([<i>step</i>])
 
-If *step* is specified, sets the major step for this graticule.  If *step* is not specified, returns the current major step, which defaults to ⟨90°, 360°⟩.
+If *step* is specified, sets the major step for this graticule. If *step* is not specified, returns the current major step, which defaults to ⟨90°, 360°⟩.
 
 <a name="graticule_stepMinor" href="#graticule_stepMinor">#</a> <i>graticule</i>.<b>stepMinor</b>([<i>step</i>])
 
-If *step* is specified, sets the minor step for this graticule.  If *step* is not specified, returns the current minor step, which defaults to ⟨10°, 10°⟩.
+If *step* is specified, sets the minor step for this graticule. If *step* is not specified, returns the current minor step, which defaults to ⟨10°, 10°⟩.
 
 <a name="graticule_precision" href="#graticule_precision">#</a> <i>graticule</i>.<b>precision</b>([<i>angle</i>])
 
-If *precision* is specified, sets the precision for this graticule, in degrees.  If *precision* is not specified, returns the current precision, which defaults to 2.5°.
+If *precision* is specified, sets the precision for this graticule, in degrees. If *precision* is not specified, returns the current precision, which defaults to 2.5°.
 
 ### Streams
 
