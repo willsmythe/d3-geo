@@ -1,4 +1,4 @@
-import {deg2rad} from "./math";
+import {abs, atan2, cos, radians, sin, sqrt} from "./math";
 import noop from "./noop";
 import stream from "./stream";
 
@@ -19,8 +19,8 @@ function lineStart() {
       cosPhi0;
 
   length.point = function(lambda, phi) {
-    lambda *= deg2rad, phi *= deg2rad;
-    lambda0 = lambda, sinPhi0 = Math.sin(phi), cosPhi0 = Math.cos(phi);
+    lambda *= radians, phi *= radians;
+    lambda0 = lambda, sinPhi0 = sin(phi), cosPhi0 = cos(phi);
     length.point = nextPoint;
   };
 
@@ -29,15 +29,15 @@ function lineStart() {
   };
 
   function nextPoint(lambda, phi) {
-    lambda *= deg2rad, phi *= deg2rad;
-    var sinPhi = Math.sin(phi),
-        cosPhi = Math.cos(phi),
-        delta = Math.abs(lambda - lambda0),
-        cosDelta = Math.cos(delta),
-        sinDelta = Math.sin(delta),
+    lambda *= radians, phi *= radians;
+    var sinPhi = sin(phi),
+        cosPhi = cos(phi),
+        delta = abs(lambda - lambda0),
+        cosDelta = cos(delta),
+        sinDelta = sin(delta),
         t;
-    sum += Math.atan2(
-      Math.sqrt((t = cosPhi * sinDelta) * t + (t = cosPhi0 * sinPhi - sinPhi0 * cosPhi * cosDelta) * t),
+    sum += atan2(
+      sqrt((t = cosPhi * sinDelta) * t + (t = cosPhi0 * sinPhi - sinPhi0 * cosPhi * cosDelta) * t),
       sinPhi0 * sinPhi + cosPhi0 * cosPhi * cosDelta
     );
     lambda0 = lambda, sinPhi0 = sinPhi, cosPhi0 = cosPhi;
