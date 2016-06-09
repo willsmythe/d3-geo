@@ -1,4 +1,5 @@
 import {range} from "d3-array";
+import {abs, ceil} from "./math";
 
 function graticuleX(y0, y1, dy) {
   var y = range(y0, y1 - 1e-6, dy).concat(y1);
@@ -22,10 +23,10 @@ export default function() {
   }
 
   function lines() {
-    return range(Math.ceil(X0 / DX) * DX, X1, DX).map(X)
-        .concat(range(Math.ceil(Y0 / DY) * DY, Y1, DY).map(Y))
-        .concat(range(Math.ceil(x0 / dx) * dx, x1, dx).filter(function(x) { return Math.abs(x % DX) > 1e-6; }).map(x))
-        .concat(range(Math.ceil(y0 / dy) * dy, y1, dy).filter(function(y) { return Math.abs(y % DY) > 1e-6; }).map(y));
+    return range(ceil(X0 / DX) * DX, X1, DX).map(X)
+        .concat(range(ceil(Y0 / DY) * DY, Y1, DY).map(Y))
+        .concat(range(ceil(x0 / dx) * dx, x1, dx).filter(function(x) { return abs(x % DX) > 1e-6; }).map(x))
+        .concat(range(ceil(y0 / dy) * dy, y1, dy).filter(function(y) { return abs(y % DY) > 1e-6; }).map(y));
   }
 
   graticule.lines = function() {

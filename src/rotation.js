@@ -7,9 +7,8 @@ function rotationIdentity(lambda, phi) {
 
 rotationIdentity.invert = rotationIdentity;
 
-// Note: |deltaLambda| must be < 2pi
-function rotation(deltaLambda, deltaPhi, deltaGamma) {
-  return deltaLambda ? (deltaPhi || deltaGamma ? compose(rotationLambda(deltaLambda), rotationPhiGamma(deltaPhi, deltaGamma))
+export function rotation(deltaLambda, deltaPhi, deltaGamma) {
+  return (deltaLambda %= tau) ? (deltaPhi || deltaGamma ? compose(rotationLambda(deltaLambda), rotationPhiGamma(deltaPhi, deltaGamma))
     : rotationLambda(deltaLambda))
     : (deltaPhi || deltaGamma ? rotationPhiGamma(deltaPhi, deltaGamma)
     : rotationIdentity);
@@ -61,7 +60,7 @@ function rotationPhiGamma(deltaPhi, deltaGamma) {
 }
 
 export default function(rotate) {
-  rotate = rotation(rotate[0] * radians % tau, rotate[1] * radians, rotate.length > 2 ? rotate[2] * radians : 0);
+  rotate = rotation(rotate[0] * radians, rotate[1] * radians, rotate.length > 2 ? rotate[2] * radians : 0);
 
   function forward(coordinates) {
     coordinates = rotate(coordinates[0] * radians, coordinates[1] * radians);

@@ -60,23 +60,33 @@ Rotates a given location according to the angles specified for this rotation, bu
 
 <a name="geoCircle" href="#geoCircle">#</a> d3.<b>geoCircle</b>()
 
-…
+Returns a new circle generator.
 
 <a name="_circle" href="#_circle">#</a> <i>circle</i>(<i>arguments…</i>)
 
-…
+Returns a new GeoJSON geometry object of type “Polygon” approximating a circle on the surface of a sphere, with the current [center](#circle_center), [radius](#circle_radius) and [precision](#circle_precision). Any *arguments* are passed to the center accessor.
 
-<a name="circle_origin" href="#circle_origin">#</a> <i>circle</i>.<b>origin</b>([<i>origin</i>])
+<a name="circle_center" href="#circle_center">#</a> <i>circle</i>.<b>center</b>([<i>center</i>])
 
-… TODO Rename to center?
+If *center* is specified, sets the circle center to the specified coordinates [*longitude*, *latitude*] in degrees, or a function that returns the center coordinates, and returns this circle generator. If *center* is not specified, returns the current center accessor, which defaults to:
 
-<a name="circle_angle" href="#circle_angle">#</a> <i>circle</i>.<b>angle</b>([<i>angle</i>])
+```js
+function center() {
+  return [0, 0];
+}
+```
 
-… TODO Rename to radius?
+The center accessor is invoked whenever a [circle is generated](#_circle), being passed the arguments passed to the circle generator.
+
+<a name="circle_radius" href="#circle_radius">#</a> <i>circle</i>.<b>radius</b>([<i>radius</i>])
+
+If *radius* is specified, sets the angular radius of the circle in degrees to the specified number and returns this circle generator. If *radius* is not specified, returns the current radius, which defaults to 90°.
+
+TODO This should allow a function like *circle*.center.
 
 <a name="circle_precision" href="#circle_precision">#</a> <i>circle</i>.<b>precision</b>([<i>angle</i>])
 
-…
+If *precision* is specified, sets the precision of the generated circle polygon to the specified number in degrees and returns this circle generator. Since small circles do not follow great arcs, smaller values improve the quality of the approximate polygon, but also increase the cost to generate and render the polygon. If *precision* is not specified, returns the current precision which defaults to 6°.
 
 <a name="geoGraticule" href="#geoGraticule">#</a> d3.<b>geoGraticule</b>()
 
