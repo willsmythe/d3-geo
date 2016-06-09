@@ -1,28 +1,26 @@
 import {cartesian, cartesianNormalizeInPlace} from "./cartesian";
 import constant from "./constant";
-import {acos, cos, degrees, epsilon, halfPi, radians, sin, tau} from "./math";
+import {acos, cos, degrees, epsilon, radians, sin, tau} from "./math";
 import {rotation} from "./rotation";
 import {spherical} from "./spherical";
 
 // Generates a circle centered at [0°, 0°], with a given radius and precision.
-function circleStream(radius, precision) {
+function circleStream(listener, radius, precision, direction, t0, t1) {
   var cosRadius = cos(radius),
-      sinRadius = sin(radius);
-  return function(from, to, direction, listener) {
-    var step = direction * precision;
-    if (from != null) {
-      from = circleRadius(cosRadius, from);
-      to = circleRadius(cosRadius, to);
-      if (direction > 0 ? from < to : from > to) from += direction * tau;
-    } else {
-      from = radius + direction * tau;
-      to = radius - 0.5 * step;
-    }
-    for (var point, t = from; direction > 0 ? t > to : t < to; t -= step) {
-      point = spherical([cosRadius, -sinRadius * cos(t), -sinRadius * sin(t)]);
-      listener.point(point[0], point[1]);
-    }
-  };
+      sinRadius = sin(radius),
+      step = direction * precision;
+  if (t0 == null) {
+    t0 = radius + direction * tau;
+    t1 = radius - step / 2;
+  } else {
+    t0 = circleRadius(cosRadius, t0);
+    t1 = circleRadius(cosRadius, t1);
+    if (direction > 0 ? t0 < t1 : t0 > t1) t0 += direction * tau;
+  }
+  for (var point, t = t0; direction > 0 ? t > t1 : t < t1; t -= step) {
+    point = spherical([cosRadius, -sinRadius * cos(t), -sinRadius * sin(t)]);
+    listener.point(point[0], point[1]);
+  }
 }
 
 // Returns the signed angle of a cartesian point relative to [cosRadius, 0, 0].
@@ -33,27 +31,29 @@ function circleRadius(cosRadius, point) {
   return ((-point[2] < 0 ? -radius : radius) + tau - epsilon) % tau;
 }
 
-var defaultCenter = constant([0, 0]);
-
 export default function() {
-  var center = defaultCenter,
-      radius = halfPi,
-      precision = 6 * radians,
-      stream = circleStream(radius, precision);
+  var center = constant([0, 0]),
+      radius = constant(90),
+      precision = constant(6),
+      ring,
+      rotate,
+      listener = {point: point};
+
+  function point(x, y) {
+    ring.push(x = rotate(x, y));
+    x[0] *= degrees, x[1] *= degrees;
+  }
 
   function circle() {
     var c = center.apply(this, arguments),
-        rotate = rotation(-c[0] * radians % tau, -c[1] * radians, 0).invert,
-        ring = [];
-
-    stream(null, null, 1, {
-      point: function(x, y) {
-        ring.push(x = rotate(x, y));
-        x[0] *= degrees, x[1] *= degrees;
-      }
-    });
-
-    return {type: "Polygon", coordinates: [ring]};
+        r = radius.apply(this, arguments) * radians,
+        p = precision.apply(this, arguments) * radians;
+    ring = [];
+    rotate = rotation(-c[0] * radians, -c[1] * radians, 0).invert;
+    circleStream(listener, r, p, 1);
+    c = {type: "Polygon", coordinates: [ring]};
+    ring = rotate = null;
+    return c;
   }
 
   circle.center = function(_) {
@@ -61,11 +61,11 @@ export default function() {
   };
 
   circle.radius = function(_) {
-    return arguments.length ? (stream = circleStream(radius = _ * radians, precision), circle) : radius * degrees;
+    return arguments.length ? (radius = typeof _ === "function" ? _ : constant(+_), circle) : radius;
   };
 
   circle.precision = function(_) {
-    return arguments.length ? (stream = circleStream(radius, precision = _ * radians), circle) : precision * degrees;
+    return arguments.length ? (precision = typeof _ === "function" ? _ : constant(+_), circle) : precision;
   };
 
   return circle;

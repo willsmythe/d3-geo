@@ -1,7 +1,7 @@
 var tape = require("tape"),
     d3 = require("../"),
     d3_array = require("d3-array");
-  
+
 require("./inDelta");
 
 tape("circle generates a Polygon", function(test) {
@@ -30,5 +30,5 @@ tape("circle: first and last points are coincident", function(test) {
   test.inDelta(o.coordinates[0][0], o.coordinates[0].pop(), 1e-6);
   test.end();
 });
-    
-    
+
+

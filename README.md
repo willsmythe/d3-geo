@@ -64,11 +64,11 @@ Returns a new circle generator.
 
 <a name="_circle" href="#_circle">#</a> <i>circle</i>(<i>arguments…</i>)
 
-Returns a new GeoJSON geometry object of type “Polygon” approximating a circle on the surface of a sphere, with the current [center](#circle_center), [radius](#circle_radius) and [precision](#circle_precision). Any *arguments* are passed to the center accessor.
+Returns a new GeoJSON geometry object of type “Polygon” approximating a circle on the surface of a sphere, with the current [center](#circle_center), [radius](#circle_radius) and [precision](#circle_precision). Any *arguments* are passed to the  accessors.
 
 <a name="circle_center" href="#circle_center">#</a> <i>circle</i>.<b>center</b>([<i>center</i>])
 
-If *center* is specified, sets the circle center to the specified coordinates [*longitude*, *latitude*] in degrees, or a function that returns the center coordinates, and returns this circle generator. If *center* is not specified, returns the current center accessor, which defaults to:
+If *center* is specified, sets the circle center to the specified coordinates [*longitude*, *latitude*] in degrees, and returns this circle generator. The center may also be specified as a function; this function will be invoked whenever a circle is [generated](#_circle), being passed any arguments passed to the circle generator. If *center* is not specified, returns the current center accessor, which defaults to:
 
 ```js
 function center() {
@@ -76,17 +76,27 @@ function center() {
 }
 ```
 
-The center accessor is invoked whenever a [circle is generated](#_circle), being passed the arguments passed to the circle generator.
-
 <a name="circle_radius" href="#circle_radius">#</a> <i>circle</i>.<b>radius</b>([<i>radius</i>])
 
-If *radius* is specified, sets the angular radius of the circle in degrees to the specified number and returns this circle generator. If *radius* is not specified, returns the current radius, which defaults to 90°.
+If *radius* is specified, sets the circle radius to the specified angle in degrees, and returns this circle generator. The radius may also be specified as a function; this function will be invoked whenever a circle is [generated](#_circle), being passed any arguments passed to the circle generator. If *radius* is not specified, returns the current radius accessor, which defaults to:
 
-TODO This should allow a function like *circle*.center.
+```js
+function radius() {
+  return 90;
+}
+```
 
 <a name="circle_precision" href="#circle_precision">#</a> <i>circle</i>.<b>precision</b>([<i>angle</i>])
 
-If *precision* is specified, sets the precision of the generated circle polygon to the specified number in degrees and returns this circle generator. Since small circles do not follow great arcs, smaller values improve the quality of the approximate polygon, but also increase the cost to generate and render the polygon. If *precision* is not specified, returns the current precision which defaults to 6°.
+If *precision* is specified, sets the circle precision to the specified angle in degrees, and returns this circle generator. The precision may also be specified as a function; this function will be invoked whenever a circle is [generated](#_circle), being passed any arguments passed to the circle generator. If *precision* is not specified, returns the current precision accessor, which defaults to:
+
+```js
+function precision() {
+  return 6;
+}
+```
+
+Small circles do not follow great arcs and thus the generated polygon is only an approximation. Specifying a smaller precision angle improves the accuracy of the approximate polygon, but also increase the cost to generate and render it.
 
 <a name="geoGraticule" href="#geoGraticule">#</a> d3.<b>geoGraticule</b>()
 
