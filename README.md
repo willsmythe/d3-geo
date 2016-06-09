@@ -48,11 +48,11 @@ Returns an interpolator given the two locations *a* and *b*. Each location must 
 
 Returns a rotation operator for the given *angles*, which must be a two- or three-element array of numbers [λ, φ, γ] specifying the rotation angles in degrees about [each spherical axis](http://bl.ocks.org/mbostock/4282586). If the rotation angle γ is omitted, it defaults to 0.
 
-<a name="_rotation" href="#_rotation">#</a> <b>rotation</b>(<i>location</i>)
+<a name="_rotation" href="#_rotation">#</a> <i>rotation</i>(<i>location</i>)
 
 Rotates a given location according to the angles specified for this rotation, in the order described above. A location is specified as an array [*longitude*, *latitude*], with coordinates expressed in degrees. Returns a new array representing the rotated location.
 
-<a name="rotation_invert" href="#rotation_invert">#</a> rotation.<b>invert</b>(<i>location</i>)
+<a name="rotation_invert" href="#rotation_invert">#</a> <i>rotation</i>.<b>invert</b>(<i>location</i>)
 
 Rotates a given location according to the angles specified for this rotation, but with the order described above reversed. A location is specified as an array [*longitude*, *latitude*], with coordinates expressed in degrees. Returns a new array representing the rotated location.
 
