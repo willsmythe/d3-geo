@@ -15,7 +15,7 @@ export var sin = Math.sin;
 export var sqrt = Math.sqrt;
 
 export function acos(x) {
-  return x > 1 ? 0 : x < -1 ? pi : Math.asin(x);
+  return x > 1 ? 0 : x < -1 ? pi : Math.acos(x);
 }
 export function asin(x) {
   return x > 1 ? halfPi : x < -1 ? -halfPi : Math.asin(x);
