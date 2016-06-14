@@ -4,6 +4,7 @@
   "description": "Shapes and calculators for spherical coordinates.",
   "keywords": [
     "d3",
+    "d3-module",
     "geo",
     "maps",
     "cartography"
