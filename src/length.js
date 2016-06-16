@@ -1,10 +1,11 @@
+import adder from "./adder";
 import {abs, atan2, cos, radians, sin, sqrt} from "./math";
 import noop from "./noop";
 import stream from "./stream";
 
-var sum;
+var lengthSum;
 
-var length = {
+var lengthSink = {
   sphere: noop,
   point: noop,
   lineStart: lineStart,
@@ -18,14 +19,14 @@ function lineStart() {
       sinPhi0,
       cosPhi0;
 
-  length.point = function(lambda, phi) {
+  lengthSink.point = function(lambda, phi) {
     lambda *= radians, phi *= radians;
     lambda0 = lambda, sinPhi0 = sin(phi), cosPhi0 = cos(phi);
-    length.point = nextPoint;
+    lengthSink.point = nextPoint;
   };
 
-  length.lineEnd = function() {
-    length.point = length.lineEnd = noop;
+  lengthSink.lineEnd = function() {
+    lengthSink.point = lengthSink.lineEnd = noop;
   };
 
   function nextPoint(lambda, phi) {
@@ -36,16 +37,17 @@ function lineStart() {
         cosDelta = cos(delta),
         sinDelta = sin(delta),
         t;
-    sum += atan2(
+    lengthSum.add(atan2(
       sqrt((t = cosPhi * sinDelta) * t + (t = cosPhi0 * sinPhi - sinPhi0 * cosPhi * cosDelta) * t),
       sinPhi0 * sinPhi + cosPhi0 * cosPhi * cosDelta
-    );
+    ));
     lambda0 = lambda, sinPhi0 = sinPhi, cosPhi0 = cosPhi;
   }
 }
 
 export default function(object) {
-  sum = 0;
-  stream(object, length);
-  return sum;
+  if (lengthSum) lengthSum.reset();
+  else lengthSum = adder();
+  stream(object, lengthSink);
+  return +lengthSum;
 }

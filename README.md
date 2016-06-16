@@ -146,17 +146,17 @@ If *precision* is specified, sets the precision for this graticule, in degrees. 
 
 Yadda yadda some introduction about how D3 transforms geometry using sequences of function calls to minimize the overhead of intermediate representations…
 
-Stream listeners must implement several methods to traverse geometry. Listeners are inherently stateful; the meaning of a [point](#point) depends on whether the point is inside of a [line](#lineStart), and likewise a line is distinguished from a ring by a [polygon](#polygonStart).
+Stream sinks must implement several methods to traverse geometry. Sinks are inherently stateful; the meaning of a [point](#point) depends on whether the point is inside of a [line](#lineStart), and likewise a line is distinguished from a ring by a [polygon](#polygonStart).
 
-<a name="listener_point" href="#listener_point">#</a> <i>listener</i>.<b>point</b>(<i>x</i>, <i>y</i>[, <i>z</i>])
+<a name="sink_point" href="#sink_point">#</a> <i>sink</i>.<b>point</b>(<i>x</i>, <i>y</i>[, <i>z</i>])
 
 Indicates a point with the specified coordinates *x* and *y* (and optionally *z*). The coordinate system is unspecified and implementation-dependent; for example, [projection streams](https://github.com/d3/d3-geo-projection) require spherical coordinates in degrees as input. Outside the context of a polygon or line, a point indicates a point geometry object ([Point](http://www.geojson.org/geojson-spec.html#point) or [MultiPoint](http://www.geojson.org/geojson-spec.html#multipoint)). Within a line or polygon ring, the point indicates a control point.
 
-<a name="listener_lineStart" href="#listener_lineStart">#</a> <i>listener</i>.<b>lineStart</b>()
+<a name="sink_lineStart" href="#sink_lineStart">#</a> <i>sink</i>.<b>lineStart</b>()
 
 Indicates the start of a line or ring. Within a polygon, indicates the start of a ring. The first ring of a polygon is the exterior ring, and is typically clockwise. Any subsequent rings indicate holes in the polygon, and are typically counterclockwise.
 
-<a name="listener_lineEnd" href="#listener_lineEnd">#</a> <i>listener</i>.<b>lineEnd</b>()
+<a name="sink_lineEnd" href="#sink_lineEnd">#</a> <i>sink</i>.<b>lineEnd</b>()
 
 Indicates the end of a line or ring. Within a polygon, indicates the end of a ring. Unlike GeoJSON, the redundant closing coordinate of a ring is *not* indicated via [point](#point), and instead is implied via lineEnd within a polygon. Thus, the given polygon input:
 
@@ -169,31 +169,31 @@ Indicates the end of a line or ring. Within a polygon, indicates the end of a ri
 }
 ```
 
-Will produce the following series of method calls on the listener:
+Will produce the following series of method calls on the sink:
 
 ```js
-listener.polygonStart();
-listener.lineStart();
-listener.point(0, 0);
-listener.point(1, 0);
-listener.point(1, 1);
-listener.point(0, 1);
-listener.lineEnd();
-listener.polygonEnd();
+sink.polygonStart();
+sink.lineStart();
+sink.point(0, 0);
+sink.point(1, 0);
+sink.point(1, 1);
+sink.point(0, 1);
+sink.lineEnd();
+sink.polygonEnd();
 ```
 
-<a name="listener_polygonStart" href="#listener_polygonStart">#</a> <i>listener</i>.<b>polygonStart</b>()
+<a name="sink_polygonStart" href="#sink_polygonStart">#</a> <i>sink</i>.<b>polygonStart</b>()
 
 Indicates the start of a polygon. The first line of a polygon indicates the exterior ring, and any subsequent lines indicate interior holes.
 
-<a name="listener_polygonEnd" href="#listener_polygonEnd">#</a> <i>listener</i>.<b>polygonEnd</b>()
+<a name="sink_polygonEnd" href="#sink_polygonEnd">#</a> <i>sink</i>.<b>polygonEnd</b>()
 
 Indicates the end of a polygon.
 
-<a name="listener_sphere" href="#listener_sphere">#</a> <i>listener</i>.<b>sphere</b>()
+<a name="sink_sphere" href="#sink_sphere">#</a> <i>sink</i>.<b>sphere</b>()
 
 Indicates the sphere (the globe; the unit sphere centered at ⟨0,0,0⟩).
 
-<a href="#geoStream" name="geoStream">#</a> d3.<b>geoStream</b>(<i>object</i>, <i>listener</i>)
+<a href="#geoStream" name="geoStream">#</a> d3.<b>geoStream</b>(<i>object</i>, <i>sink</i>)
 
-Streams the specified [GeoJSON](http://geojson.org) *object* to the specified stream *listener*. (Despite the name “stream”, these method calls are currently synchronous.) While both features and geometry objects are supported as input, the stream interface only describes the geometry, and thus additional feature properties are not visible to listeners.
+Streams the specified [GeoJSON](http://geojson.org) *object* to the specified stream *sink*. (Despite the name “stream”, these method calls are currently synchronous.) While both features and geometry objects are supported as input, the stream interface only describes the geometry, and thus additional feature properties are not visible to listeners.

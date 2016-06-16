@@ -5,7 +5,7 @@ import {rotation} from "./rotation";
 import {spherical} from "./spherical";
 
 // Generates a circle centered at [0°, 0°], with a given radius and precision.
-function circleStream(listener, radius, precision, direction, t0, t1) {
+function circleStream(sink, radius, precision, direction, t0, t1) {
   var cosRadius = cos(radius),
       sinRadius = sin(radius),
       step = direction * precision;
@@ -19,7 +19,7 @@ function circleStream(listener, radius, precision, direction, t0, t1) {
   }
   for (var point, t = t0; direction > 0 ? t > t1 : t < t1; t -= step) {
     point = spherical([cosRadius, -sinRadius * cos(t), -sinRadius * sin(t)]);
-    listener.point(point[0], point[1]);
+    sink.point(point[0], point[1]);
   }
 }
 
@@ -37,7 +37,7 @@ export default function() {
       precision = constant(6),
       ring,
       rotate,
-      listener = {point: point};
+      sink = {point: point};
 
   function point(x, y) {
     ring.push(x = rotate(x, y));
@@ -50,7 +50,7 @@ export default function() {
         p = precision.apply(this, arguments) * radians;
     ring = [];
     rotate = rotation(-c[0] * radians, -c[1] * radians, 0).invert;
-    circleStream(listener, r, p, 1);
+    circleStream(sink, r, p, 1);
     c = {type: "Polygon", coordinates: [ring]};
     ring = rotate = null;
     return c;

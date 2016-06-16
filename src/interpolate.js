@@ -1,4 +1,4 @@
-import {asin, atan2, cos, degrees, haversin,radians, sin, sqrt} from "./math";
+import {asin, atan2, cos, degrees, haversin, radians, sin, sqrt} from "./math";
 
 function interpolate(x0, y0, x1, y1) {
   var cy0 = cos(y0),

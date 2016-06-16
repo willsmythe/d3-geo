@@ -3,16 +3,17 @@ import {atan2, cos, quarterPi, radians, sin, tau} from "./math";
 import noop from "./noop";
 import stream from "./stream";
 
-var areaSum,
-    areaRingSum;
+var areaSum;
 
-var area = {
+export var areaRingSum;
+
+export var areaSink = {
   point: noop,
   lineStart: noop,
   lineEnd: noop,
   polygonStart: function() {
     areaRingSum.reset();
-    area.lineStart = areaRingStart;
+    areaSink.lineStart = areaRingStart;
   },
   polygonEnd: function() {
     var areaRing = +areaRingSum;
@@ -28,8 +29,8 @@ function areaRingStart() {
   var lambda00, phi00, lambda0, cosPhi0, sinPhi0; // start point and previous point
 
   // For the first point, …
-  area.point = function(lambda, phi) {
-    area.point = nextPoint;
+  areaSink.point = function(lambda, phi) {
+    areaSink.point = nextPoint;
     lambda00 = lambda, phi00 = phi;
     lambda *= radians, phi *= radians;
     lambda0 = lambda, cosPhi0 = cos(phi = phi / 2 + quarterPi), sinPhi0 = sin(phi);
@@ -58,7 +59,7 @@ function areaRingStart() {
   }
 
   // For the last point, return to the start.
-  area.lineEnd = function() {
+  areaSink.lineEnd = function() {
     nextPoint(lambda00, phi00);
   };
 }
@@ -66,6 +67,6 @@ function areaRingStart() {
 export default function(object) {
   if (areaSum) areaSum.reset();
   else areaSum = adder(), areaRingSum = adder();
-  stream(object, area);
+  stream(object, areaSink);
   return areaSum * 2;
 }

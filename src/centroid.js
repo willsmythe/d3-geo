@@ -14,16 +14,16 @@ var centroidW0,
     centroidY2,
     centroidZ2;
 
-var centroid = {
+var centroidSink = {
   sphere: noop,
   point: centroidPoint,
   lineStart: centroidLineStart,
   lineEnd: centroidLineEnd,
   polygonStart: function() {
-    centroid.lineStart = centroidRingStart;
+    centroidSink.lineStart = centroidRingStart;
   },
   polygonEnd: function() {
-    centroid.lineStart = centroidLineStart;
+    centroidSink.lineStart = centroidLineStart;
   }
 };
 
@@ -44,13 +44,13 @@ function centroidPointXYZ(x, y, z) {
 function centroidLineStart() {
   var x0, y0, z0; // previous point
 
-  centroid.point = function(lambda, phi) {
+  centroidSink.point = function(lambda, phi) {
     lambda *= radians, phi *= radians;
     var cosPhi = cos(phi);
     x0 = cosPhi * cos(lambda);
     y0 = cosPhi * sin(lambda);
     z0 = sin(phi);
-    centroid.point = nextPoint;
+    centroidSink.point = nextPoint;
     centroidPointXYZ(x0, y0, z0);
   };
 
@@ -70,7 +70,7 @@ function centroidLineStart() {
 }
 
 function centroidLineEnd() {
-  centroid.point = centroidPoint;
+  centroidSink.point = centroidPoint;
 }
 
 // See J. E. Brock, The Inertia Tensor for a Spherical Triangle,
@@ -79,10 +79,10 @@ function centroidRingStart() {
   var lambda00, phi00, // first point
       x0, y0, z0; // previous point
 
-  centroid.point = function(lambda, phi) {
+  centroidSink.point = function(lambda, phi) {
     lambda00 = lambda, phi00 = phi;
     lambda *= radians, phi *= radians;
-    centroid.point = nextPoint;
+    centroidSink.point = nextPoint;
     var cosPhi = cos(phi);
     x0 = cosPhi * cos(lambda);
     y0 = cosPhi * sin(lambda);
@@ -90,10 +90,10 @@ function centroidRingStart() {
     centroidPointXYZ(x0, y0, z0);
   };
 
-  centroid.lineEnd = function() {
+  centroidSink.lineEnd = function() {
     nextPoint(lambda00, phi00);
-    centroid.lineEnd = centroidLineEnd;
-    centroid.point = centroidPoint;
+    centroidSink.lineEnd = centroidLineEnd;
+    centroidSink.point = centroidPoint;
   };
 
   function nextPoint(lambda, phi) {
@@ -125,7 +125,7 @@ export default function(object) {
   centroidX0 = centroidY0 = centroidZ0 =
   centroidX1 = centroidY1 = centroidZ1 =
   centroidX2 = centroidY2 = centroidZ2 = 0;
-  stream(object, centroid);
+  stream(object, centroidSink);
 
   var x = centroidX2,
       y = centroidY2,

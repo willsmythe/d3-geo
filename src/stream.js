@@ -1,69 +1,69 @@
-function streamGeometry(geometry, listener) {
+function streamGeometry(geometry, sink) {
   if (geometry && streamGeometryType.hasOwnProperty(geometry.type)) {
-    streamGeometryType[geometry.type](geometry, listener);
+    streamGeometryType[geometry.type](geometry, sink);
   }
 }
 
 var streamObjectType = {
-  Feature: function(feature, listener) {
-    streamGeometry(feature.geometry, listener);
+  Feature: function(feature, sink) {
+    streamGeometry(feature.geometry, sink);
   },
-  FeatureCollection: function(object, listener) {
+  FeatureCollection: function(object, sink) {
     var features = object.features, i = -1, n = features.length;
-    while (++i < n) streamGeometry(features[i].geometry, listener);
+    while (++i < n) streamGeometry(features[i].geometry, sink);
   }
 };
 
 var streamGeometryType = {
-  Sphere: function(object, listener) {
-    listener.sphere();
+  Sphere: function(object, sink) {
+    sink.sphere();
   },
-  Point: function(object, listener) {
+  Point: function(object, sink) {
     object = object.coordinates;
-    listener.point(object[0], object[1], object[2]);
+    sink.point(object[0], object[1], object[2]);
   },
-  MultiPoint: function(object, listener) {
+  MultiPoint: function(object, sink) {
     var coordinates = object.coordinates, i = -1, n = coordinates.length;
-    while (++i < n) object = coordinates[i], listener.point(object[0], object[1], object[2]);
+    while (++i < n) object = coordinates[i], sink.point(object[0], object[1], object[2]);
   },
-  LineString: function(object, listener) {
-    streamLine(object.coordinates, listener, 0);
+  LineString: function(object, sink) {
+    streamLine(object.coordinates, sink, 0);
   },
-  MultiLineString: function(object, listener) {
+  MultiLineString: function(object, sink) {
     var coordinates = object.coordinates, i = -1, n = coordinates.length;
-    while (++i < n) streamLine(coordinates[i], listener, 0);
+    while (++i < n) streamLine(coordinates[i], sink, 0);
   },
-  Polygon: function(object, listener) {
-    streamPolygon(object.coordinates, listener);
+  Polygon: function(object, sink) {
+    streamPolygon(object.coordinates, sink);
   },
-  MultiPolygon: function(object, listener) {
+  MultiPolygon: function(object, sink) {
     var coordinates = object.coordinates, i = -1, n = coordinates.length;
-    while (++i < n) streamPolygon(coordinates[i], listener);
+    while (++i < n) streamPolygon(coordinates[i], sink);
   },
-  GeometryCollection: function(object, listener) {
+  GeometryCollection: function(object, sink) {
     var geometries = object.geometries, i = -1, n = geometries.length;
-    while (++i < n) streamGeometry(geometries[i], listener);
+    while (++i < n) streamGeometry(geometries[i], sink);
   }
 };
 
-function streamLine(coordinates, listener, closed) {
+function streamLine(coordinates, sink, closed) {
   var i = -1, n = coordinates.length - closed, coordinate;
-  listener.lineStart();
-  while (++i < n) coordinate = coordinates[i], listener.point(coordinate[0], coordinate[1], coordinate[2]);
-  listener.lineEnd();
+  sink.lineStart();
+  while (++i < n) coordinate = coordinates[i], sink.point(coordinate[0], coordinate[1], coordinate[2]);
+  sink.lineEnd();
 }
 
-function streamPolygon(coordinates, listener) {
+function streamPolygon(coordinates, sink) {
   var i = -1, n = coordinates.length;
-  listener.polygonStart();
-  while (++i < n) streamLine(coordinates[i], listener, 1);
-  listener.polygonEnd();
+  sink.polygonStart();
+  while (++i < n) streamLine(coordinates[i], sink, 1);
+  sink.polygonEnd();
 }
 
-export default function(object, listener) {
+export default function(object, sink) {
   if (object && streamObjectType.hasOwnProperty(object.type)) {
-    streamObjectType[object.type](object, listener);
+    streamObjectType[object.type](object, sink);
   } else {
-    streamGeometry(object, listener);
+    streamGeometry(object, sink);
   }
 }
