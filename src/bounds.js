@@ -14,21 +14,21 @@ var lambda0, phi0, lambda1, phi1, // bounds
     range;
 
 var boundsSink = {
-  point: point,
-  lineStart: lineStart,
-  lineEnd: lineEnd,
+  point: boundsPoint,
+  lineStart: boundsLineStart,
+  lineEnd: boundsLineEnd,
   polygonStart: function() {
-    boundsSink.point = ringPoint;
-    boundsSink.lineStart = ringStart;
-    boundsSink.lineEnd = ringEnd;
+    boundsSink.point = boundsRingPoint;
+    boundsSink.lineStart = boundsRingStart;
+    boundsSink.lineEnd = boundsRingEnd;
     deltaSum.reset();
     areaSink.polygonStart();
   },
   polygonEnd: function() {
     areaSink.polygonEnd();
-    boundsSink.point = point;
-    boundsSink.lineStart = lineStart;
-    boundsSink.lineEnd = lineEnd;
+    boundsSink.point = boundsPoint;
+    boundsSink.lineStart = boundsLineStart;
+    boundsSink.lineEnd = boundsLineEnd;
     if (areaRingSum < 0) lambda0 = -(lambda1 = 180), phi0 = -(phi1 = 90);
     else if (deltaSum > epsilon) phi1 = 90;
     else if (deltaSum < -epsilon) phi0 = -90;
@@ -36,7 +36,7 @@ var boundsSink = {
   }
 };
 
-function point(lambda, phi) {
+function boundsPoint(lambda, phi) {
   ranges.push(range = [lambda0 = lambda, lambda1 = lambda]);
   if (phi < phi0) phi0 = phi;
   if (phi > phi1) phi1 = phi;
@@ -84,22 +84,22 @@ function linePoint(lambda, phi) {
       }
     }
   } else {
-    point(lambda, phi);
+    boundsPoint(lambda, phi);
   }
   p0 = p, lambda2 = lambda;
 }
 
-function lineStart() {
+function boundsLineStart() {
   boundsSink.point = linePoint;
 }
 
-function lineEnd() {
+function boundsLineEnd() {
   range[0] = lambda0, range[1] = lambda1;
-  boundsSink.point = point;
+  boundsSink.point = boundsPoint;
   p0 = null;
 }
 
-function ringPoint(lambda, phi) {
+function boundsRingPoint(lambda, phi) {
   if (p0) {
     var delta = lambda - lambda2;
     deltaSum.add(abs(delta) > 180 ? delta + (delta > 0 ? 360 : -360) : delta);
@@ -110,12 +110,12 @@ function ringPoint(lambda, phi) {
   linePoint(lambda, phi);
 }
 
-function ringStart() {
+function boundsRingStart() {
   areaSink.lineStart();
 }
 
-function ringEnd() {
-  ringPoint(lambda00, phi00);
+function boundsRingEnd() {
+  boundsRingPoint(lambda00, phi00);
   areaSink.lineEnd();
   if (abs(deltaSum) > epsilon) lambda0 = -(lambda1 = 180);
   range[0] = lambda0, range[1] = lambda1;
