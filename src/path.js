@@ -1,10 +1,7 @@
 import identity from "./identity";
-import {degrees} from "./math";
 import PathBuffer from "./path-buffer";
 import PathContext from "./path-context";
-import resample from "./resample";
 import stream from "./stream";
-import {transformRadians} from "./transform";
 
 export default function() {
   var pointRadius = 4.5,
@@ -30,7 +27,7 @@ export default function() {
 
   path.projection = function(_) {
     if (!arguments.length) return projection;
-    projectStream = (projection = _) ? _.stream || pathProjectStream(_) : identity;
+    projectStream = (projection = _) ? _.stream : identity;
     return reset();
   };
 
@@ -53,9 +50,4 @@ export default function() {
   }
 
   return path.projection(null).context(null); // TODO albersUsa
-}
-
-function pathProjectStream(project) {
-  var resampleProjectDegrees = resample(function(x, y) { return project([x * degrees, y * degrees]); });
-  return function(stream) { return transformRadians(resampleProjectDegrees(stream)); };
 }

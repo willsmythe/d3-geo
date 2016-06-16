@@ -1,18 +1,21 @@
-import {radians} from "./math";
-
-export function transformPoint(stream, point) {
-  return {
-    point: point,
-    sphere: function() { stream.sphere(); },
-    lineStart: function() { stream.lineStart(); },
-    lineEnd: function() { stream.lineEnd(); },
-    polygonStart: function() { stream.polygonStart(); },
-    polygonEnd: function() { stream.polygonEnd(); }
+export default function transform(prototype) {
+  function T() {}
+  var p = T.prototype = Object.create(Transform.prototype);
+  for (var k in prototype) p[k] = prototype[k];
+  return function(stream) {
+    var t = new T;
+    t.stream = stream;
+    return t;
   };
 }
 
-export function transformRadians(stream) {
-  return transformPoint(stream, function(x, y) {
-    stream.point(x * radians, y * radians);
-  });
-}
+function Transform() {}
+
+Transform.prototype = {
+  point: function(x, y) { this.stream.point(x, y); },
+  sphere: function() { this.stream.sphere(); },
+  lineStart: function() { this.stream.lineStart(); },
+  lineEnd: function() { this.stream.lineEnd(); },
+  polygonStart: function() { this.stream.polygonStart(); },
+  polygonEnd: function() { this.stream.polygonEnd(); }
+};

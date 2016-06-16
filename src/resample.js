@@ -1,21 +1,20 @@
 import {cartesian} from "./cartesian";
 import {abs, asin, atan2, cos, epsilon, radians, sqrt} from "./math";
-import {transformPoint} from "./transform";
+import transform from "./transform";
 
 export default function(project) {
   var delta2 = 0.5, // precision, px²
       cosMinDistance = cos(30 * radians), // cos(minimum angular distance)
-      maxDepth = 16;
+      maxDepth = 16,
+      resampleNone = transform({point: transformPoint});
+
+  function transformPoint(x, y) {
+    x = project(x, y);
+    this.stream.point(x[0], x[1]);
+  }
 
   function resample(stream) {
     return (maxDepth ? resampleRecursive : resampleNone)(stream);
-  }
-
-  function resampleNone(stream) {
-    return transformPoint(stream, function(x, y) {
-      x = project(x, y);
-      stream.point(x[0], x[1]);
-    });
   }
 
   function resampleRecursive(stream) {

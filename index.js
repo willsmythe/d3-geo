@@ -9,3 +9,4 @@ export {default as geoLength} from "./src/length";
 export {default as geoPath} from "./src/path";
 export {default as geoRotation} from "./src/rotation";
 export {default as geoStream} from "./src/stream";
+export {default as geoTransform} from "./src/transform";
