@@ -1,26 +1,26 @@
 import adder from "./adder";
-import {atan2, cos, fourPi, quarterPi, radians, sin} from "./math";
+import {atan2, cos, quarterPi, radians, sin, tau} from "./math";
 import noop from "./noop";
 import stream from "./stream";
 
 var areaSum,
-    areaRingSum = adder();
+    areaRingSum;
 
 var area = {
-  sphere: function() { areaSum += fourPi; },
   point: noop,
   lineStart: noop,
   lineEnd: noop,
-
-  // Only count area for polygon rings.
   polygonStart: function() {
     areaRingSum.reset();
     area.lineStart = areaRingStart;
   },
   polygonEnd: function() {
-    var a = 2 * areaRingSum;
-    areaSum += a < 0 ? fourPi + a : a;
+    var areaRing = +areaRingSum;
+    areaSum.add(areaRing < 0 ? tau + areaRing : areaRing);
     this.lineStart = this.lineEnd = this.point = noop;
+  },
+  sphere: function() {
+    areaSum.add(tau);
   }
 };
 
@@ -64,7 +64,8 @@ function areaRingStart() {
 }
 
 export default function(object) {
-  areaSum = 0;
+  if (areaSum) areaSum.reset();
+  else areaSum = adder(), areaRingSum = adder();
   stream(object, area);
-  return areaSum;
+  return areaSum * 2;
 }
