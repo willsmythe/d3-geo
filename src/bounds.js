@@ -1,3 +1,4 @@
+import adder from "./adder";
 import {areaSink, areaRingSum} from "./area";
 import {cartesian, cartesianCross, cartesianNormalizeInPlace} from "./cartesian";
 import {abs, degrees, epsilon, radians} from "./math";
@@ -5,8 +6,8 @@ import stream from "./stream";
 import {spherical} from "./spherical";
 
 var lambda0, phi0, lambda1, phi1, // bounds
-    lambda_, // previous lambda-coordinate
-    lambda__, phi__, // first point
+    lambda2, // previous lambda-coordinate
+    lambda00, phi00, // first point
     p0, // previous 3D point
     deltaSum,
     ranges,
@@ -20,7 +21,7 @@ var boundsSink = {
     boundsSink.point = ringPoint;
     boundsSink.lineStart = ringStart;
     boundsSink.lineEnd = ringEnd;
-    deltaSum = 0;
+    deltaSum.reset();
     areaSink.polygonStart();
   },
   polygonEnd: function() {
@@ -49,15 +50,15 @@ function linePoint(lambda, phi) {
         inflection = cartesianCross(equatorial, normal);
     cartesianNormalizeInPlace(inflection);
     inflection = spherical(inflection);
-    var delta = lambda - lambda_,
+    var delta = lambda - lambda2,
         sign = delta > 0 ? 1 : -1,
         lambdai = inflection[0] * degrees * sign,
         phii,
         antimeridian = abs(delta) > 180;
-    if (antimeridian ^ (sign * lambda_ < lambdai && lambdai < sign * lambda)) {
+    if (antimeridian ^ (sign * lambda2 < lambdai && lambdai < sign * lambda)) {
       phii = inflection[1] * degrees;
       if (phii > phi1) phi1 = phii;
-    } else if (lambdai = (lambdai + 360) % 360 - 180, antimeridian ^ (sign * lambda_ < lambdai && lambdai < sign * lambda)) {
+    } else if (lambdai = (lambdai + 360) % 360 - 180, antimeridian ^ (sign * lambda2 < lambdai && lambdai < sign * lambda)) {
       phii = -inflection[1] * degrees;
       if (phii < phi0) phi0 = phii;
     } else {
@@ -65,7 +66,7 @@ function linePoint(lambda, phi) {
       if (phi > phi1) phi1 = phi;
     }
     if (antimeridian) {
-      if (lambda < lambda_) {
+      if (lambda < lambda2) {
         if (angle(lambda0, lambda) > angle(lambda0, lambda1)) lambda1 = lambda;
       } else {
         if (angle(lambda, lambda1) > angle(lambda0, lambda1)) lambda0 = lambda;
@@ -75,7 +76,7 @@ function linePoint(lambda, phi) {
         if (lambda < lambda0) lambda0 = lambda;
         if (lambda > lambda1) lambda1 = lambda;
       } else {
-        if (lambda > lambda_) {
+        if (lambda > lambda2) {
           if (angle(lambda0, lambda) > angle(lambda0, lambda1)) lambda1 = lambda;
         } else {
           if (angle(lambda, lambda1) > angle(lambda0, lambda1)) lambda0 = lambda;
@@ -85,7 +86,7 @@ function linePoint(lambda, phi) {
   } else {
     point(lambda, phi);
   }
-  p0 = p, lambda_ = lambda;
+  p0 = p, lambda2 = lambda;
 }
 
 function lineStart() {
@@ -100,9 +101,11 @@ function lineEnd() {
 
 function ringPoint(lambda, phi) {
   if (p0) {
-    var delta = lambda - lambda_;
-    deltaSum += abs(delta) > 180 ? delta + (delta > 0 ? 360 : -360) : delta;
-  } else lambda__ = lambda, phi__ = phi;
+    var delta = lambda - lambda2;
+    deltaSum.add(abs(delta) > 180 ? delta + (delta > 0 ? 360 : -360) : delta);
+  } else {
+    lambda00 = lambda, phi00 = phi;
+  }
   areaSink.point(lambda, phi);
   linePoint(lambda, phi);
 }
@@ -112,7 +115,7 @@ function ringStart() {
 }
 
 function ringEnd() {
-  ringPoint(lambda__, phi__);
+  ringPoint(lambda00, phi00);
   areaSink.lineEnd();
   if (abs(deltaSum) > epsilon) lambda0 = -(lambda1 = 180);
   range[0] = lambda0, range[1] = lambda1;
@@ -137,6 +140,8 @@ function rangeContains(range, x) {
 export default function(feature) {
   var i, n, a, b, merged, deltaMax, delta;
 
+  if (deltaSum) deltaSum.reset();
+  else deltaSum = adder();
   phi1 = lambda1 = -(lambda0 = phi0 = Infinity);
   ranges = [];
   stream(feature, boundsSink);

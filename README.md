@@ -26,7 +26,7 @@ Returns the spherical area of the specified *feature* in [steradians](http://mat
 
 <a name="geoBounds" href="#geoBounds">#</a> d3.<b>geoBounds</b>(<i>feature</i>)
 
-…
+Returns the spherical bounding box for the specified *feature*. The bounding box is represented by a two-dimensional array: [​[<i>left</i>, <i>bottom</i>], [<i>right</i>, <i>top</i>]​], where *left* is the minimum longitude, *bottom* is the minimum latitude, *right* is maximum longitude, and *top* is the maximum latitude.
 
 <a name="geoCentroid" href="#geoCentroid">#</a> d3.<b>geoCentroid</b>(<i>feature</i>)
 
