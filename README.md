@@ -26,7 +26,7 @@ Returns the spherical area of the specified *feature* in [steradians](http://mat
 
 <a name="geoBounds" href="#geoBounds">#</a> d3.<b>geoBounds</b>(<i>feature</i>)
 
-Returns the spherical bounding box for the specified *feature*. The bounding box is represented by a two-dimensional array: [​[<i>left</i>, <i>bottom</i>], [<i>right</i>, <i>top</i>]​], where *left* is the minimum longitude, *bottom* is the minimum latitude, *right* is maximum longitude, and *top* is the maximum latitude.
+Returns the spherical bounding box for the specified *feature*. The bounding box is represented by a two-dimensional array: [​[*left*, *bottom*], [*right*, *top*]​], where *left* is the minimum longitude, *bottom* is the minimum latitude, *right* is maximum longitude, and *top* is the maximum latitude.
 
 <a name="geoCentroid" href="#geoCentroid">#</a> d3.<b>geoCentroid</b>(<i>feature</i>)
 
@@ -34,7 +34,7 @@ Returns the spherical centroid of the specified *feature*. See also [path.centro
 
 <a name="geoDistance" href="#geoDistance">#</a> d3.<b>geoDistance</b>(<i>a</i>, <i>b</i>)
 
-Returns the great-arc distance in radians between the two points <i>a</i> and <i>b</i>. Each point is specified as an array [<i>longitude</i>, <i>latitude</i>], with coordinates expressed in decimal degrees.
+Returns the great-arc distance in radians between the two location *a* and *b*. Each location must be specified as a two-element array [*longitude*, *latitude*] in degrees.
 
 <a name="geoLength" href="#geoLength">#</a> d3.<b>geoLength</b>(<i>feature</i>)
 
@@ -42,19 +42,19 @@ Returns the great-arc length of the specified *feature* in [radians](http://math
 
 <a name="geoInterpolate" href="#geoInterpolate">#</a> d3.<b>geoInterpolate</b>(<i>a</i>, <i>b</i>)
 
-Returns an interpolator given the two locations *a* and *b*. Each location must be represented as a two-element array of [<i>longitude</i>, <i>latitude</i>]. The returned interpolator is a function which takes a single parameter *t* as input, where *t* ranges from 0 to 1. A value of 0 returns the location *a*, while a value of 1 returns the location *b*. Intermediate values interpolate from *a* to *b* along the spanning great arc.
+Returns an interpolator given the two locations *a* and *b*. Each location must be specified as a two-element array [*longitude*, *latitude*] in degrees. The returned interpolator is a function which takes a single parameter *t* as input, where *t* ranges from 0 to 1. A value of 0 returns the location *a*, while a value of 1 returns the location *b*. Intermediate values interpolate from *a* to *b* along the spanning great arc.
 
 <a name="geoRotation" href="#geoRotation">#</a> d3.<b>geoRotation</b>(<i>angles</i>)
 
-Returns a rotation operator for the given *angles*, which must be a two- or three-element array of numbers [λ, φ, γ] specifying the rotation angles in degrees about [each spherical axis](http://bl.ocks.org/mbostock/4282586). If the rotation angle γ is omitted, it defaults to 0.
+Returns a rotation operator for the given *angles*, which must be a two- or three-element array of numbers [*lambda*, *phi*, *gamma*] specifying the rotation angles in degrees about [each spherical axis](http://bl.ocks.org/mbostock/4282586). If the rotation angle *gamma* is omitted, it defaults to 0.
 
 <a name="_rotation" href="#_rotation">#</a> <i>rotation</i>(<i>location</i>)
 
-Rotates a given location according to the angles specified for this rotation, in the order described above. A location is specified as an array [*longitude*, *latitude*], with coordinates expressed in degrees. Returns a new array representing the rotated location.
+Rotates the given *location* according to the angles specified for this rotation, in the order described above. The location must be specified as a two-element array [*longitude*, *latitude*] in degrees. Returns a new array representing the rotated location.
 
 <a name="rotation_invert" href="#rotation_invert">#</a> <i>rotation</i>.<b>invert</b>(<i>location</i>)
 
-Rotates a given location according to the angles specified for this rotation, but with the order described above reversed. A location is specified as an array [*longitude*, *latitude*], with coordinates expressed in degrees. Returns a new array representing the rotated location.
+Rotates the given *location* according to the angles specified for this rotation, but with the order described above reversed. The location must be specified as a two-element array [*longitude*, *latitude*] in degrees. Returns a new array representing the rotated location.
 
 ### Shapes
 
@@ -68,7 +68,7 @@ Returns a new GeoJSON geometry object of type “Polygon” approximating a circ
 
 <a name="circle_center" href="#circle_center">#</a> <i>circle</i>.<b>center</b>([<i>center</i>])
 
-If *center* is specified, sets the circle center to the specified coordinates [*longitude*, *latitude*] in degrees, and returns this circle generator. The center may also be specified as a function; this function will be invoked whenever a circle is [generated](#_circle), being passed any arguments passed to the circle generator. If *center* is not specified, returns the current center accessor, which defaults to:
+If *center* is specified, sets the circle center to the specified location [*longitude*, *latitude*] in degrees, and returns this circle generator. The center may also be specified as a function; this function will be invoked whenever a circle is [generated](#_circle), being passed any arguments passed to the circle generator. If *center* is not specified, returns the current center accessor, which defaults to:
 
 ```js
 function center() {
