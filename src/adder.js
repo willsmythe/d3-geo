@@ -6,30 +6,31 @@
 // http://geographiclib.sourceforge.net/
 
 export default function Adder() {
-  this.s = 0; // rounded value
-  this.t = 0; // exact error
+  this.reset();
 }
 
 Adder.prototype = {
   constructor: Adder,
-  add: function(y) {
-    adderSum(y, this.t, adderTemp);
-    adderSum(adderTemp.s, this.s, this);
-    if (this.s) this.t += adderTemp.t;
-    else this.s = adderTemp.t;
-  },
   reset: function() {
-    this.s = this.t = 0;
+    this.s = // rounded value
+    this.t = 0; // exact error
+  },
+  add: function(y) {
+    add(temp, y, this.t);
+    add(this, temp.s, this.s);
+    if (this.s) this.t += temp.t;
+    else this.s = temp.t;
   },
   valueOf: function() {
     return this.s;
   }
 };
 
-var adderTemp = new Adder;
+var temp = new Adder;
 
-function adderSum(a, b, o) {
-  var x = o.s = a + b, // a + b
-      bv = x - a, av = x - bv; // b_virtual & a_virtual
-  o.t = (a - av) + (b - bv); // a_roundoff + b_roundoff
+function add(adder, a, b) {
+  var x = adder.s = a + b,
+      bv = x - a,
+      av = x - bv;
+  adder.t = (a - av) + (b - bv);
 }
