@@ -32,14 +32,14 @@ export var areaSink = {
 };
 
 function areaRingStart() {
-  areaSink.point = areaFirstPoint;
+  areaSink.point = areaPointFirst;
 }
 
 function areaRingEnd() {
   areaPoint(lambda00, phi00);
 }
 
-function areaFirstPoint(lambda, phi) {
+function areaPointFirst(lambda, phi) {
   areaSink.point = areaPoint;
   lambda00 = lambda, phi00 = phi;
   lambda *= radians, phi *= radians;
