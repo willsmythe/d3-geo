@@ -1,6 +1,6 @@
-import {acos, asin, atan2, cos, degrees, radians, sin, sqrt} from "./math";
+import {acos, asin, atan2, cos, degrees, epsilon, epsilon2, radians, sin, sqrt} from "./math";
 import noop from "./noop";
-import geoStream from "./stream";
+import stream from "./stream";
 
 var centroidW0,
     centroidW1,
@@ -29,8 +29,8 @@ var centroid = {
 
 // Arithmetic mean of Cartesian vectors.
 function centroidPoint(lambda, phi) {
-  lambda *= radians;
-  var cosPhi = cos(phi *= radians);
+  lambda *= radians, phi *= radians;
+  var cosPhi = cos(phi);
   centroidPointXYZ(cosPhi * cos(lambda), cosPhi * sin(lambda), sin(phi));
 }
 
@@ -45,8 +45,8 @@ function centroidLineStart() {
   var x0, y0, z0; // previous point
 
   centroid.point = function(lambda, phi) {
-    lambda *= radians;
-    var cosPhi = cos(phi *= radians);
+    lambda *= radians, phi *= radians;
+    var cosPhi = cos(phi);
     x0 = cosPhi * cos(lambda);
     y0 = cosPhi * sin(lambda);
     z0 = sin(phi);
@@ -55,14 +55,12 @@ function centroidLineStart() {
   };
 
   function nextPoint(lambda, phi) {
-    lambda *= radians;
-    var cosPhi = cos(phi *= radians),
+    lambda *= radians, phi *= radians;
+    var cosPhi = cos(phi),
         x = cosPhi * cos(lambda),
         y = cosPhi * sin(lambda),
         z = sin(phi),
-        w = atan2(
-          sqrt((w = y0 * z - z0 * y) * w + (w = z0 * x - x0 * z) * w + (w = x0 * y - y0 * x) * w),
-          x0 * x + y0 * y + z0 * z);
+        w = atan2(sqrt((w = y0 * z - z0 * y) * w + (w = z0 * x - x0 * z) * w + (w = x0 * y - y0 * x) * w), x0 * x + y0 * y + z0 * z);
     centroidW1 += w;
     centroidX1 += w * (x0 + (x0 = x));
     centroidY1 += w * (y0 + (y0 = y));
@@ -83,9 +81,9 @@ function centroidRingStart() {
 
   centroid.point = function(lambda, phi) {
     lambda00 = lambda, phi00 = phi;
+    lambda *= radians, phi *= radians;
     centroid.point = nextPoint;
-    lambda *= radians;
-    var cosPhi = cos(phi *= radians);
+    var cosPhi = cos(phi);
     x0 = cosPhi * cos(lambda);
     y0 = cosPhi * sin(lambda);
     z0 = sin(phi);
@@ -99,8 +97,8 @@ function centroidRingStart() {
   };
 
   function nextPoint(lambda, phi) {
-    lambda *= radians;
-    var cosPhi = cos(phi *= radians),
+    lambda *= radians, phi *= radians;
+    var cosPhi = cos(phi),
         x = cosPhi * cos(lambda),
         y = cosPhi * sin(lambda),
         z = sin(phi),
@@ -127,7 +125,7 @@ export default function(object) {
   centroidX0 = centroidY0 = centroidZ0 =
   centroidX1 = centroidY1 = centroidZ1 =
   centroidX2 = centroidY2 = centroidZ2 = 0;
-  geoStream(object, centroid);
+  stream(object, centroid);
 
   var x = centroidX2,
       y = centroidY2,
@@ -135,13 +133,13 @@ export default function(object) {
       m = x * x + y * y + z * z;
 
   // If the area-weighted ccentroid is undefined, fall back to length-weighted ccentroid.
-  if (m < 1e-12) {
+  if (m < epsilon2) {
     x = centroidX1, y = centroidY1, z = centroidZ1;
     // If the feature has zero length, fall back to arithmetic mean of point vectors.
-    if (centroidW1 < 1e-6) x = centroidX0, y = centroidY0, z = centroidZ0;
+    if (centroidW1 < epsilon) x = centroidX0, y = centroidY0, z = centroidZ0;
     m = x * x + y * y + z * z;
     // If the feature still has an undefined ccentroid, then return.
-    if (m < 1e-12) return [NaN, NaN];
+    if (m < epsilon2) return [NaN, NaN];
   }
 
   return [atan2(y, x) * degrees, asin(z / sqrt(m)) * degrees];
