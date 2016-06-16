@@ -3,10 +3,10 @@ import {atan2, cos, quarterPi, radians, sin, tau} from "./math";
 import noop from "./noop";
 import stream from "./stream";
 
-export var areaSum;
 export var areaRingSum;
 
-var lambda00,
+var areaSum,
+    lambda00,
     phi00,
     lambda0,
     cosPhi0,
