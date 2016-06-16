@@ -1,7 +1,7 @@
 import identity from "./identity";
 import pathArea from "./path-area";
 import pathBounds from "./path-bounds";
-import PathBuffer from "./path-buffer";
+import PathString from "./path-string";
 import pathCentroid from "./path-centroid";
 import PathContext from "./path-context";
 import stream from "./stream";
@@ -47,7 +47,7 @@ export default function() {
 
   path.context = function(_) {
     if (!arguments.length) return context;
-    contextStream = (context = _) == null ? new PathBuffer : new PathContext(_);
+    contextStream = (context = _) == null ? new PathString : new PathContext(_);
     if (typeof pointRadius !== "function") contextStream.pointRadius(pointRadius);
     return reset();
   };
