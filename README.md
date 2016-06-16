@@ -22,7 +22,7 @@ var stream = d3.geoStream();
 
 <a name="geoArea" href="#geoArea">#</a> d3.<b>geoArea</b>(<i>feature</i>)
 
-…
+Returns the spherical area of the specified *feature* in [steradians](http://mathworld.wolfram.com/Steradian.html). See also [path.area](#path_area), which computes the projected area on the Cartesian plane.
 
 <a name="geoBounds" href="#geoBounds">#</a> d3.<b>geoBounds</b>(<i>feature</i>)
 
