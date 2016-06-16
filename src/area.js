@@ -3,9 +3,14 @@ import {atan2, cos, quarterPi, radians, sin, tau} from "./math";
 import noop from "./noop";
 import stream from "./stream";
 
-var areaSum;
-
+export var areaSum;
 export var areaRingSum;
+
+var lambda00,
+    phi00,
+    lambda0,
+    cosPhi0,
+    sinPhi0;
 
 export var areaSink = {
   point: noop,
@@ -14,6 +19,7 @@ export var areaSink = {
   polygonStart: function() {
     areaRingSum.reset();
     areaSink.lineStart = areaRingStart;
+    areaSink.lineEnd = areaRingEnd;
   },
   polygonEnd: function() {
     var areaRing = +areaRingSum;
@@ -26,42 +32,39 @@ export var areaSink = {
 };
 
 function areaRingStart() {
-  var lambda00, phi00, lambda0, cosPhi0, sinPhi0; // start point and previous point
+  areaSink.point = areaFirstPoint;
+}
 
-  // For the first point, …
-  areaSink.point = function(lambda, phi) {
-    areaSink.point = nextPoint;
-    lambda00 = lambda, phi00 = phi;
-    lambda *= radians, phi *= radians;
-    lambda0 = lambda, cosPhi0 = cos(phi = phi / 2 + quarterPi), sinPhi0 = sin(phi);
-  };
+function areaRingEnd() {
+  areaPoint(lambda00, phi00);
+}
 
-  // For subsequent points, …
-  function nextPoint(lambda, phi) {
-    lambda *= radians, phi *= radians;
-    phi = phi / 2 + quarterPi; // half the angular distance from south pole
+function areaFirstPoint(lambda, phi) {
+  areaSink.point = areaPoint;
+  lambda00 = lambda, phi00 = phi;
+  lambda *= radians, phi *= radians;
+  lambda0 = lambda, cosPhi0 = cos(phi = phi / 2 + quarterPi), sinPhi0 = sin(phi);
+}
 
-    // Spherical excess E for a spherical triangle with vertices: south pole,
-    // previous point, current point.  Uses a formula derived from Cagnoli’s
-    // theorem.  See Todhunter, Spherical Trig. (1871), Sec. 103, Eq. (2).
-    var dLambda = lambda - lambda0,
-        sdLambda = dLambda >= 0 ? 1 : -1,
-        adLambda = sdLambda * dLambda,
-        cosPhi = cos(phi),
-        sinPhi = sin(phi),
-        k = sinPhi0 * sinPhi,
-        u = cosPhi0 * cosPhi + k * cos(adLambda),
-        v = k * sdLambda * sin(adLambda);
-    areaRingSum.add(atan2(v, u));
+function areaPoint(lambda, phi) {
+  lambda *= radians, phi *= radians;
+  phi = phi / 2 + quarterPi; // half the angular distance from south pole
 
-    // Advance the previous points.
-    lambda0 = lambda, cosPhi0 = cosPhi, sinPhi0 = sinPhi;
-  }
+  // Spherical excess E for a spherical triangle with vertices: south pole,
+  // previous point, current point.  Uses a formula derived from Cagnoli’s
+  // theorem.  See Todhunter, Spherical Trig. (1871), Sec. 103, Eq. (2).
+  var dLambda = lambda - lambda0,
+      sdLambda = dLambda >= 0 ? 1 : -1,
+      adLambda = sdLambda * dLambda,
+      cosPhi = cos(phi),
+      sinPhi = sin(phi),
+      k = sinPhi0 * sinPhi,
+      u = cosPhi0 * cosPhi + k * cos(adLambda),
+      v = k * sdLambda * sin(adLambda);
+  areaRingSum.add(atan2(v, u));
 
-  // For the last point, return to the start.
-  areaSink.lineEnd = function() {
-    nextPoint(lambda00, phi00);
-  };
+  // Advance the previous points.
+  lambda0 = lambda, cosPhi0 = cosPhi, sinPhi0 = sinPhi;
 }
 
 export default function(object) {
