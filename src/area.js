@@ -1,13 +1,13 @@
 import Adder from "./adder";
-import {atan2, cos, pi, radians, sin} from "./math";
+import {atan2, cos, fourPi, quarterPi, radians, sin} from "./math";
 import noop from "./noop";
-import geoStream from "./stream";
+import stream from "./stream";
 
 var areaSum,
     areaRingSum = new Adder;
 
 var area = {
-  sphere: function() { areaSum += 4 * pi; },
+  sphere: function() { areaSum += fourPi; },
   point: noop,
   lineStart: noop,
   lineEnd: noop,
@@ -18,8 +18,8 @@ var area = {
     area.lineStart = areaRingStart;
   },
   polygonEnd: function() {
-    var area = 2 * areaRingSum;
-    areaSum += area < 0 ? 4 * pi + area : area;
+    var a = 2 * areaRingSum;
+    areaSum += a < 0 ? fourPi + a : a;
     this.lineStart = this.lineEnd = this.point = noop;
   }
 };
@@ -30,13 +30,15 @@ function areaRingStart() {
   // For the first point, …
   area.point = function(lambda, phi) {
     area.point = nextPoint;
-    lambda0 = (lambda00 = lambda) * radians, cosPhi0 = cos(phi = (phi00 = phi) * radians / 2 + pi / 4), sinPhi0 = sin(phi);
+    lambda00 = lambda, phi00 = phi;
+    lambda *= radians, phi *= radians;
+    lambda0 = lambda, cosPhi0 = cos(phi = phi / 2 + quarterPi), sinPhi0 = sin(phi);
   };
 
   // For subsequent points, …
   function nextPoint(lambda, phi) {
-    lambda *= radians;
-    phi = phi * radians / 2 + pi / 4; // half the angular distance from south pole
+    lambda *= radians, phi *= radians;
+    phi = phi / 2 + quarterPi; // half the angular distance from south pole
 
     // Spherical excess E for a spherical triangle with vertices: south pole,
     // previous point, current point.  Uses a formula derived from Cagnoli’s
@@ -63,6 +65,6 @@ function areaRingStart() {
 
 export default function(object) {
   areaSum = 0;
-  geoStream(object, area);
+  stream(object, area);
   return areaSum;
 }
