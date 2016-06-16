@@ -1,7 +1,7 @@
 var tape = require("tape"),
     array = require('d3-array'),
     d3 = require("../");
-  
+
 require("./inDelta");
 
 function stripes(a, b) {
@@ -11,7 +11,6 @@ function stripes(a, b) {
     return i ? stripe.reverse() : stripe;
   })};
 }
-
 
 tape("area: Point", function(test) {
   test.equal(d3.geoArea({type: "Point", coordinates: [0, 0]}), 0);

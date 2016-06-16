@@ -1,10 +1,10 @@
-import {adder, atan2, cos, pi, radians, sin} from "./math";
+import Adder from "./adder";
+import {atan2, cos, pi, radians, sin} from "./math";
 import noop from "./noop";
 import geoStream from "./stream";
 
-
 var areaSum,
-    areaRingSum = new adder;
+    areaRingSum = new Adder;
 
 var area = {
   sphere: function() { areaSum += 4 * pi; },
