@@ -1,10 +1,10 @@
-import Adder from "./adder";
+import adder from "./adder";
 import {atan2, cos, fourPi, quarterPi, radians, sin} from "./math";
 import noop from "./noop";
 import stream from "./stream";
 
 var areaSum,
-    areaRingSum = new Adder;
+    areaRingSum = adder();
 
 var area = {
   sphere: function() { areaSum += fourPi; },

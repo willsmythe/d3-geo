@@ -5,7 +5,11 @@
 // Code adapted from GeographicLib by Charles F. F. Karney,
 // http://geographiclib.sourceforge.net/
 
-export default function Adder() {
+export default function() {
+  return new Adder;
+}
+
+function Adder() {
   this.reset();
 }
 
