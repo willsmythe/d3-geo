@@ -1,4 +1,6 @@
 import identity from "./identity";
+import pathArea from "./path-area";
+import pathBounds from "./path-bounds";
 import PathBuffer from "./path-buffer";
 import PathContext from "./path-context";
 import stream from "./stream";
@@ -20,10 +22,18 @@ export default function() {
     return contextStream.result();
   }
 
-  // TODO path.area
-  // TODO path.bounds
   // TODO path.centroid
   // TODO test projection.sink instead of projection.stream?
+
+  path.area = function(object) {
+    stream(object, projectStream(pathArea));
+    return pathArea.result();
+  };
+
+  path.bounds = function(object) {
+    stream(object, projectStream(pathBounds));
+    return pathBounds.result();
+  };
 
   path.projection = function(_) {
     if (!arguments.length) return projection;
