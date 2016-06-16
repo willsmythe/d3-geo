@@ -1,13 +1,13 @@
 import {range} from "d3-array";
-import {abs, ceil} from "./math";
+import {abs, ceil, epsilon} from "./math";
 
 function graticuleX(y0, y1, dy) {
-  var y = range(y0, y1 - 1e-6, dy).concat(y1);
+  var y = range(y0, y1 - epsilon, dy).concat(y1);
   return function(x) { return y.map(function(y) { return [x, y]; }); };
 }
 
 function graticuleY(x0, x1, dx) {
-  var x = range(x0, x1 - 1e-6, dx).concat(x1);
+  var x = range(x0, x1 - epsilon, dx).concat(x1);
   return function(y) { return x.map(function(x) { return [x, y]; }); };
 }
 
@@ -25,8 +25,8 @@ export default function() {
   function lines() {
     return range(ceil(X0 / DX) * DX, X1, DX).map(X)
         .concat(range(ceil(Y0 / DY) * DY, Y1, DY).map(Y))
-        .concat(range(ceil(x0 / dx) * dx, x1, dx).filter(function(x) { return abs(x % DX) > 1e-6; }).map(x))
-        .concat(range(ceil(y0 / dy) * dy, y1, dy).filter(function(y) { return abs(y % DY) > 1e-6; }).map(y));
+        .concat(range(ceil(x0 / dx) * dx, x1, dx).filter(function(x) { return abs(x % DX) > epsilon; }).map(x))
+        .concat(range(ceil(y0 / dy) * dy, y1, dy).filter(function(y) { return abs(y % DY) > epsilon; }).map(y));
   }
 
   graticule.lines = function() {
@@ -96,6 +96,6 @@ export default function() {
   };
 
   return graticule
-      .extentMajor([[-180, -90 + 1e-6], [180, 90 - 1e-6]])
-      .extentMinor([[-180, -80 - 1e-6], [180, 80 + 1e-6]]);
+      .extentMajor([[-180, -90 + epsilon], [180, 90 - epsilon]])
+      .extentMinor([[-180, -80 - epsilon], [180, 80 + epsilon]]);
 }
