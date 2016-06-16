@@ -9,6 +9,7 @@ export var degrees = 180 / pi;
 export var radians = pi / 180;
 
 export var abs = Math.abs;
+export var atan = Math.atan;
 export var atan2 = Math.atan2;
 export var cos = Math.cos;
 export var ceil = Math.ceil;

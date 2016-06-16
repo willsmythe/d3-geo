@@ -7,6 +7,7 @@ function rotationIdentity(lambda, phi) {
 
 rotationIdentity.invert = rotationIdentity;
 
+// XXX This one is in radians; the public one is in degrees!
 export function rotation(deltaLambda, deltaPhi, deltaGamma) {
   return (deltaLambda %= tau) ? (deltaPhi || deltaGamma ? compose(rotationLambda(deltaLambda), rotationPhiGamma(deltaPhi, deltaGamma))
     : rotationLambda(deltaLambda))
