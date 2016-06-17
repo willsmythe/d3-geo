@@ -2,17 +2,10 @@ import {acos, asin, atan2, cos, degrees, epsilon, epsilon2, radians, sin, sqrt} 
 import noop from "./noop";
 import stream from "./stream";
 
-var centroidW0,
-    centroidW1,
-    centroidX0,
-    centroidY0,
-    centroidZ0,
-    centroidX1,
-    centroidY1,
-    centroidZ1,
-    centroidX2,
-    centroidY2,
-    centroidZ2,
+var W0, W1,
+    X0, Y0, Z0,
+    X1, Y1, Z1,
+    X2, Y2, Z2,
     lambda00, phi00, // first point
     x0, y0, z0; // previous point
 
@@ -35,14 +28,14 @@ var centroidSink = {
 function centroidPoint(lambda, phi) {
   lambda *= radians, phi *= radians;
   var cosPhi = cos(phi);
-  centroidPointXYZ(cosPhi * cos(lambda), cosPhi * sin(lambda), sin(phi));
+  centroidPointCartesian(cosPhi * cos(lambda), cosPhi * sin(lambda), sin(phi));
 }
 
-function centroidPointXYZ(x, y, z) {
-  ++centroidW0;
-  centroidX0 += (x - centroidX0) / centroidW0;
-  centroidY0 += (y - centroidY0) / centroidW0;
-  centroidZ0 += (z - centroidZ0) / centroidW0;
+function centroidPointCartesian(x, y, z) {
+  ++W0;
+  X0 += (x - X0) / W0;
+  Y0 += (y - Y0) / W0;
+  Z0 += (z - Z0) / W0;
 }
 
 function centroidLineStart() {
@@ -56,7 +49,7 @@ function centroidLinePointFirst(lambda, phi) {
   y0 = cosPhi * sin(lambda);
   z0 = sin(phi);
   centroidSink.point = centroidLinePoint;
-  centroidPointXYZ(x0, y0, z0);
+  centroidPointCartesian(x0, y0, z0);
 }
 
 function centroidLinePoint(lambda, phi) {
@@ -66,11 +59,11 @@ function centroidLinePoint(lambda, phi) {
       y = cosPhi * sin(lambda),
       z = sin(phi),
       w = atan2(sqrt((w = y0 * z - z0 * y) * w + (w = z0 * x - x0 * z) * w + (w = x0 * y - y0 * x) * w), x0 * x + y0 * y + z0 * z);
-  centroidW1 += w;
-  centroidX1 += w * (x0 + (x0 = x));
-  centroidY1 += w * (y0 + (y0 = y));
-  centroidZ1 += w * (z0 + (z0 = z));
-  centroidPointXYZ(x0, y0, z0);
+  W1 += w;
+  X1 += w * (x0 + (x0 = x));
+  Y1 += w * (y0 + (y0 = y));
+  Z1 += w * (z0 + (z0 = z));
+  centroidPointCartesian(x0, y0, z0);
 }
 
 function centroidLineEnd() {
@@ -96,7 +89,7 @@ function centroidRingPointFirst(lambda, phi) {
   x0 = cosPhi * cos(lambda);
   y0 = cosPhi * sin(lambda);
   z0 = sin(phi);
-  centroidPointXYZ(x0, y0, z0);
+  centroidPointCartesian(x0, y0, z0);
 }
 
 function centroidRingPoint(lambda, phi) {
@@ -112,33 +105,33 @@ function centroidRingPoint(lambda, phi) {
       u = x0 * x + y0 * y + z0 * z,
       v = m && -acos(u) / m, // area weight
       w = atan2(m, u); // line weight
-  centroidX2 += v * cx;
-  centroidY2 += v * cy;
-  centroidZ2 += v * cz;
-  centroidW1 += w;
-  centroidX1 += w * (x0 + (x0 = x));
-  centroidY1 += w * (y0 + (y0 = y));
-  centroidZ1 += w * (z0 + (z0 = z));
-  centroidPointXYZ(x0, y0, z0);
+  X2 += v * cx;
+  Y2 += v * cy;
+  Z2 += v * cz;
+  W1 += w;
+  X1 += w * (x0 + (x0 = x));
+  Y1 += w * (y0 + (y0 = y));
+  Z1 += w * (z0 + (z0 = z));
+  centroidPointCartesian(x0, y0, z0);
 }
 
 export default function(object) {
-  centroidW0 = centroidW1 =
-  centroidX0 = centroidY0 = centroidZ0 =
-  centroidX1 = centroidY1 = centroidZ1 =
-  centroidX2 = centroidY2 = centroidZ2 = 0;
+  W0 = W1 =
+  X0 = Y0 = Z0 =
+  X1 = Y1 = Z1 =
+  X2 = Y2 = Z2 = 0;
   stream(object, centroidSink);
 
-  var x = centroidX2,
-      y = centroidY2,
-      z = centroidZ2,
+  var x = X2,
+      y = Y2,
+      z = Z2,
       m = x * x + y * y + z * z;
 
   // If the area-weighted ccentroid is undefined, fall back to length-weighted ccentroid.
   if (m < epsilon2) {
-    x = centroidX1, y = centroidY1, z = centroidZ1;
+    x = X1, y = Y1, z = Z1;
     // If the feature has zero length, fall back to arithmetic mean of point vectors.
-    if (centroidW1 < epsilon) x = centroidX0, y = centroidY0, z = centroidZ0;
+    if (W1 < epsilon) x = X0, y = Y0, z = Z0;
     m = x * x + y * y + z * z;
     // If the feature still has an undefined ccentroid, then return.
     if (m < epsilon2) return [NaN, NaN];
