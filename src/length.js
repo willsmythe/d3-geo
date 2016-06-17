@@ -39,11 +39,10 @@ function lengthPoint(lambda, phi) {
       delta = abs(lambda - lambda0),
       cosDelta = cos(delta),
       sinDelta = sin(delta),
-      t;
-  lengthSum.add(atan2(
-    sqrt((t = cosPhi * sinDelta) * t + (t = cosPhi0 * sinPhi - sinPhi0 * cosPhi * cosDelta) * t),
-    sinPhi0 * sinPhi + cosPhi0 * cosPhi * cosDelta
-  ));
+      x = cosPhi * sinDelta,
+      y = cosPhi0 * sinPhi - sinPhi0 * cosPhi * cosDelta,
+      z = sinPhi0 * sinPhi + cosPhi0 * cosPhi * cosDelta;
+  lengthSum.add(atan2(sqrt(x * x + y * y), z));
   lambda0 = lambda, sinPhi0 = sinPhi, cosPhi0 = cosPhi;
 }
 
