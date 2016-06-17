@@ -1,10 +1,10 @@
-import clipAntimeridian from "./clip-antimeridian";
-import compose from "./compose";
-import identity from "./identity";
-import {degrees, radians} from "./math";
+import clipAntimeridian from "../clip/antimeridian";
+import compose from "../compose";
+import identity from "../identity";
+import {degrees, radians} from "../math";
+import {rotation} from "../rotation";
+import transform from "../transform";
 import resample from "./resample";
-import {rotation} from "./rotation";
-import transform from "./transform";
 
 var transformRadians = transform({
   point: function(x, y) {

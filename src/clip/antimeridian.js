@@ -1,5 +1,5 @@
-import clip from "./clip";
-import {abs, atan, cos, epsilon, halfPi, pi, sin} from "./math";
+import clip from "./index";
+import {abs, atan, cos, epsilon, halfPi, pi, sin} from "../math";
 
 export default clip(
   function() { return true; },

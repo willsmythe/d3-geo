@@ -1,6 +1,6 @@
-import {cartesian} from "./cartesian";
-import {abs, asin, atan2, cos, epsilon, radians, sqrt} from "./math";
-import transform from "./transform";
+import {cartesian} from "../cartesian";
+import {abs, asin, atan2, cos, epsilon, radians, sqrt} from "../math";
+import transform from "../transform";
 
 export default function(project) {
   var delta2 = 0.5, // precision, px²

@@ -1,10 +1,10 @@
-import identity from "./identity";
-import pathArea from "./path-area";
-import pathBounds from "./path-bounds";
-import PathString from "./path-string";
-import pathCentroid from "./path-centroid";
-import PathContext from "./path-context";
-import stream from "./stream";
+import identity from "../identity";
+import stream from "../stream";
+import pathArea from "./area";
+import pathBounds from "./bounds";
+import pathCentroid from "./centroid";
+import PathContext from "./context";
+import PathString from "./string";
 
 export default function() {
   var pointRadius = 4.5,

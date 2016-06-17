@@ -1,4 +1,4 @@
-import projection from "./projection";
+import projection from "./index";
 
 export function equirectangular(lambda, phi) {
   return [lambda, phi];

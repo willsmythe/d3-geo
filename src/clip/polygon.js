@@ -1,4 +1,4 @@
-import {sphericalEqual} from "./spherical";
+import {sphericalEqual} from "../spherical";
 
 // General spherical polygon clipping algorithm: takes a polygon, cuts it into
 // visible line segments and rejoins the segments by interpolating along the

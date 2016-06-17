@@ -1,7 +1,7 @@
-import clipPolygon from "./clip-polygon";
-import lineBuffer from "./line-buffer";
-import {epsilon, halfPi} from "./math";
-import polygonContains from "./polygon-contains";
+import clipPolygon from "./polygon";
+import lineBuffer from "../line-buffer";
+import {epsilon, halfPi} from "../math";
+import polygonContains from "../polygon-contains";
 import {merge} from "d3-array";
 
 export default function(pointVisible, clipLine, interpolate, clipStart) {

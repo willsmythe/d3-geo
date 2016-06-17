@@ -1,5 +1,5 @@
-import {tau} from "./math";
-import noop from "./noop";
+import {tau} from "../math";
+import noop from "../noop";
 
 export default function(context) {
   var pointRadius = 4.5;
