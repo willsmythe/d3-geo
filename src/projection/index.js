@@ -1,4 +1,5 @@
 import clipAntimeridian from "../clip/antimeridian";
+import clipCircle from "../clip/circle";
 import compose from "../compose";
 import identity from "../identity";
 import {degrees, radians} from "../math";
@@ -28,7 +29,7 @@ export function projectionMutator(projectAt) {
       deltaLambda = 0, deltaPhi = 0, deltaGamma = 0, // rotate
       preclip = clipAntimeridian,
       postclip = identity,
-      // clipAngle = null,
+      clipAngle = null,
       // clipExtent = null,
       stream,
       streamSink;
@@ -52,12 +53,11 @@ export function projectionMutator(projectAt) {
     return stream && streamSink === sink ? stream : stream = transformRadians(preclip(rotate, projectResample(postclip(streamSink = sink))));
   };
 
-  // TODO
-  // projection.clipAngle = function(_) {
-  //   if (!arguments.length) return clipAngle;
-  //   preclip = _ == null ? (clipAngle = _, clipAntimeridian) : clipCircle((clipAngle = +_) * radians);
-  //   return invalidate();
-  // };
+  projection.clipAngle = function(_) {
+    if (!arguments.length) return clipAngle;
+    preclip = _ == null ? (clipAngle = _, clipAntimeridian) : clipCircle((clipAngle = +_) * radians);
+    return invalidate();
+  };
 
   // TODO
   // projection.clipExtent = function(_) {

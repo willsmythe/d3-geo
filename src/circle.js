@@ -5,7 +5,7 @@ import {rotateRadians} from "./rotation";
 import {spherical} from "./spherical";
 
 // Generates a circle centered at [0°, 0°], with a given radius and precision.
-function circleStream(sink, radius, precision, direction, t0, t1) {
+export function circleStream(sink, radius, precision, direction, t0, t1) {
   var cosRadius = cos(radius),
       sinRadius = sin(radius),
       step = direction * precision;
