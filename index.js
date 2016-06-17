@@ -8,7 +8,7 @@ export {default as geoGraticule} from "./src/graticule";
 export {default as geoInterpolate} from "./src/interpolate";
 export {default as geoLength} from "./src/length";
 export {default as geoPath} from "./src/path/index";
-export {default as geoProjection} from "./src/projection/index";
+export {default as geoProjection, projectionMutator as geoProjectionMutator} from "./src/projection/index";
 export {default as geoRotation} from "./src/rotation";
 export {default as geoStream} from "./src/stream";
 export {default as geoTransform} from "./src/transform";
