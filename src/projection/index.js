@@ -2,7 +2,7 @@ import clipAntimeridian from "../clip/antimeridian";
 import compose from "../compose";
 import identity from "../identity";
 import {degrees, radians} from "../math";
-import {rotation} from "../rotation";
+import {rotateRadians} from "../rotation";
 import transform from "../transform";
 import resample from "./resample";
 
@@ -101,7 +101,7 @@ export function projectionMutator(projectAt) {
   };
 
   function reset() {
-    projectRotate = compose(rotate = rotation(deltaLambda, deltaPhi, deltaGamma), project);
+    projectRotate = compose(rotate = rotateRadians(deltaLambda, deltaPhi, deltaGamma), project);
     var center = project(lambda, phi);
     dx = x - center[0] * k;
     dy = y + center[1] * k;

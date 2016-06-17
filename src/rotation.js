@@ -7,8 +7,7 @@ function rotationIdentity(lambda, phi) {
 
 rotationIdentity.invert = rotationIdentity;
 
-// XXX This one is in radians; the public one is in degrees!
-export function rotation(deltaLambda, deltaPhi, deltaGamma) {
+export function rotateRadians(deltaLambda, deltaPhi, deltaGamma) {
   return (deltaLambda %= tau) ? (deltaPhi || deltaGamma ? compose(rotationLambda(deltaLambda), rotationPhiGamma(deltaPhi, deltaGamma))
     : rotationLambda(deltaLambda))
     : (deltaPhi || deltaGamma ? rotationPhiGamma(deltaPhi, deltaGamma)
@@ -61,7 +60,7 @@ function rotationPhiGamma(deltaPhi, deltaGamma) {
 }
 
 export default function(rotate) {
-  rotate = rotation(rotate[0] * radians, rotate[1] * radians, rotate.length > 2 ? rotate[2] * radians : 0);
+  rotate = rotateRadians(rotate[0] * radians, rotate[1] * radians, rotate.length > 2 ? rotate[2] * radians : 0);
 
   function forward(coordinates) {
     coordinates = rotate(coordinates[0] * radians, coordinates[1] * radians);

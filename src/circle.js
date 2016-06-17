@@ -1,7 +1,7 @@
 import {cartesian, cartesianNormalizeInPlace} from "./cartesian";
 import constant from "./constant";
 import {acos, cos, degrees, epsilon, radians, sin, tau} from "./math";
-import {rotation} from "./rotation";
+import {rotateRadians} from "./rotation";
 import {spherical} from "./spherical";
 
 // Generates a circle centered at [0°, 0°], with a given radius and precision.
@@ -49,7 +49,7 @@ export default function() {
         r = radius.apply(this, arguments) * radians,
         p = precision.apply(this, arguments) * radians;
     ring = [];
-    rotate = rotation(-c[0] * radians, -c[1] * radians, 0).invert;
+    rotate = rotateRadians(-c[0] * radians, -c[1] * radians, 0).invert;
     circleStream(sink, r, p, 1);
     c = {type: "Polygon", coordinates: [ring]};
     ring = rotate = null;
