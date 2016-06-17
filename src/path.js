@@ -36,7 +36,6 @@ export default function() {
     return pathCentroid.result();
   };
 
-  // TODO test projection.sink instead of projection.stream?
   path.projection = function(_) {
     if (!arguments.length) return projection;
     projectStream = (projection = _) ? _.stream : identity;
