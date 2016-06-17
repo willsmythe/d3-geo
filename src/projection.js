@@ -30,7 +30,8 @@ export function projectionMutator(projectAt) {
       postclip = identity,
       // clipAngle = null,
       // clipExtent = null,
-      stream;
+      stream,
+      streamSink;
 
   function projection(point) {
     point = projectRotate(point[0] * radians, point[1] * radians);
@@ -47,11 +48,8 @@ export function projectionMutator(projectAt) {
     return [x[0] * k + dx, dy - x[1] * k];
   }
 
-  projection.stream = function(output) {
-    if (stream) stream.valid = false;
-    stream = transformRadians(preclip(rotate, projectResample(postclip(output))));
-    stream.valid = true; // allow caching by d3.geoPath; TODO remove this, memoize internally
-    return stream;
+  projection.stream = function(sink) {
+    return stream && streamSink === sink ? stream : stream = transformRadians(preclip(rotate, projectResample(postclip(streamSink = sink))));
   };
 
   // TODO
@@ -111,7 +109,7 @@ export function projectionMutator(projectAt) {
   }
 
   function invalidate() {
-    if (stream) stream.valid = false, stream = null;
+    stream = streamSink = null;
     return projection;
   }
 

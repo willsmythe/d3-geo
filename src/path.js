@@ -11,14 +11,12 @@ export default function() {
       projection,
       context,
       projectStream,
-      contextStream,
-      cacheStream;
+      contextStream;
 
   function path(object) {
     if (object) {
       if (typeof pointRadius === "function") contextStream.pointRadius(+pointRadius.apply(this, arguments));
-      if (!cacheStream || !cacheStream.valid) cacheStream = projectStream(contextStream);
-      stream(object, cacheStream);
+      stream(object, projectStream(contextStream));
     }
     return contextStream.result();
   }
@@ -42,14 +40,14 @@ export default function() {
   path.projection = function(_) {
     if (!arguments.length) return projection;
     projectStream = (projection = _) ? _.stream : identity;
-    return reset();
+    return path;
   };
 
   path.context = function(_) {
     if (!arguments.length) return context;
     contextStream = (context = _) == null ? new PathString : new PathContext(_);
     if (typeof pointRadius !== "function") contextStream.pointRadius(pointRadius);
-    return reset();
+    return path;
   };
 
   path.pointRadius = function(_) {
@@ -57,11 +55,6 @@ export default function() {
     pointRadius = typeof _ === "function" ? _ : (contextStream.pointRadius(+_), +_);
     return path;
   };
-
-  function reset() {
-    cacheStream = null;
-    return path;
-  }
 
   return path.projection(null).context(null); // TODO albersUsa
 }
