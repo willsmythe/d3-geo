@@ -6,10 +6,10 @@ var equirectangular = d3_geo.geoEquirectangular()
     .scale(900 / Math.PI)
     .precision(0);
 
-function testBounds(projection, feature) {
+function testBounds(projection, object) {
   return d3_geo.geoPath()
       .projection(projection)
-      .bounds(feature);
+      .bounds(object);
 }
 
 tape("geoPath.bounds(…) of a polygon with no holes", function(test) {

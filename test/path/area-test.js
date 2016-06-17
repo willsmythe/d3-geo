@@ -6,10 +6,10 @@ var equirectangular = d3_geo.geoEquirectangular()
     .scale(900 / Math.PI)
     .precision(0);
 
-function testArea(projection, feature) {
+function testArea(projection, object) {
   return d3_geo.geoPath()
       .projection(projection)
-      .area(feature);
+      .area(object);
 }
 
 tape("geoPath.area(…) of a polygon with no holes", function(test) {

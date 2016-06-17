@@ -6,13 +6,13 @@ var equirectangular = d3_geo.geoEquirectangular()
     .scale(900 / Math.PI)
     .precision(0);
 
-function testPath(projection, feature) {
+function testPath(projection, object) {
   var context = testContext();
 
   d3_geo.geoPath()
       .projection(projection)
       .context(context)
-      (feature);
+      (object);
 
   return context.result();
 }
