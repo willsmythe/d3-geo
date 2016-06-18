@@ -1,7 +1,7 @@
 import projection from "./index";
 import {atan, exp, halfPi, log, pi, tan} from "../math";
 
-function mercator(lambda, phi) {
+export function mercator(lambda, phi) {
   return [lambda, log(tan((halfPi + phi) / 2))];
 }
 
