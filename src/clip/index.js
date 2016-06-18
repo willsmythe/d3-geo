@@ -4,10 +4,10 @@ import {epsilon, halfPi} from "../math";
 import polygonContains from "../polygonContains";
 import {merge} from "d3-array";
 
-export default function(pointVisible, clipLine, interpolate, clipStart) {
+export default function(pointVisible, clipLine, interpolate, start) {
   return function(rotate, sink) {
     var line = clipLine(sink),
-        rotatedClipStart = rotate.invert(clipStart[0], clipStart[1]),
+        rotatedStart = rotate.invert(start[0], start[1]),
         ringBuffer = clipBuffer(),
         ringSink = clipLine(ringBuffer),
         polygonStarted = false,
@@ -31,11 +31,11 @@ export default function(pointVisible, clipLine, interpolate, clipStart) {
         clip.lineStart = lineStart;
         clip.lineEnd = lineEnd;
         segments = merge(segments);
-        var clipStartInside = polygonContains(polygon, rotatedClipStart);
+        var startInside = polygonContains(polygon, rotatedStart);
         if (segments.length) {
           if (!polygonStarted) sink.polygonStart(), polygonStarted = true;
-          clipPolygon(segments, clipSort, clipStartInside, interpolate, sink);
-        } else if (clipStartInside) {
+          clipPolygon(segments, compareIntersection, startInside, interpolate, sink);
+        } else if (startInside) {
           if (!polygonStarted) sink.polygonStart(), polygonStarted = true;
           sink.lineStart();
           interpolate(null, null, 1, sink);
@@ -116,20 +116,20 @@ export default function(pointVisible, clipLine, interpolate, clipStart) {
       // TODO reuse ringBuffer.rejoin()?
       if (n > 1 && clean & 2) ringSegments.push(ringSegments.pop().concat(ringSegments.shift()));
 
-      segments.push(ringSegments.filter(clipSegmentLength1));
+      segments.push(ringSegments.filter(validSegment));
     }
 
     return clip;
   };
 }
 
-function clipSegmentLength1(segment) {
+function validSegment(segment) {
   return segment.length > 1;
 }
 
-// Intersection points are sorted along the clip edge. For both antimeridian
-// cutting and circle clipping, the same comparison is used.
-function clipSort(a, b) {
+// Intersections are sorted along the clip edge. For both antimeridian cutting
+// and circle clipping, the same comparison is used.
+function compareIntersection(a, b) {
   return ((a = a.x)[0] < 0 ? a[1] - halfPi - epsilon : halfPi - a[1])
        - ((b = b.x)[0] < 0 ? b[1] - halfPi - epsilon : halfPi - b[1]);
 }
