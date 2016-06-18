@@ -10,6 +10,7 @@ export {default as geoLength} from "./src/length";
 export {default as geoPath} from "./src/path/index";
 export {default as geoEquirectangular} from "./src/projection/equirectangular";
 export {default as geoOrthographic} from "./src/projection/orthographic";
+export {default as geoMercator} from "./src/projection/mercator";
 export {default as geoProjection, projectionMutator as geoProjectionMutator} from "./src/projection/index";
 export {default as geoRotation} from "./src/rotation";
 export {default as geoStream} from "./src/stream";
