@@ -9,6 +9,7 @@ export {default as geoInterpolate} from "./src/interpolate";
 export {default as geoLength} from "./src/length";
 export {default as geoPath} from "./src/path/index";
 export {default as geoAlbers} from "./src/projection/albers";
+export {default as geoAlbersUsa} from "./src/projection/albersUsa";
 export {default as geoAzimuthalEqualArea} from "./src/projection/azimuthalEqualArea";
 export {default as geoAzimuthalEquidistant} from "./src/projection/azimuthalEquidistant";
 export {default as geoConicConformal} from "./src/projection/conicConformal";
