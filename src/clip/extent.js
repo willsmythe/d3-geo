@@ -143,7 +143,8 @@ export function clipExtent(x0, y0, x1, y1) {
       } else {
         if (v && v_) activeSink.point(x, y);
         else {
-          var a = [x_, y_], b = [x = Math.max(clipMin, Math.min(clipMax, x)), y = Math.max(clipMin, Math.min(clipMax, y))];
+          var a = [x_ = Math.max(clipMin, Math.min(clipMax, x_)), y_ = Math.max(clipMin, Math.min(clipMax, y_))],
+              b = [x = Math.max(clipMin, Math.min(clipMax, x)), y = Math.max(clipMin, Math.min(clipMax, y))];
           if (clipLine(a, b, x0, y0, x1, y1)) {
             if (!v_) {
               activeSink.lineStart();

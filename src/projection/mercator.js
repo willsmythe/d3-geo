@@ -1,5 +1,5 @@
 import projection from "./index";
-import {atan, epsilon, exp, halfPi, log, pi, tan} from "../math";
+import {atan, exp, halfPi, log, pi, tan} from "../math";
 
 function mercator(lambda, phi) {
   return [lambda, log(tan((halfPi + phi) / 2))];
@@ -13,7 +13,7 @@ export default function() {
   return mercatorProjection(mercator);
 }
 
-function mercatorProjection(project) {
+export function mercatorProjection(project) {
   var m = projection(project),
       scale = m.scale,
       translate = m.translate,
