@@ -4,7 +4,8 @@ import clipLine from "./line";
 import clipPolygon from "./polygon";
 import {merge} from "d3-array";
 
-// TODO? var clipMax = 1e9, clipMin = -clipMax;
+var clipMax = 1e9, clipMin = -clipMax;
+
 // TODO Use d3-polygon’s polygonContains here for the ring check?
 // TODO Eliminate duplicate buffering in clipBuffer and polygon.push?
 
@@ -130,8 +131,6 @@ export function clipExtent(x0, y0, x1, y1) {
     }
 
     function linePoint(x, y) {
-      // x = Math.max(clipMin, Math.min(clipMax, x));
-      // y = Math.max(clipMin, Math.min(clipMax, y));
       var v = visible(x, y);
       if (polygon) ring.push([x, y]);
       if (first) {
@@ -144,7 +143,7 @@ export function clipExtent(x0, y0, x1, y1) {
       } else {
         if (v && v_) activeSink.point(x, y);
         else {
-          var a = [x_, y_], b = [x, y];
+          var a = [x_, y_], b = [x = Math.max(clipMin, Math.min(clipMax, x)), y = Math.max(clipMin, Math.min(clipMax, y))];
           if (clipLine(a, b, x0, y0, x1, y1)) {
             if (!v_) {
               activeSink.lineStart();
