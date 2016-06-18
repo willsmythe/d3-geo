@@ -1,11 +1,11 @@
 import {cartesian, cartesianAddInPlace, cartesianCross, cartesianDot, cartesianScale} from "../cartesian";
 import {circleStream} from "../circle";
-import {abs, epsilon, pi, radians} from "../math";
+import {abs, cos, epsilon, pi, radians, sqrt} from "../math";
 import {spherical, sphericalEqual} from "../spherical";
 import clip from "./index";
 
 export default function(radius) {
-  var cr = Math.cos(radius),
+  var cr = cos(radius),
       smallRadius = cr > 0,
       notHemisphere = abs(cr) > epsilon, // TODO optimise for this common case
       precision = 6 * radians; // TODO customize?
@@ -15,7 +15,7 @@ export default function(radius) {
   }
 
   function visible(lambda, phi) {
-    return Math.cos(lambda) * Math.cos(phi) > cr;
+    return cos(lambda) * cos(phi) > cr;
   }
 
   // Takes a line and cuts into visible segments. Return values used for polygon
@@ -132,7 +132,7 @@ export default function(radius) {
 
     if (t2 < 0) return;
 
-    var t = Math.sqrt(t2),
+    var t = sqrt(t2),
         q = cartesianScale(u, (-w - t) / uu);
     cartesianAddInPlace(q, A);
     q = spherical(q);
