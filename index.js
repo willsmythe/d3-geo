@@ -14,6 +14,7 @@ export {default as geoConicConformal} from "./src/projection/conicConformal";
 export {default as geoConicEquidistant} from "./src/projection/conicEquidistant";
 export {default as geoConicEqualArea} from "./src/projection/conicEqualArea";
 export {default as geoEquirectangular} from "./src/projection/equirectangular";
+export {default as geoGnomonic} from "./src/projection/gnomonic";
 export {default as geoProjection, projectionMutator as geoProjectionMutator} from "./src/projection/index";
 export {default as geoMercator} from "./src/projection/mercator";
 export {default as geoOrthographic} from "./src/projection/orthographic";
