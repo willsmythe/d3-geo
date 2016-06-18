@@ -19,18 +19,14 @@ export default function projection(project) {
 
 export function projectionMutator(projectAt) {
   var project,
-      rotate,
-      projectRotate,
-      projectResample = resample(projectTransform),
       k = 150, // scale
       x = 480, y = 250, // translate
-      dx, dy, // center
-      lambda = 0, phi = 0, // center
-      deltaLambda = 0, deltaPhi = 0, deltaGamma = 0, // rotate
-      preclip = clipAntimeridian,
-      postclip = identity,
-      clipAngle = null,
-      // clipExtent = null,
+      dx, dy, lambda = 0, phi = 0, // center
+      deltaLambda = 0, deltaPhi = 0, deltaGamma = 0, rotate, projectRotate, // rotate
+      theta = null, preclip = clipAntimeridian, // clip angle
+      // x0 = null, y0, x1, y1, // TODO clip extent
+      postclip = identity, // clip extent
+      delta = 6 * radians, projectResample = resample(projectTransform, delta), // precision
       stream,
       streamSink;
 
@@ -45,8 +41,7 @@ export function projectionMutator(projectAt) {
   }
 
   function projectTransform(x, y) {
-    x = project(x, y);
-    return [x[0] * k + dx, dy - x[1] * k];
+    return x = project(x, y), [x[0] * k + dx, dy - x[1] * k];
   }
 
   projection.stream = function(sink) {
@@ -54,61 +49,43 @@ export function projectionMutator(projectAt) {
   };
 
   projection.clipAngle = function(_) {
-    if (!arguments.length) return clipAngle;
-    preclip = _ == null ? (clipAngle = _, clipAntimeridian) : clipCircle((clipAngle = +_) * radians);
-    return invalidate();
+    return arguments.length ? (preclip = +_ ? clipCircle(theta = _ * radians, delta) : (theta = null, clipAntimeridian), reset()) : theta * degrees;
   };
 
   // TODO
   // projection.clipExtent = function(_) {
-  //   if (!arguments.length) return clipExtent;
-  //   clipExtent = _;
-  //   postclip = _ ? clipExtent(_[0][0], _[0][1], _[1][0], _[1][1]) : identity;
-  //   return invalidate();
+  //   return arguments.length ? (postclip = _ == null ? (x0 = y0 = x1 = y1 = null, identity) : clipExtent(x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1]), reset()) : x0 == null ? null : [[x0, y0], [x1, y1]];
   // };
 
   projection.scale = function(_) {
-    if (!arguments.length) return k;
-    k = +_;
-    return reset();
+    return arguments.length ? (k = +_, recenter()) : k;
   };
 
   projection.translate = function(_) {
-    if (!arguments.length) return [x, y];
-    x = +_[0];
-    y = +_[1];
-    return reset();
+    return arguments.length ? (x = +_[0], y = +_[1], recenter()) : [x, y];
   };
 
   projection.center = function(_) {
-    if (!arguments.length) return [lambda * degrees, phi * degrees];
-    lambda = _[0] % 360 * radians;
-    phi = _[1] % 360 * radians;
-    return reset();
+    return arguments.length ? (lambda = _[0] % 360 * radians, phi = _[1] % 360 * radians, recenter()) : [lambda * degrees, phi * degrees];
   };
 
   projection.rotate = function(_) {
-    if (!arguments.length) return [deltaLambda * degrees, deltaPhi * degrees, deltaGamma * degrees];
-    deltaLambda = _[0] % 360 * radians;
-    deltaPhi = _[1] % 360 * radians;
-    deltaGamma = _.length > 2 ? _[2] % 360 * radians : 0;
-    return reset();
+    return arguments.length ? (deltaLambda = _[0] % 360 * radians, deltaPhi = _[1] % 360 * radians, deltaGamma = _.length > 2 ? _[2] % 360 * radians : 0, recenter()) : [deltaLambda * degrees, deltaPhi * degrees, deltaGamma * degrees];
   };
 
-  projection.precision = function() {
-    var result = projectResample.precision.apply(projectResample, arguments);
-    return result === projectResample ? projection : result;
+  projection.precision = function(_) {
+    return arguments.length ? (projectResample = resample(projectTransform, delta = _ * radians), theta && (preclip = clipCircle(theta, delta)), reset()) : delta * degrees;
   };
 
-  function reset() {
+  function recenter() {
     projectRotate = compose(rotate = rotateRadians(deltaLambda, deltaPhi, deltaGamma), project);
     var center = project(lambda, phi);
     dx = x - center[0] * k;
     dy = y + center[1] * k;
-    return invalidate();
+    return reset();
   }
 
-  function invalidate() {
+  function reset() {
     stream = streamSink = null;
     return projection;
   }
@@ -116,6 +93,6 @@ export function projectionMutator(projectAt) {
   return function() {
     project = projectAt.apply(this, arguments);
     projection.invert = project.invert && invert;
-    return reset();
+    return recenter();
   };
 }

@@ -1,17 +1,16 @@
 import {cartesian, cartesianAddInPlace, cartesianCross, cartesianDot, cartesianScale, spherical} from "../cartesian";
 import {circleStream} from "../circle";
-import {abs, cos, epsilon, pi, radians, sqrt} from "../math";
+import {abs, cos, epsilon, pi, sqrt} from "../math";
 import pointEqual from "../pointEqual";
 import clip from "./index";
 
-export default function(radius) {
+export default function(radius, delta) {
   var cr = cos(radius),
       smallRadius = cr > 0,
-      notHemisphere = abs(cr) > epsilon, // TODO optimise for this common case
-      precision = 6 * radians; // TODO customize?
+      notHemisphere = abs(cr) > epsilon; // TODO optimise for this common case
 
   function interpolate(from, to, direction, sink) {
-    circleStream(sink, radius, precision, direction, from, to);
+    circleStream(sink, radius, delta, direction, from, to);
   }
 
   function visible(lambda, phi) {

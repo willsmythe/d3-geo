@@ -2,74 +2,23 @@ import {cartesian} from "../cartesian";
 import {abs, asin, atan2, cos, epsilon, radians, sqrt} from "../math";
 import transform from "../transform";
 
-export default function(project) {
-  var delta2 = 0.5, // precision, px²
-      cosMinDistance = cos(30 * radians), // cos(minimum angular distance)
-      maxDepth = 16,
-      resampleNone = transform({point: transformPoint});
+var maxDepth = 16, // maximum depth of subdivision
+    cosMinDistance = cos(30 * radians); // cos(minimum angular distance)
 
-  function transformPoint(x, y) {
-    x = project(x, y);
-    this.stream.point(x[0], x[1]);
-  }
+export default function(project, delta) {
+  return +delta ? resample(project, delta * delta) : resampleNone(project);
+}
 
-  function resample(stream) {
-    return (maxDepth ? resampleRecursive : resampleNone)(stream);
-  }
-
-  function resampleRecursive(stream) {
-    var lambda00, x00, y00, a00, b00, c00, // first point
-        lambda0, x0, y0, a0, b0, c0; // previous point
-
-    var resample = {
-      point: point,
-      lineStart: lineStart,
-      lineEnd: lineEnd,
-      polygonStart: function() { stream.polygonStart(); resample.lineStart = ringStart; },
-      polygonEnd: function() { stream.polygonEnd(); resample.lineStart = lineStart; }
-    };
-
-    function point(x, y) {
+function resampleNone(project) {
+  return transform({
+    point: function(x, y) {
       x = project(x, y);
-      stream.point(x[0], x[1]);
+      this.stream.point(x[0], x[1]);
     }
+  });
+}
 
-    function lineStart() {
-      x0 = NaN;
-      resample.point = linePoint;
-      stream.lineStart();
-    }
-
-    function linePoint(lambda, phi) {
-      var c = cartesian([lambda, phi]), p = project(lambda, phi);
-      resampleLineTo(x0, y0, lambda0, a0, b0, c0, x0 = p[0], y0 = p[1], lambda0 = lambda, a0 = c[0], b0 = c[1], c0 = c[2], maxDepth, stream);
-      stream.point(x0, y0);
-    }
-
-    function lineEnd() {
-      resample.point = point;
-      stream.lineEnd();
-    }
-
-    function ringStart() {
-      lineStart();
-      resample.point = ringPoint;
-      resample.lineEnd = ringEnd;
-    }
-
-    function ringPoint(lambda, phi) {
-      linePoint(lambda00 = lambda, phi), x00 = x0, y00 = y0, a00 = a0, b00 = b0, c00 = c0;
-      resample.point = linePoint;
-    }
-
-    function ringEnd() {
-      resampleLineTo(x0, y0, lambda0, a0, b0, c0, x00, y00, lambda00, a00, b00, c00, maxDepth, stream);
-      resample.lineEnd = lineEnd;
-      lineEnd();
-    }
-
-    return resample;
-  }
+function resample(project, delta2) {
 
   function resampleLineTo(x0, y0, lambda0, a0, b0, c0, x1, y1, lambda1, a1, b1, c1, depth, stream) {
     var dx = x1 - x0,
@@ -98,11 +47,57 @@ export default function(project) {
     }
   }
 
-  resample.precision = function(_) {
-    if (!arguments.length) return sqrt(delta2);
-    maxDepth = (delta2 = _ * _) > 0 && 16;
-    return resample;
-  };
+  return function(stream) {
+    var lambda00, x00, y00, a00, b00, c00, // first point
+        lambda0, x0, y0, a0, b0, c0; // previous point
 
-  return resample;
+    var resampleSink = {
+      point: point,
+      lineStart: lineStart,
+      lineEnd: lineEnd,
+      polygonStart: function() { stream.polygonStart(); resampleSink.lineStart = ringStart; },
+      polygonEnd: function() { stream.polygonEnd(); resampleSink.lineStart = lineStart; }
+    };
+
+    function point(x, y) {
+      x = project(x, y);
+      stream.point(x[0], x[1]);
+    }
+
+    function lineStart() {
+      x0 = NaN;
+      resampleSink.point = linePoint;
+      stream.lineStart();
+    }
+
+    function linePoint(lambda, phi) {
+      var c = cartesian([lambda, phi]), p = project(lambda, phi);
+      resampleLineTo(x0, y0, lambda0, a0, b0, c0, x0 = p[0], y0 = p[1], lambda0 = lambda, a0 = c[0], b0 = c[1], c0 = c[2], maxDepth, stream);
+      stream.point(x0, y0);
+    }
+
+    function lineEnd() {
+      resampleSink.point = point;
+      stream.lineEnd();
+    }
+
+    function ringStart() {
+      lineStart();
+      resampleSink.point = ringPoint;
+      resampleSink.lineEnd = ringEnd;
+    }
+
+    function ringPoint(lambda, phi) {
+      linePoint(lambda00 = lambda, phi), x00 = x0, y00 = y0, a00 = a0, b00 = b0, c00 = c0;
+      resampleSink.point = linePoint;
+    }
+
+    function ringEnd() {
+      resampleLineTo(x0, y0, lambda0, a0, b0, c0, x00, y00, lambda00, a00, b00, c00, maxDepth, stream);
+      resampleSink.lineEnd = lineEnd;
+      lineEnd();
+    }
+
+    return resampleSink;
+  };
 }

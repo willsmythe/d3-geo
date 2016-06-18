@@ -4,10 +4,11 @@ import {acos, cos, degrees, epsilon, radians, sin, tau} from "./math";
 import {rotateRadians} from "./rotation";
 
 // Generates a circle centered at [0°, 0°], with a given radius and precision.
-export function circleStream(sink, radius, precision, direction, t0, t1) {
+export function circleStream(sink, radius, delta, direction, t0, t1) {
+  if (!delta) return;
   var cosRadius = cos(radius),
       sinRadius = sin(radius),
-      step = direction * precision;
+      step = direction * delta;
   if (t0 == null) {
     t0 = radius + direction * tau;
     t1 = radius - step / 2;
