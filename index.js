@@ -11,6 +11,7 @@ export {default as geoPath} from "./src/path/index";
 export {default as geoAzimuthalEqualArea} from "./src/projection/azimuthalEqualArea";
 export {default as geoAzimuthalEquidistant} from "./src/projection/azimuthalEquidistant";
 export {default as geoConicConformal} from "./src/projection/conicConformal";
+export {default as geoConicEquidistant} from "./src/projection/conicEquidistant";
 export {default as geoEquirectangular} from "./src/projection/equirectangular";
 export {default as geoProjection, projectionMutator as geoProjectionMutator} from "./src/projection/index";
 export {default as geoMercator} from "./src/projection/mercator";
