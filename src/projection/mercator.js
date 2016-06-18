@@ -1,12 +1,12 @@
 import projection from "./index";
-import {pi, halfPi} from "../math";
+import {atan, exp, halfPi, log, tan} from "../math";
 
 function mercator(lambda, phi) {
-  return [lambda, Math.log(Math.tan(pi / 4 + phi / 2))];
+  return [lambda, log(tan((halfPi + phi) / 2))];
 }
 
 mercator.invert = function(x, y) {
-  return [x, 2 * Math.atan(Math.exp(y)) - halfPi];
+  return [x, 2 * atan(exp(y)) - halfPi];
 };
 
 export default function() {

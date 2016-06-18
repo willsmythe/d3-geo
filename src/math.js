@@ -13,9 +13,12 @@ export var atan = Math.atan;
 export var atan2 = Math.atan2;
 export var cos = Math.cos;
 export var ceil = Math.ceil;
+export var exp = Math.exp;
 export var floor = Math.floor;
+export var log = Math.log;
 export var sin = Math.sin;
 export var sqrt = Math.sqrt;
+export var tan = Math.tan;
 
 export function acos(x) {
   return x > 1 ? 0 : x < -1 ? pi : Math.acos(x);
