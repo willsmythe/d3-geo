@@ -1,8 +1,7 @@
-import {cartesian, cartesianNormalizeInPlace} from "./cartesian";
+import {cartesian, cartesianNormalizeInPlace, spherical} from "./cartesian";
 import constant from "./constant";
 import {acos, cos, degrees, epsilon, radians, sin, tau} from "./math";
 import {rotateRadians} from "./rotation";
-import {spherical} from "./spherical";
 
 // Generates a circle centered at [0°, 0°], with a given radius and precision.
 export function circleStream(sink, radius, precision, direction, t0, t1) {

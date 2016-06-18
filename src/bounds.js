@@ -1,9 +1,8 @@
 import adder from "./adder";
 import {areaSink, areaRingSum} from "./area";
-import {cartesian, cartesianCross, cartesianNormalizeInPlace} from "./cartesian";
+import {cartesian, cartesianCross, cartesianNormalizeInPlace, spherical} from "./cartesian";
 import {abs, degrees, epsilon, radians} from "./math";
 import stream from "./stream";
-import {spherical} from "./spherical";
 
 var lambda0, phi0, lambda1, phi1, // bounds
     lambda2, // previous lambda-coordinate

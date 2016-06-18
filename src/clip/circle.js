@@ -1,7 +1,7 @@
-import {cartesian, cartesianAddInPlace, cartesianCross, cartesianDot, cartesianScale} from "../cartesian";
+import {cartesian, cartesianAddInPlace, cartesianCross, cartesianDot, cartesianScale, spherical} from "../cartesian";
 import {circleStream} from "../circle";
 import {abs, cos, epsilon, pi, radians, sqrt} from "../math";
-import {spherical, sphericalEqual} from "../spherical";
+import pointEqual from "../pointEqual";
 import clip from "./index";
 
 export default function(radius) {
@@ -45,7 +45,7 @@ export default function(radius) {
         // TODO ignore if not clipping polygons.
         if (v !== v0) {
           point2 = intersect(point0, point1);
-          if (sphericalEqual(point0, point2) || sphericalEqual(point1, point2)) {
+          if (pointEqual(point0, point2) || pointEqual(point1, point2)) {
             point1[0] += epsilon;
             point1[1] += epsilon;
             v = visible(point1[0], point1[1]);
@@ -84,7 +84,7 @@ export default function(radius) {
             }
           }
         }
-        if (v && (!point0 || !sphericalEqual(point0, point1))) {
+        if (v && (!point0 || !pointEqual(point0, point1))) {
           sink.point(point1[0], point1[1]);
         }
         point0 = point1, v0 = v, c0 = c;

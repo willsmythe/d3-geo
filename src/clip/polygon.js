@@ -1,9 +1,17 @@
-import {sphericalEqual} from "../spherical";
-import Intersection from "./intersection";
+import pointEqual from "../pointEqual";
 
-// General spherical polygon clipping algorithm: takes a polygon, cuts it into
-// visible line segments, and then rejoins the segments by interpolating along
-// the clip edge.
+function Intersection(point, points, other, entry) {
+  this.x = point;
+  this.z = points;
+  this.o = other; // another intersection
+  this.e = entry; // is an entry?
+  this.v = false; // visited
+  this.n = this.p = null; // next & previous
+}
+
+// A generalized polygon clipping algorithm: given a polygon that has been cut
+// into its visible line segments, and rejoins the segments by interpolating
+// along the clip edge.
 export default function(segments, compareIntersection, startInside, interpolate, sink) {
   var subject = [],
       clip = [],
@@ -17,7 +25,7 @@ export default function(segments, compareIntersection, startInside, interpolate,
     // If the first and last points of a segment are coincident, then treat as a
     // closed ring. TODO if all rings are closed, then the winding order of the
     // exterior ring should be checked.
-    if (sphericalEqual(p0, p1)) {
+    if (pointEqual(p0, p1)) {
       sink.lineStart();
       for (i = 0; i < n; ++i) sink.point((p0 = segment[i])[0], p0[1]);
       sink.lineEnd();

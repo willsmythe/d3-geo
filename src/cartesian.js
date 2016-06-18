@@ -1,4 +1,8 @@
-import {cos, sin, sqrt} from "./math";
+import {asin, atan2, cos, sin, sqrt} from "./math";
+
+export function spherical(cartesian) {
+  return [atan2(cartesian[1], cartesian[0]), asin(cartesian[2])];
+}
 
 export function cartesian(spherical) {
   var lambda = spherical[0], phi = spherical[1], cosPhi = cos(phi);

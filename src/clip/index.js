@@ -1,15 +1,15 @@
+import clipBuffer from "./buffer";
 import clipPolygon from "./polygon";
-import lineBuffer from "../line-buffer";
 import {epsilon, halfPi} from "../math";
-import polygonContains from "../polygon-contains";
+import polygonContains from "../polygonContains";
 import {merge} from "d3-array";
 
 export default function(pointVisible, clipLine, interpolate, clipStart) {
   return function(rotate, sink) {
     var line = clipLine(sink),
         rotatedClipStart = rotate.invert(clipStart[0], clipStart[1]),
-        buffer = lineBuffer(),
-        ringSink = clipLine(buffer),
+        ringBuffer = clipBuffer(),
+        ringSink = clipLine(ringBuffer),
         polygonStarted = false,
         polygon,
         segments,
@@ -89,7 +89,7 @@ export default function(pointVisible, clipLine, interpolate, clipStart) {
       ringSink.lineEnd();
 
       var clean = ringSink.clean(),
-          ringSegments = buffer.result(),
+          ringSegments = ringBuffer.result(),
           i, n = ringSegments.length, m,
           segment,
           point;
@@ -113,7 +113,7 @@ export default function(pointVisible, clipLine, interpolate, clipStart) {
       }
 
       // Rejoin connected segments.
-      // TODO reuse buffer.rejoin()?
+      // TODO reuse ringBuffer.rejoin()?
       if (n > 1 && clean & 2) ringSegments.push(ringSegments.pop().concat(ringSegments.shift()));
 
       segments.push(ringSegments.filter(clipSegmentLength1));
