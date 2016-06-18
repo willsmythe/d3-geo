@@ -1,5 +1,6 @@
 import clipAntimeridian from "../clip/antimeridian";
 import clipCircle from "../clip/circle";
+import {clipExtent} from "../clip/extent";
 import compose from "../compose";
 import identity from "../identity";
 import {degrees, radians} from "../math";
@@ -24,8 +25,7 @@ export function projectionMutator(projectAt) {
       dx, dy, lambda = 0, phi = 0, // center
       deltaLambda = 0, deltaPhi = 0, deltaGamma = 0, rotate, projectRotate, // rotate
       theta = null, preclip = clipAntimeridian, // clip angle
-      // x0 = null, y0, x1, y1, // TODO clip extent
-      postclip = identity, // clip extent
+      x0 = null, y0, x1, y1, postclip = identity, // clip extent
       delta = 6 * radians, projectResample = resample(projectTransform, delta), // precision
       stream,
       streamSink;
@@ -52,10 +52,9 @@ export function projectionMutator(projectAt) {
     return arguments.length ? (preclip = +_ ? clipCircle(theta = _ * radians, delta) : (theta = null, clipAntimeridian), reset()) : theta * degrees;
   };
 
-  // TODO
-  // projection.clipExtent = function(_) {
-  //   return arguments.length ? (postclip = _ == null ? (x0 = y0 = x1 = y1 = null, identity) : clipExtent(x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1]), reset()) : x0 == null ? null : [[x0, y0], [x1, y1]];
-  // };
+  projection.clipExtent = function(_) {
+    return arguments.length ? (postclip = _ == null ? (x0 = y0 = x1 = y1 = null, identity) : clipExtent(x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1]), reset()) : x0 == null ? null : [[x0, y0], [x1, y1]];
+  };
 
   projection.scale = function(_) {
     return arguments.length ? (k = +_, recenter()) : k;
