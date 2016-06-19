@@ -11,5 +11,7 @@ azimuthalEqualArea.invert = azimuthalInvert(function(z) {
 });
 
 export default function() {
-  return projection(azimuthalEqualArea);
+  return projection(azimuthalEqualArea)
+      .scale(120)
+      .clipAngle(180 - 1e-3);
 }

@@ -1,5 +1,5 @@
 import projection from "./index";
-import {atan, exp, halfPi, log, pi, tan} from "../math";
+import {atan, exp, halfPi, log, pi, tan, tau} from "../math";
 
 export function mercator(lambda, phi) {
   return [lambda, log(tan((halfPi + phi) / 2))];
@@ -38,5 +38,5 @@ export function mercatorProjection(project) {
     return m;
   };
 
-  return m.clipExtent(null);
+  return m.clipExtent(null).scale(961 / tau);
 }

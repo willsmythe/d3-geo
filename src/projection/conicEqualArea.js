@@ -21,5 +21,7 @@ function conicEqualArea(y0, y1) {
 }
 
 export default function() {
-  return conicProjection(conicEqualArea);
+  return conicProjection(conicEqualArea)
+      .scale(151)
+      .translate([480, 347]);
 }

@@ -1,4 +1,4 @@
-import {acos, sin} from "../math";
+import {acos, sin, tau} from "../math";
 import {azimuthal, azimuthalInvert} from "./azimuthal";
 import projection from "./index";
 
@@ -11,5 +11,7 @@ azimuthalEquidistant.invert = azimuthalInvert(function(z) {
 });
 
 export default function() {
-  return projection(azimuthalEquidistant);
+  return projection(azimuthalEquidistant)
+      .scale(480 / tau)
+      .clipAngle(180 - 1e-3);
 }
