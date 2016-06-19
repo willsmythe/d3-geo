@@ -5,8 +5,8 @@ import transform from "../transform";
 var maxDepth = 16, // maximum depth of subdivision
     cosMinDistance = cos(30 * radians); // cos(minimum angular distance)
 
-export default function(project, delta) {
-  return +delta ? resample(project, delta * delta) : resampleNone(project);
+export default function(project, delta2) {
+  return +delta2 ? resample(project, delta2) : resampleNone(project);
 }
 
 function resampleNone(project) {

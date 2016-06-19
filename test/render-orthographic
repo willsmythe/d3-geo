@@ -1,0 +1,36 @@
+#!/usr/bin/env node
+
+var width = 960,
+    height = 500;
+
+var fs = require("fs"),
+    topojson = require("topojson"),
+    Canvas = require("canvas"),
+    d3_geo = require("../");
+
+var canvas = new Canvas(width, height),
+    context = canvas.getContext("2d");
+
+var world = require("./data/world-50m.json");
+
+var graticule = d3_geo.geoGraticule();
+
+var path = d3_geo.geoPath()
+    .projection(d3_geo.geoOrthographic())
+    .context(context);
+
+context.fillStyle = "#fff";
+context.fillRect(0, 0, width, height);
+
+context.beginPath();
+path(topojson.feature(world, world.objects.land));
+context.fillStyle = "#000";
+context.fill();
+
+context.beginPath();
+path(graticule());
+context.strokeStyle = "rgba(119,119,119,0.5)";
+context.stroke();
+
+console.warn("↳ build/orthographic.png");
+canvas.pngStream().pipe(fs.createWriteStream("build/orthographic.png"));

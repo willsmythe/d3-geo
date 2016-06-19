@@ -3,7 +3,7 @@ import clipCircle from "../clip/circle";
 import {clipExtent} from "../clip/extent";
 import compose from "../compose";
 import identity from "../identity";
-import {degrees, radians} from "../math";
+import {degrees, radians, sqrt} from "../math";
 import {rotateRadians} from "../rotation";
 import transform from "../transform";
 import resample from "./resample";
@@ -26,7 +26,7 @@ export function projectionMutator(projectAt) {
       deltaLambda = 0, deltaPhi = 0, deltaGamma = 0, rotate, projectRotate, // rotate
       theta = null, preclip = clipAntimeridian, // clip angle
       x0 = null, y0, x1, y1, postclip = identity, // clip extent
-      delta = 6 * radians, projectResample = resample(projectTransform, delta), // precision
+      delta2 = 0.5, projectResample = resample(projectTransform, delta2), // precision
       stream,
       streamSink;
 
@@ -49,7 +49,7 @@ export function projectionMutator(projectAt) {
   };
 
   projection.clipAngle = function(_) {
-    return arguments.length ? (preclip = +_ ? clipCircle(theta = _ * radians, delta) : (theta = null, clipAntimeridian), reset()) : theta * degrees;
+    return arguments.length ? (preclip = +_ ? clipCircle(theta = _ * radians, 6 * radians) : (theta = null, clipAntimeridian), reset()) : theta * degrees;
   };
 
   projection.clipExtent = function(_) {
@@ -73,7 +73,7 @@ export function projectionMutator(projectAt) {
   };
 
   projection.precision = function(_) {
-    return arguments.length ? (projectResample = resample(projectTransform, delta = _ * radians), theta && (preclip = clipCircle(theta, delta)), reset()) : delta * degrees;
+    return arguments.length ? (projectResample = resample(projectTransform, delta2 = _ * _), reset()) : sqrt(delta2);
   };
 
   function recenter() {

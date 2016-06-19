@@ -31,10 +31,12 @@
     "d3-array": "1"
   },
   "devDependencies": {
+    "canvas": "1",
     "eslint": "2",
     "package-preamble": "0.0",
     "rollup": "0.31",
     "tape": "4",
+    "topojson": "1",
     "uglify-js": "2"
   }
 }
