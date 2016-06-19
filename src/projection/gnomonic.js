@@ -12,5 +12,5 @@ gnomonic.invert = azimuthalInvert(atan);
 export default function() {
   return projection(gnomonic)
       .scale(139)
-      .clipAngle(70);
+      .clipAngle(60);
 }

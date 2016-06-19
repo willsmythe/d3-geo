@@ -1,0 +1,26 @@
+#!/bin/bash
+
+for i in \
+    azimuthalEqualArea \
+    azimuthalEquidistant \
+    conicConformal \
+    conicEqualArea \
+    conicEquidistant \
+    equirectangular \
+    gnomonic \
+    mercator \
+    orthographic \
+    stereographic \
+    transverseMercator; do
+  test/render-world $i \
+      && [ "$(compare -metric rmse test/images/$i.png build/$i.png null: 2>&1)" = "0 (0)" ] \
+      || echo "✗ build/$i.png and test/images/$i.png differ"
+done
+
+for i in \
+    albers \
+    albersUsa; do
+  test/render-us $i \
+      && [ "$(compare -metric rmse test/images/$i.png build/$i.png null: 2>&1)" = "0 (0)" ] \
+      || echo "✗ build/$i.png and test/images/$i.png differ"
+done
