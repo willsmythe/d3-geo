@@ -14,5 +14,5 @@ stereographic.invert = azimuthalInvert(function(z) {
 export default function() {
   return projection(stereographic)
       .scale(240)
-      .clipAngle(180 - 1e-3);
+      .clipAngle(142);
 }
