@@ -41,5 +41,5 @@ context.lineWidth = 1;
 context.strokeStyle = "#fff";
 context.stroke();
 
-console.warn("↳ build/" + projectionName + ".png");
-canvas.pngStream().pipe(fs.createWriteStream("build/" + projectionName + ".png"));
+console.warn("↳ test/output/" + projectionName + ".png");
+canvas.pngStream().pipe(fs.createWriteStream("test/output/" + projectionName + ".png"));

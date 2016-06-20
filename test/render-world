@@ -36,5 +36,5 @@ path(graticule());
 context.strokeStyle = "rgba(119,119,119,0.5)";
 context.stroke();
 
-console.warn("↳ build/" + projectionName + ".png");
-canvas.pngStream().pipe(fs.createWriteStream("build/" + projectionName + ".png"));
+console.warn("↳ test/output/" + projectionName + ".png");
+canvas.pngStream().pipe(fs.createWriteStream("test/output/" + projectionName + ".png"));
