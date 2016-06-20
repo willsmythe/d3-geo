@@ -30,7 +30,10 @@ export default function() {
 
   function albersUsa(coordinates) {
     var x = coordinates[0], y = coordinates[1];
-    return point = null, (lower48Point(x, y), point) || (alaskaPoint(x, y), point) || (hawaiiPoint(x, y), point);
+    return point = null,
+        (lower48Point.point(x, y), point)
+        || (alaskaPoint.point(x, y), point)
+        || (hawaiiPoint.point(x, y), point);
   }
 
   albersUsa.invert = function(coordinates) {
@@ -66,17 +69,17 @@ export default function() {
     lower48Point = lower48
         .translate(_)
         .clipExtent([[x - 0.455 * k, y - 0.238 * k], [x + 0.455 * k, y + 0.238 * k]])
-        .stream(pointSink).point;
+        .stream(pointSink);
 
     alaskaPoint = alaska
         .translate([x - 0.307 * k, y + 0.201 * k])
         .clipExtent([[x - 0.425 * k + epsilon, y + 0.120 * k + epsilon], [x - 0.214 * k - epsilon, y + 0.234 * k - epsilon]])
-        .stream(pointSink).point;
+        .stream(pointSink);
 
     hawaiiPoint = hawaii
         .translate([x - 0.205 * k, y + 0.212 * k])
         .clipExtent([[x - 0.214 * k + epsilon, y + 0.166 * k + epsilon], [x - 0.115 * k - epsilon, y + 0.234 * k - epsilon]])
-        .stream(pointSink).point;
+        .stream(pointSink);
 
     return albersUsa;
   };
