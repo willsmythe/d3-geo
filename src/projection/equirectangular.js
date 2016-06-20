@@ -1,3 +1,4 @@
+import {pi} from "../math";
 import projection from "./index";
 
 export function equirectangular(lambda, phi) {
@@ -7,5 +8,5 @@ export function equirectangular(lambda, phi) {
 equirectangular.invert = equirectangular;
 
 export default function() {
-  return projection(equirectangular);
+  return projection(equirectangular).scale(480 / pi);
 }
