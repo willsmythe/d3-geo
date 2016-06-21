@@ -1,10 +1,16 @@
-export default function transform(prototype) {
+export default function(prototype) {
+  return {
+    stream: transform(prototype)
+  };
+}
+
+export function transform(prototype) {
   function T() {}
   var p = T.prototype = Object.create(Transform.prototype);
   for (var k in prototype) p[k] = prototype[k];
-  return function(stream) {
+  return function(next) {
     var t = new T;
-    t.stream = stream;
+    t.next = next;
     return t;
   };
 }
@@ -12,10 +18,10 @@ export default function transform(prototype) {
 function Transform() {}
 
 Transform.prototype = {
-  point: function(x, y) { this.stream.point(x, y); },
-  sphere: function() { this.stream.sphere(); },
-  lineStart: function() { this.stream.lineStart(); },
-  lineEnd: function() { this.stream.lineEnd(); },
-  polygonStart: function() { this.stream.polygonStart(); },
-  polygonEnd: function() { this.stream.polygonEnd(); }
+  point: function(x, y) { this.next.point(x, y); },
+  sphere: function() { this.next.sphere(); },
+  lineStart: function() { this.next.lineStart(); },
+  lineEnd: function() { this.next.lineEnd(); },
+  polygonStart: function() { this.next.polygonStart(); },
+  polygonEnd: function() { this.next.polygonEnd(); }
 };

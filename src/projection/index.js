@@ -5,12 +5,12 @@ import compose from "../compose";
 import identity from "../identity";
 import {degrees, radians, sqrt} from "../math";
 import {rotateRadians} from "../rotation";
-import transform from "../transform";
+import {transform} from "../transform";
 import resample from "./resample";
 
 var transformRadians = transform({
   point: function(x, y) {
-    this.stream.point(x * radians, y * radians);
+    this.next.point(x * radians, y * radians);
   }
 });
 

@@ -1,6 +1,6 @@
 import {cartesian} from "../cartesian";
 import {abs, asin, atan2, cos, epsilon, radians, sqrt} from "../math";
-import transform from "../transform";
+import {transform} from "../transform";
 
 var maxDepth = 16, // maximum depth of subdivision
     cosMinDistance = cos(30 * radians); // cos(minimum angular distance)
@@ -13,14 +13,14 @@ function resampleNone(project) {
   return transform({
     point: function(x, y) {
       x = project(x, y);
-      this.stream.point(x[0], x[1]);
+      this.next.point(x[0], x[1]);
     }
   });
 }
 
 function resample(project, delta2) {
 
-  function resampleLineTo(x0, y0, lambda0, a0, b0, c0, x1, y1, lambda1, a1, b1, c1, depth, stream) {
+  function resampleLineTo(x0, y0, lambda0, a0, b0, c0, x1, y1, lambda1, a1, b1, c1, depth, next) {
     var dx = x1 - x0,
         dy = y1 - y0,
         d2 = dx * dx + dy * dy;
@@ -40,14 +40,13 @@ function resample(project, delta2) {
       if (dz * dz / d2 > delta2 // perpendicular projected distance
           || abs((dx * dx2 + dy * dy2) / d2 - 0.5) > 0.3 // midpoint close to an end
           || a0 * a1 + b0 * b1 + c0 * c1 < cosMinDistance) { // angular distance
-        resampleLineTo(x0, y0, lambda0, a0, b0, c0, x2, y2, lambda2, a /= m, b /= m, c, depth, stream);
-        stream.point(x2, y2);
-        resampleLineTo(x2, y2, lambda2, a, b, c, x1, y1, lambda1, a1, b1, c1, depth, stream);
+        resampleLineTo(x0, y0, lambda0, a0, b0, c0, x2, y2, lambda2, a /= m, b /= m, c, depth, next);
+        next.point(x2, y2);
+        resampleLineTo(x2, y2, lambda2, a, b, c, x1, y1, lambda1, a1, b1, c1, depth, next);
       }
     }
   }
-
-  return function(stream) {
+  return function(next) {
     var lambda00, x00, y00, a00, b00, c00, // first point
         lambda0, x0, y0, a0, b0, c0; // previous point
 
@@ -55,30 +54,30 @@ function resample(project, delta2) {
       point: point,
       lineStart: lineStart,
       lineEnd: lineEnd,
-      polygonStart: function() { stream.polygonStart(); resampleSink.lineStart = ringStart; },
-      polygonEnd: function() { stream.polygonEnd(); resampleSink.lineStart = lineStart; }
+      polygonStart: function() { next.polygonStart(); resampleSink.lineStart = ringStart; },
+      polygonEnd: function() { next.polygonEnd(); resampleSink.lineStart = lineStart; }
     };
 
     function point(x, y) {
       x = project(x, y);
-      stream.point(x[0], x[1]);
+      next.point(x[0], x[1]);
     }
 
     function lineStart() {
       x0 = NaN;
       resampleSink.point = linePoint;
-      stream.lineStart();
+      next.lineStart();
     }
 
     function linePoint(lambda, phi) {
       var c = cartesian([lambda, phi]), p = project(lambda, phi);
-      resampleLineTo(x0, y0, lambda0, a0, b0, c0, x0 = p[0], y0 = p[1], lambda0 = lambda, a0 = c[0], b0 = c[1], c0 = c[2], maxDepth, stream);
-      stream.point(x0, y0);
+      resampleLineTo(x0, y0, lambda0, a0, b0, c0, x0 = p[0], y0 = p[1], lambda0 = lambda, a0 = c[0], b0 = c[1], c0 = c[2], maxDepth, next);
+      next.point(x0, y0);
     }
 
     function lineEnd() {
       resampleSink.point = point;
-      stream.lineEnd();
+      next.lineEnd();
     }
 
     function ringStart() {
@@ -93,7 +92,7 @@ function resample(project, delta2) {
     }
 
     function ringEnd() {
-      resampleLineTo(x0, y0, lambda0, a0, b0, c0, x00, y00, lambda00, a00, b00, c00, maxDepth, stream);
+      resampleLineTo(x0, y0, lambda0, a0, b0, c0, x00, y00, lambda00, a00, b00, c00, maxDepth, next);
       resampleSink.lineEnd = lineEnd;
       lineEnd();
     }

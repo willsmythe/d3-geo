@@ -20,6 +20,13 @@ var stream = d3.geoStream();
 
 ## API Reference
 
+* Math
+* Shapes
+* Projections
+* Transforms
+
+### Math
+
 <a name="geoArea" href="#geoArea">#</a> d3.<b>geoArea</b>(<i>feature</i>)
 
 Returns the spherical area of the specified *feature* in [steradians](http://mathworld.wolfram.com/Steradian.html). See also [path.area](#path_area), which computes the projected area on the Cartesian plane.
@@ -142,7 +149,11 @@ If *step* is specified, sets the minor step for this graticule. If *step* is not
 
 If *precision* is specified, sets the precision for this graticule, in degrees. If *precision* is not specified, returns the current precision, which defaults to 2.5°.
 
-### Streams
+### Projections
+
+<a href="#geoPath" name="geoPath">#</a> d3.<b>geoPath</b>()
+
+### Transforms
 
 Yadda yadda some introduction about how D3 transforms geometry using sequences of function calls to minimize the overhead of intermediate representations…
 
@@ -197,3 +208,15 @@ Indicates the sphere (the globe; the unit sphere centered at ⟨0,0,0⟩).
 <a href="#geoStream" name="geoStream">#</a> d3.<b>geoStream</b>(<i>object</i>, <i>sink</i>)
 
 Streams the specified [GeoJSON](http://geojson.org) *object* to the specified stream *sink*. (Despite the name “stream”, these method calls are currently synchronous.) While both features and geometry objects are supported as input, the stream interface only describes the geometry, and thus additional feature properties are not visible to sinks.
+
+<a href="#geoTransform" name="geoTransform">#</a> d3.<b>geoTransform</b>(<i>methods</i>)
+
+For example:
+
+```js
+var flipY = d3.geoTransform({
+  point: function(x, y) {
+    this.next.point(x, -y);
+  }
+});
+```
