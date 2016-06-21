@@ -9,51 +9,49 @@ import PathString from "./string";
 export default function() {
   var pointRadius = 4.5,
       projection,
+      projectionStream,
       context,
-      projectStream,
-      contextStream;
+      contextSink;
 
   function path(object) {
     if (object) {
-      if (typeof pointRadius === "function") contextStream.pointRadius(+pointRadius.apply(this, arguments));
-      stream(object, projectStream(contextStream));
+      if (typeof pointRadius === "function") contextSink.pointRadius(+pointRadius.apply(this, arguments));
+      stream(object, projectionStream(contextSink));
     }
-    return contextStream.result();
+    return contextSink.result();
   }
 
   path.area = function(object) {
-    stream(object, projectStream(pathArea));
+    stream(object, projectionStream(pathArea));
     return pathArea.result();
   };
 
   path.bounds = function(object) {
-    stream(object, projectStream(pathBounds));
+    stream(object, projectionStream(pathBounds));
     return pathBounds.result();
   };
 
   path.centroid = function(object) {
-    stream(object, projectStream(pathCentroid));
+    stream(object, projectionStream(pathCentroid));
     return pathCentroid.result();
   };
 
   path.projection = function(_) {
-    if (!arguments.length) return projection;
-    projectStream = (projection = _) ? _.stream : identity;
-    return path;
+    return arguments.length ? (projectionStream = (projection = _) == null ? identity : _.stream, path) : projection;
   };
 
   path.context = function(_) {
     if (!arguments.length) return context;
-    contextStream = (context = _) == null ? new PathString : new PathContext(_);
-    if (typeof pointRadius !== "function") contextStream.pointRadius(pointRadius);
+    contextSink = (context = _) == null ? new PathString : new PathContext(_);
+    if (typeof pointRadius !== "function") contextSink.pointRadius(pointRadius);
     return path;
   };
 
   path.pointRadius = function(_) {
     if (!arguments.length) return pointRadius;
-    pointRadius = typeof _ === "function" ? _ : (contextStream.pointRadius(+_), +_);
+    pointRadius = typeof _ === "function" ? _ : (contextSink.pointRadius(+_), +_);
     return path;
   };
 
-  return path.projection(null).context(null); // TODO albersUsa
+  return path.projection(null).context(null);
 }
