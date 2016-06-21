@@ -20,10 +20,10 @@ var stream = d3.geoStream();
 
 ## API Reference
 
-* Math
-* Shapes
-* Projections
-* Transforms
+* [Math](#math)
+* [Shapes](#shapes)
+* [Projections](#projections)
+* [Transforms](#transforms)
 
 ### Math
 
@@ -152,6 +152,136 @@ If *precision* is specified, sets the precision for this graticule, in degrees. 
 ### Projections
 
 <a href="#geoPath" name="geoPath">#</a> d3.<b>geoPath</b>()
+
+…
+
+<a href="_path" name="_path">#</a> <i>path</i>(<i>object</i>)
+
+…
+
+<a href="#path_area" name="path_area">#</a> <i>path</i>.<b>area</b>(<i>object</i>)
+
+…
+
+<a href="#path_bounds" name="path_bounds">#</a> <i>path</i>.<b>bounds</b>(<i>object</i>)
+
+…
+
+<a href="#path_centroid" name="path_centroid">#</a> <i>path</i>.<b>centroid</b>(<i>object</i>)
+
+…
+
+<a href="#path_projection" name="path_projection">#</a><i>path</i>.<b>projection</b>([<i>projection</i>])
+
+…
+
+<a href="#path_context" name="path_context">#</a><i>path</i>.<b>context</b>([<i>context</i>])
+
+…
+
+<a href="#path_pointRadius" name="path_pointRadius">#</a><i>path</i>.<b>pointRadius</b>([<i>radius</i>])
+
+…
+
+<a href="#geoProjection" name="geoProjection">#</a> d3.<b>geoProjection</b>(<i>project</i>)
+
+…
+
+<a href="#geoProjectionMutator" name="geoProjectionMutator">#</a> d3.<b>geoProjectionMutator</b>(<i>projectFactory</i>)
+
+…
+
+<a href="#_projection" name="_projection">#</a> <i>projection</i>(<i>point</i>)
+
+…
+
+<a href="#projection_invert" name="projection_invert">#</a> <i>projection</i>.<b>invert</b>(<i>point</i>)
+
+…
+
+<a href="#projection_stream" name="projection_stream">#</a> <i>projection</i>.<b>stream</b>(<i>sink</i>)
+
+…
+
+<a href="#projection_clipAngle" name="projection_clipAngle">#</a> <i>projection</i>.<b>clipAngle</b>([<i>angle</i>])
+
+…
+
+<a href="#projection_clipExtent" name="projection_clipExtent">#</a> <i>projection</i>.<b>clipExtent</b>([<i>extent</i>])
+
+…
+
+<a href="#projection_scale" name="projection_scale">#</a> <i>projection</i>.<b>scale</b>([<i>scale</i>])
+
+…
+
+<a href="#projection_translate" name="projection_translate">#</a> <i>projection</i>.<b>translate</b>([<i>translate</i>])
+
+…
+
+<a href="#projection_center" name="projection_center">#</a> <i>projection</i>.<b>center</b>([<i>center</i>])
+
+…
+
+<a href="#projection_rotate" name="projection_rotate">#</a> <i>projection</i>.<b>rotate</b>([<i>rotate</i>])
+
+…
+
+<a href="#projection_precision" name="projection_precision">#</a> <i>projection</i>.<b>precision</b>([<i>precision</i>])
+
+…
+
+<a href="#geoAlbers" name="geoAlbers">#</a> d3.<b>geoAlbers</b>()
+
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/albers.png" width="480" height="250">
+
+<a href="#geoAlbersUsa" name="geoAlbersUsa">#</a> d3.<b>geoAlbersUsa</b>()
+
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/albersUsa.png" width="480" height="250">
+
+<a href="#geoAzimuthalEqualArea" name="geoAzimuthalEqualArea">#</a> d3.<b>geoAzimuthalEqualArea</b>()
+
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/azimuthalEqualArea.png" width="480" height="250">
+
+<a href="#geoAzimuthalEquidistant" name="geoAzimuthalEquidistant">#</a> d3.<b>geoAzimuthalEquidistant</b>()
+
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/azimuthalEquidistant.png" width="480" height="250">
+
+<a href="#geoConicConformal" name="geoConicConformal">#</a> d3.<b>geoConicConformal</b>()
+
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/conicConformal.png" width="480" height="250">
+
+<a href="#geoConicEqualArea" name="geoConicEqualArea">#</a> d3.<b>geoConicEqualArea</b>()
+
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/conicEqualArea.png" width="480" height="250">
+
+<a href="#geoConicEquidistant" name="geoConicEquidistant">#</a> d3.<b>geoConicEquidistant</b>()
+
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/conicEquidistant.png" width="480" height="250">
+
+<a href="#geoEquirectangular" name="geoEquirectangular">#</a> d3.<b>geoEquirectangular</b>()
+
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/equirectangular.png" width="480" height="250">
+
+<a href="#geoGnomonic" name="geoGnomonic">#</a> d3.<b>geoGnomonic</b>()
+
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/gnomonic.png" width="480" height="250">
+
+<a href="#geoMercator" name="geoMercator">#</a> d3.<b>geoMercator</b>()
+
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/mercator.png" width="480" height="250">
+
+<a href="#geoOrthographic" name="geoOrthographic">#</a> d3.<b>geoOrthographic</b>()
+
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/orthographic.png" width="480" height="250">
+
+<a href="#geoStereographic" name="geoStereographic">#</a> d3.<b>geoStereographic</b>()
+
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/stereographic.png" width="480" height="250">
+
+<a href="#geoTransverseMercator" name="geoTransverseMercator">#</a> d3.<b>geoTransverseMercator</b>()
+
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/transverseMercator.png" width="480" height="250">
 
 ### Transforms
 
