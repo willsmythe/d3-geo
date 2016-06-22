@@ -346,7 +346,7 @@ For example:
 ```js
 var flipY = d3.geoTransform({
   point: function(x, y) {
-    this.next.point(x, -y);
+    this.stream.point(x, -y);
   }
 });
 ```

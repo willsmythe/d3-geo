@@ -13,7 +13,7 @@ function resampleNone(project) {
   return transform({
     point: function(x, y) {
       x = project(x, y);
-      this.next.point(x[0], x[1]);
+      this.stream.point(x[0], x[1]);
     }
   });
 }

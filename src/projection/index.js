@@ -10,7 +10,7 @@ import resample from "./resample";
 
 var transformRadians = transform({
   point: function(x, y) {
-    this.next.point(x * radians, y * radians);
+    this.stream.point(x * radians, y * radians);
   }
 });
 
