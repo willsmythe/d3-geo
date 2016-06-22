@@ -4,20 +4,20 @@ import noop from "../noop";
 export default function(context) {
   var pointRadius = 4.5;
 
-  var sink = {
+  var stream = {
     point: point,
 
     // While inside a line, override point to moveTo then lineTo.
-    lineStart: function() { sink.point = pointLineStart; },
+    lineStart: function() { stream.point = pointLineStart; },
     lineEnd: lineEnd,
 
     // While inside a polygon, override lineEnd to closePath.
-    polygonStart: function() { sink.lineEnd = lineEndPolygon; },
-    polygonEnd: function() { sink.lineEnd = lineEnd; sink.point = point; },
+    polygonStart: function() { stream.lineEnd = lineEndPolygon; },
+    polygonEnd: function() { stream.lineEnd = lineEnd; stream.point = point; },
 
     pointRadius: function(_) {
       pointRadius = _;
-      return sink;
+      return stream;
     },
 
     result: noop
@@ -30,7 +30,7 @@ export default function(context) {
 
   function pointLineStart(x, y) {
     context.moveTo(x, y);
-    sink.point = pointLine;
+    stream.point = pointLine;
   }
 
   function pointLine(x, y) {
@@ -38,12 +38,12 @@ export default function(context) {
   }
 
   function lineEnd() {
-    sink.point = point;
+    stream.point = point;
   }
 
   function lineEndPolygon() {
     context.closePath();
   }
 
-  return sink;
+  return stream;
 }

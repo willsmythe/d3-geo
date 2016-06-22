@@ -8,7 +8,7 @@ var lengthSum,
     sinPhi0,
     cosPhi0;
 
-var lengthSink = {
+var lengthStream = {
   sphere: noop,
   point: noop,
   lineStart: lengthLineStart,
@@ -18,18 +18,18 @@ var lengthSink = {
 };
 
 function lengthLineStart() {
-  lengthSink.point = lengthPointFirst;
-  lengthSink.lineEnd = lengthLineEnd;
+  lengthStream.point = lengthPointFirst;
+  lengthStream.lineEnd = lengthLineEnd;
 }
 
 function lengthLineEnd() {
-  lengthSink.point = lengthSink.lineEnd = noop;
+  lengthStream.point = lengthStream.lineEnd = noop;
 }
 
 function lengthPointFirst(lambda, phi) {
   lambda *= radians, phi *= radians;
   lambda0 = lambda, sinPhi0 = sin(phi), cosPhi0 = cos(phi);
-  lengthSink.point = lengthPoint;
+  lengthStream.point = lengthPoint;
 }
 
 function lengthPoint(lambda, phi) {
@@ -49,6 +49,6 @@ function lengthPoint(lambda, phi) {
 export default function(object) {
   if (lengthSum) lengthSum.reset();
   else lengthSum = adder();
-  stream(object, lengthSink);
+  stream(object, lengthStream);
   return +lengthSum;
 }

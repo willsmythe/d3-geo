@@ -4,15 +4,15 @@ import conicEqualArea from "./conicEqualArea";
 
 // The projections must have mutually exclusive clip regions on the sphere,
 // as this will avoid emitting interleaving lines and polygons.
-function multiplex(sinks) {
-  var n = sinks.length;
+function multiplex(streams) {
+  var n = streams.length;
   return {
-    point: function(x, y) { var i = -1; while (++i < n) sinks[i].point(x, y); },
-    sphere: function() { var i = -1; while (++i < n) sinks[i].sphere(); },
-    lineStart: function() { var i = -1; while (++i < n) sinks[i].lineStart(); },
-    lineEnd: function() { var i = -1; while (++i < n) sinks[i].lineEnd(); },
-    polygonStart: function() { var i = -1; while (++i < n) sinks[i].polygonStart(); },
-    polygonEnd: function() { var i = -1; while (++i < n) sinks[i].polygonEnd(); }
+    point: function(x, y) { var i = -1; while (++i < n) streams[i].point(x, y); },
+    sphere: function() { var i = -1; while (++i < n) streams[i].sphere(); },
+    lineStart: function() { var i = -1; while (++i < n) streams[i].lineStart(); },
+    lineEnd: function() { var i = -1; while (++i < n) streams[i].lineEnd(); },
+    polygonStart: function() { var i = -1; while (++i < n) streams[i].polygonStart(); },
+    polygonEnd: function() { var i = -1; while (++i < n) streams[i].polygonEnd(); }
   };
 }
 
@@ -21,12 +21,12 @@ function multiplex(sinks) {
 // standard parallels for each region comes from USGS, which is published here:
 // http://egsc.usgs.gov/isb/pubs/MapProjections/projections.html#albers
 export default function() {
-  var stream,
-      streamSink,
+  var cache,
+      cacheStream,
       lower48 = albers(), lower48Point,
       alaska = conicEqualArea().rotate([154, 0]).center([-2, 58.5]).parallels([55, 65]), alaskaPoint, // EPSG:3338
       hawaii = conicEqualArea().rotate([157, 0]).center([-3, 19.9]).parallels([8, 18]), hawaiiPoint, // ESRI:102007
-      point, pointSink = {point: function(x, y) { point = [x, y]; }};
+      point, pointStream = {point: function(x, y) { point = [x, y]; }};
 
   function albersUsa(coordinates) {
     var x = coordinates[0], y = coordinates[1];
@@ -46,8 +46,8 @@ export default function() {
         : lower48).invert(coordinates);
   };
 
-  albersUsa.stream = function(sink) {
-    return stream && streamSink === sink ? stream : stream = multiplex([lower48.stream(streamSink = sink), alaska.stream(sink), hawaii.stream(sink)]);
+  albersUsa.stream = function(stream) {
+    return cache && cacheStream === stream ? cache : cache = multiplex([lower48.stream(cacheStream = stream), alaska.stream(stream), hawaii.stream(stream)]);
   };
 
   albersUsa.precision = function(_) {
@@ -69,17 +69,17 @@ export default function() {
     lower48Point = lower48
         .translate(_)
         .clipExtent([[x - 0.455 * k, y - 0.238 * k], [x + 0.455 * k, y + 0.238 * k]])
-        .stream(pointSink);
+        .stream(pointStream);
 
     alaskaPoint = alaska
         .translate([x - 0.307 * k, y + 0.201 * k])
         .clipExtent([[x - 0.425 * k + epsilon, y + 0.120 * k + epsilon], [x - 0.214 * k - epsilon, y + 0.234 * k - epsilon]])
-        .stream(pointSink);
+        .stream(pointStream);
 
     hawaiiPoint = hawaii
         .translate([x - 0.205 * k, y + 0.212 * k])
         .clipExtent([[x - 0.214 * k + epsilon, y + 0.166 * k + epsilon], [x - 0.115 * k - epsilon, y + 0.234 * k - epsilon]])
-        .stream(pointSink);
+        .stream(pointStream);
 
     return albersUsa;
   };

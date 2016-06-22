@@ -1,5 +1,5 @@
 import adder from "./adder";
-import {areaSink, areaRingSum} from "./area";
+import {areaStream, areaRingSum} from "./area";
 import {cartesian, cartesianCross, cartesianNormalizeInPlace, spherical} from "./cartesian";
 import {abs, degrees, epsilon, radians} from "./math";
 import stream from "./stream";
@@ -12,22 +12,22 @@ var lambda0, phi0, lambda1, phi1, // bounds
     ranges,
     range;
 
-var boundsSink = {
+var boundsStream = {
   point: boundsPoint,
   lineStart: boundsLineStart,
   lineEnd: boundsLineEnd,
   polygonStart: function() {
-    boundsSink.point = boundsRingPoint;
-    boundsSink.lineStart = boundsRingStart;
-    boundsSink.lineEnd = boundsRingEnd;
+    boundsStream.point = boundsRingPoint;
+    boundsStream.lineStart = boundsRingStart;
+    boundsStream.lineEnd = boundsRingEnd;
     deltaSum.reset();
-    areaSink.polygonStart();
+    areaStream.polygonStart();
   },
   polygonEnd: function() {
-    areaSink.polygonEnd();
-    boundsSink.point = boundsPoint;
-    boundsSink.lineStart = boundsLineStart;
-    boundsSink.lineEnd = boundsLineEnd;
+    areaStream.polygonEnd();
+    boundsStream.point = boundsPoint;
+    boundsStream.lineStart = boundsLineStart;
+    boundsStream.lineEnd = boundsLineEnd;
     if (areaRingSum < 0) lambda0 = -(lambda1 = 180), phi0 = -(phi1 = 90);
     else if (deltaSum > epsilon) phi1 = 90;
     else if (deltaSum < -epsilon) phi0 = -90;
@@ -89,12 +89,12 @@ function linePoint(lambda, phi) {
 }
 
 function boundsLineStart() {
-  boundsSink.point = linePoint;
+  boundsStream.point = linePoint;
 }
 
 function boundsLineEnd() {
   range[0] = lambda0, range[1] = lambda1;
-  boundsSink.point = boundsPoint;
+  boundsStream.point = boundsPoint;
   p0 = null;
 }
 
@@ -105,17 +105,17 @@ function boundsRingPoint(lambda, phi) {
   } else {
     lambda00 = lambda, phi00 = phi;
   }
-  areaSink.point(lambda, phi);
+  areaStream.point(lambda, phi);
   linePoint(lambda, phi);
 }
 
 function boundsRingStart() {
-  areaSink.lineStart();
+  areaStream.lineStart();
 }
 
 function boundsRingEnd() {
   boundsRingPoint(lambda00, phi00);
-  areaSink.lineEnd();
+  areaStream.lineEnd();
   if (abs(deltaSum) > epsilon) lambda0 = -(lambda1 = 180);
   range[0] = lambda0, range[1] = lambda1;
   p0 = null;
@@ -143,7 +143,7 @@ export default function(feature) {
   else deltaSum = adder();
   phi1 = lambda1 = -(lambda0 = phi0 = Infinity);
   ranges = [];
-  stream(feature, boundsSink);
+  stream(feature, boundsStream);
 
   // First, sort ranges by their minimum longitudes.
   if (n = ranges.length) {

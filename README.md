@@ -199,7 +199,7 @@ If *precision* is specified, sets the precision for this graticule, in degrees. 
 
 …
 
-<a href="#projection_stream" name="projection_stream">#</a> <i>projection</i>.<b>stream</b>(<i>sink</i>)
+<a href="#projection_stream" name="projection_stream">#</a> <i>projection</i>.<b>stream</b>(<i>stream</i>)
 
 …
 
@@ -283,21 +283,21 @@ If *precision* is specified, sets the precision for this graticule, in degrees. 
 
 <img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/transverseMercator.png" width="480" height="250">
 
-### Transforms
+### Streams
 
 Yadda yadda some introduction about how D3 transforms geometry using sequences of function calls to minimize the overhead of intermediate representations…
 
-Stream sinks must implement several methods to traverse geometry. Sinks are inherently stateful; the meaning of a [point](#point) depends on whether the point is inside of a [line](#lineStart), and likewise a line is distinguished from a ring by a [polygon](#polygonStart).
+Streams must implement several methods to receive input geometry. Streams are inherently stateful; the meaning of a [point](#point) depends on whether the point is inside of a [line](#lineStart), and likewise a line is distinguished from a ring by a [polygon](#polygonStart).
 
-<a name="sink_point" href="#sink_point">#</a> <i>sink</i>.<b>point</b>(<i>x</i>, <i>y</i>[, <i>z</i>])
+<a name="stream_point" href="#stream_point">#</a> <i>stream</i>.<b>point</b>(<i>x</i>, <i>y</i>[, <i>z</i>])
 
 Indicates a point with the specified coordinates *x* and *y* (and optionally *z*). The coordinate system is unspecified and implementation-dependent; for example, [projection streams](https://github.com/d3/d3-geo-projection) require spherical coordinates in degrees as input. Outside the context of a polygon or line, a point indicates a point geometry object ([Point](http://www.geojson.org/geojson-spec.html#point) or [MultiPoint](http://www.geojson.org/geojson-spec.html#multipoint)). Within a line or polygon ring, the point indicates a control point.
 
-<a name="sink_lineStart" href="#sink_lineStart">#</a> <i>sink</i>.<b>lineStart</b>()
+<a name="stream_lineStart" href="#stream_lineStart">#</a> <i>stream</i>.<b>lineStart</b>()
 
 Indicates the start of a line or ring. Within a polygon, indicates the start of a ring. The first ring of a polygon is the exterior ring, and is typically clockwise. Any subsequent rings indicate holes in the polygon, and are typically counterclockwise.
 
-<a name="sink_lineEnd" href="#sink_lineEnd">#</a> <i>sink</i>.<b>lineEnd</b>()
+<a name="stream_lineEnd" href="#stream_lineEnd">#</a> <i>stream</i>.<b>lineEnd</b>()
 
 Indicates the end of a line or ring. Within a polygon, indicates the end of a ring. Unlike GeoJSON, the redundant closing coordinate of a ring is *not* indicated via [point](#point), and instead is implied via lineEnd within a polygon. Thus, the given polygon input:
 
@@ -310,38 +310,38 @@ Indicates the end of a line or ring. Within a polygon, indicates the end of a ri
 }
 ```
 
-Will produce the following series of method calls on the sink:
+Will produce the following series of method calls on the stream:
 
 ```js
-sink.polygonStart();
-sink.lineStart();
-sink.point(0, 0);
-sink.point(1, 0);
-sink.point(1, 1);
-sink.point(0, 1);
-sink.lineEnd();
-sink.polygonEnd();
+stream.polygonStart();
+stream.lineStart();
+stream.point(0, 0);
+stream.point(1, 0);
+stream.point(1, 1);
+stream.point(0, 1);
+stream.lineEnd();
+stream.polygonEnd();
 ```
 
-<a name="sink_polygonStart" href="#sink_polygonStart">#</a> <i>sink</i>.<b>polygonStart</b>()
+<a name="stream_polygonStart" href="#stream_polygonStart">#</a> <i>stream</i>.<b>polygonStart</b>()
 
 Indicates the start of a polygon. The first line of a polygon indicates the exterior ring, and any subsequent lines indicate interior holes.
 
-<a name="sink_polygonEnd" href="#sink_polygonEnd">#</a> <i>sink</i>.<b>polygonEnd</b>()
+<a name="stream_polygonEnd" href="#stream_polygonEnd">#</a> <i>stream</i>.<b>polygonEnd</b>()
 
 Indicates the end of a polygon.
 
-<a name="sink_sphere" href="#sink_sphere">#</a> <i>sink</i>.<b>sphere</b>()
+<a name="stream_sphere" href="#stream_sphere">#</a> <i>stream</i>.<b>sphere</b>()
 
 Indicates the sphere (the globe; the unit sphere centered at ⟨0,0,0⟩).
 
-<a href="#geoStream" name="geoStream">#</a> d3.<b>geoStream</b>(<i>object</i>, <i>sink</i>)
+<a href="#geoStream" name="geoStream">#</a> d3.<b>geoStream</b>(<i>object</i>, <i>stream</i>)
 
-Streams the specified [GeoJSON](http://geojson.org) *object* to the specified stream *sink*. (Despite the name “stream”, these method calls are currently synchronous.) While both features and geometry objects are supported as input, the stream interface only describes the geometry, and thus additional feature properties are not visible to sinks.
+Streams the specified [GeoJSON](http://geojson.org) *object* to the specified *stream*. (Despite the name “stream”, these method calls are currently synchronous.) While both features and geometry objects are supported as input, the stream interface only describes the geometry, and thus additional feature properties are not visible to streams.
 
-<a href="#geoTransform" name="geoTransform">#</a> d3.<b>geoTransform</b>(<i>methods</i>)
+<a href="#geoTransform" name="geoTransform">#</a> d3.<b>geoTransform</b>(<i>prototype</i>)
 
-For example:
+Defines a simple transform projection, implementing [*projection*.stream](#projection_stream), using any methods defined on the specified *prototype*. Any undefined methods will use passthrough methods that propagate inputs to the output stream. For example, to invert the *y*-coordinates:
 
 ```js
 var flipY = d3.geoTransform({
@@ -349,4 +349,16 @@ var flipY = d3.geoTransform({
     this.stream.point(x, -y);
   }
 });
+```
+
+Or to define an affine matrix transformation:
+
+```js
+function matrix(a, b, c, d, tx, ty) {
+  return d3.geoTransform({
+    point: function(x, y) {
+      this.stream.point(a * x + b * y + tx, c * x + d * y + ty);
+    }
+  });
+}
 ```

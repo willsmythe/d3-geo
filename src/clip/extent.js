@@ -15,15 +15,15 @@ export function clipExtent(x0, y0, x1, y1) {
     return x0 <= x && x <= x1 && y0 <= y && y <= y1;
   }
 
-  function interpolate(from, to, direction, sink) {
+  function interpolate(from, to, direction, stream) {
     var a = 0, a1 = 0;
     if (from == null
         || (a = corner(from, direction)) !== (a1 = corner(to, direction))
         || comparePoint(from, to) < 0 ^ direction > 0) {
-      do sink.point(a === 0 || a === 3 ? x0 : x1, a > 1 ? y1 : y0);
+      do stream.point(a === 0 || a === 3 ? x0 : x1, a > 1 ? y1 : y0);
       while ((a = (a + direction + 4) % 4) !== a1);
     } else {
-      sink.point(to[0], to[1]);
+      stream.point(to[0], to[1]);
     }
   }
 
@@ -48,9 +48,9 @@ export function clipExtent(x0, y0, x1, y1) {
         : b[0] - a[0];
   }
 
-  return function(sink) {
-    var activeSink = sink,
-        bufferSink = clipBuffer(),
+  return function(stream) {
+    var activeStream = stream,
+        bufferStream = clipBuffer(),
         segments,
         polygon,
         ring,
@@ -59,7 +59,7 @@ export function clipExtent(x0, y0, x1, y1) {
         first,
         clean;
 
-    var clipSink = {
+    var clipStream = {
       point: point,
       lineStart: lineStart,
       lineEnd: lineEnd,
@@ -68,7 +68,7 @@ export function clipExtent(x0, y0, x1, y1) {
     };
 
     function point(x, y) {
-      if (visible(x, y)) activeSink.point(x, y);
+      if (visible(x, y)) activeStream.point(x, y);
     }
 
     function polygonInside() {
@@ -87,7 +87,7 @@ export function clipExtent(x0, y0, x1, y1) {
 
     // Buffer geometry within a polygon and then clip it en masse.
     function polygonStart() {
-      activeSink = bufferSink, segments = [], polygon = [], clean = true;
+      activeStream = bufferStream, segments = [], polygon = [], clean = true;
     }
 
     function polygonEnd() {
@@ -95,22 +95,22 @@ export function clipExtent(x0, y0, x1, y1) {
           cleanInside = clean && startInside,
           visible = (segments = merge(segments)).length;
       if (cleanInside || visible) {
-        sink.polygonStart();
+        stream.polygonStart();
         if (cleanInside) {
-          sink.lineStart();
-          interpolate(null, null, 1, sink);
-          sink.lineEnd();
+          stream.lineStart();
+          interpolate(null, null, 1, stream);
+          stream.lineEnd();
         }
         if (visible) {
-          clipPolygon(segments, compareIntersection, startInside, interpolate, sink);
+          clipPolygon(segments, compareIntersection, startInside, interpolate, stream);
         }
-        sink.polygonEnd();
+        stream.polygonEnd();
       }
-      activeSink = sink, segments = polygon = ring = null;
+      activeStream = stream, segments = polygon = ring = null;
     }
 
     function lineStart() {
-      clipSink.point = linePoint;
+      clipStream.point = linePoint;
       if (polygon) polygon.push(ring = []);
       first = true;
       v_ = false;
@@ -123,11 +123,11 @@ export function clipExtent(x0, y0, x1, y1) {
     function lineEnd() {
       if (segments) {
         linePoint(x__, y__);
-        if (v__ && v_) bufferSink.rejoin();
-        segments.push(bufferSink.result());
+        if (v__ && v_) bufferStream.rejoin();
+        segments.push(bufferStream.result());
       }
-      clipSink.point = point;
-      if (v_) activeSink.lineEnd();
+      clipStream.point = point;
+      if (v_) activeStream.lineEnd();
     }
 
     function linePoint(x, y) {
@@ -137,25 +137,25 @@ export function clipExtent(x0, y0, x1, y1) {
         x__ = x, y__ = y, v__ = v;
         first = false;
         if (v) {
-          activeSink.lineStart();
-          activeSink.point(x, y);
+          activeStream.lineStart();
+          activeStream.point(x, y);
         }
       } else {
-        if (v && v_) activeSink.point(x, y);
+        if (v && v_) activeStream.point(x, y);
         else {
           var a = [x_ = Math.max(clipMin, Math.min(clipMax, x_)), y_ = Math.max(clipMin, Math.min(clipMax, y_))],
               b = [x = Math.max(clipMin, Math.min(clipMax, x)), y = Math.max(clipMin, Math.min(clipMax, y))];
           if (clipLine(a, b, x0, y0, x1, y1)) {
             if (!v_) {
-              activeSink.lineStart();
-              activeSink.point(a[0], a[1]);
+              activeStream.lineStart();
+              activeStream.point(a[0], a[1]);
             }
-            activeSink.point(b[0], b[1]);
-            if (!v) activeSink.lineEnd();
+            activeStream.point(b[0], b[1]);
+            if (!v) activeStream.lineEnd();
             clean = false;
           } else if (v) {
-            activeSink.lineStart();
-            activeSink.point(x, y);
+            activeStream.lineStart();
+            activeStream.point(x, y);
             clean = false;
           }
         }
@@ -163,7 +163,7 @@ export function clipExtent(x0, y0, x1, y1) {
       x_ = x, y_ = y, v_ = v;
     }
 
-    return clipSink;
+    return clipStream;
   };
 }
 
@@ -172,16 +172,16 @@ export default function() {
       y0 = 0,
       x1 = 960,
       y1 = 500,
-      stream,
-      streamSink,
+      cache,
+      cacheStream,
       clip;
 
   return clip = {
-    stream: function(sink) {
-      return stream && streamSink === sink ? stream : stream = clipExtent(x0, y0, x1, y1)(streamSink = sink);
+    stream: function(stream) {
+      return cache && cacheStream === stream ? cache : cache = clipExtent(x0, y0, x1, y1)(cacheStream = stream);
     },
     extent: function(_) {
-      return arguments.length ? (x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1], stream = streamSink = null, clip) : [[x0, y0], [x1, y1]];
+      return arguments.length ? (x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1], cache = cacheStream = null, clip) : [[x0, y0], [x1, y1]];
     }
   };
 }

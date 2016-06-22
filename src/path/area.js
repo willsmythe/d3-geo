@@ -9,16 +9,16 @@ var areaSum = adder(),
     x0,
     y0;
 
-var areaSink = {
+var areaStream = {
   point: noop,
   lineStart: noop,
   lineEnd: noop,
   polygonStart: function() {
-    areaSink.lineStart = areaRingStart;
-    areaSink.lineEnd = areaRingEnd;
+    areaStream.lineStart = areaRingStart;
+    areaStream.lineEnd = areaRingEnd;
   },
   polygonEnd: function() {
-    areaSink.lineStart = areaSink.lineEnd = areaSink.point = noop;
+    areaStream.lineStart = areaStream.lineEnd = areaStream.point = noop;
     areaSum.add(abs(areaRingSum));
     areaRingSum.reset();
   },
@@ -30,11 +30,11 @@ var areaSink = {
 };
 
 function areaRingStart() {
-  areaSink.point = areaPointFirst;
+  areaStream.point = areaPointFirst;
 }
 
 function areaPointFirst(x, y) {
-  areaSink.point = areaPoint;
+  areaStream.point = areaPoint;
   x00 = x0 = x, y00 = y0 = y;
 }
 
@@ -47,4 +47,4 @@ function areaRingEnd() {
   areaPoint(x00, y00);
 }
 
-export default areaSink;
+export default areaStream;

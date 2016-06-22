@@ -12,7 +12,7 @@ function Intersection(point, points, other, entry) {
 // A generalized polygon clipping algorithm: given a polygon that has been cut
 // into its visible line segments, and rejoins the segments by interpolating
 // along the clip edge.
-export default function(segments, compareIntersection, startInside, interpolate, sink) {
+export default function(segments, compareIntersection, startInside, interpolate, stream) {
   var subject = [],
       clip = [],
       i,
@@ -26,9 +26,9 @@ export default function(segments, compareIntersection, startInside, interpolate,
     // closed ring. TODO if all rings are closed, then the winding order of the
     // exterior ring should be checked.
     if (pointEqual(p0, p1)) {
-      sink.lineStart();
-      for (i = 0; i < n; ++i) sink.point((p0 = segment[i])[0], p0[1]);
-      sink.lineEnd();
+      stream.lineStart();
+      for (i = 0; i < n; ++i) stream.point((p0 = segment[i])[0], p0[1]);
+      stream.lineEnd();
       return;
     }
 
@@ -58,22 +58,22 @@ export default function(segments, compareIntersection, startInside, interpolate,
         isSubject = true;
     while (current.v) if ((current = current.n) === start) return;
     points = current.z;
-    sink.lineStart();
+    stream.lineStart();
     do {
       current.v = current.o.v = true;
       if (current.e) {
         if (isSubject) {
-          for (i = 0, n = points.length; i < n; ++i) sink.point((point = points[i])[0], point[1]);
+          for (i = 0, n = points.length; i < n; ++i) stream.point((point = points[i])[0], point[1]);
         } else {
-          interpolate(current.x, current.n.x, 1, sink);
+          interpolate(current.x, current.n.x, 1, stream);
         }
         current = current.n;
       } else {
         if (isSubject) {
           points = current.p.z;
-          for (i = points.length - 1; i >= 0; --i) sink.point((point = points[i])[0], point[1]);
+          for (i = points.length - 1; i >= 0; --i) stream.point((point = points[i])[0], point[1]);
         } else {
-          interpolate(current.x, current.p.x, -1, sink);
+          interpolate(current.x, current.p.x, -1, stream);
         }
         current = current.p;
       }
@@ -81,7 +81,7 @@ export default function(segments, compareIntersection, startInside, interpolate,
       points = current.z;
       isSubject = !isSubject;
     } while (!current.v);
-    sink.lineEnd();
+    stream.lineEnd();
   }
 }
 

@@ -12,14 +12,14 @@ var areaSum,
     cosPhi0,
     sinPhi0;
 
-export var areaSink = {
+export var areaStream = {
   point: noop,
   lineStart: noop,
   lineEnd: noop,
   polygonStart: function() {
     areaRingSum.reset();
-    areaSink.lineStart = areaRingStart;
-    areaSink.lineEnd = areaRingEnd;
+    areaStream.lineStart = areaRingStart;
+    areaStream.lineEnd = areaRingEnd;
   },
   polygonEnd: function() {
     var areaRing = +areaRingSum;
@@ -32,7 +32,7 @@ export var areaSink = {
 };
 
 function areaRingStart() {
-  areaSink.point = areaPointFirst;
+  areaStream.point = areaPointFirst;
 }
 
 function areaRingEnd() {
@@ -40,7 +40,7 @@ function areaRingEnd() {
 }
 
 function areaPointFirst(lambda, phi) {
-  areaSink.point = areaPoint;
+  areaStream.point = areaPoint;
   lambda00 = lambda, phi00 = phi;
   lambda *= radians, phi *= radians;
   lambda0 = lambda, cosPhi0 = cos(phi = phi / 2 + quarterPi), sinPhi0 = sin(phi);
@@ -70,6 +70,6 @@ function areaPoint(lambda, phi) {
 export default function(object) {
   if (areaSum) areaSum.reset();
   else areaSum = adder(), areaRingSum = adder();
-  stream(object, areaSink);
+  stream(object, areaStream);
   return areaSum * 2;
 }

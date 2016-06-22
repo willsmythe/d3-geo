@@ -11,14 +11,14 @@ export default function() {
       projection,
       projectionStream,
       context,
-      contextSink;
+      contextStream;
 
   function path(object) {
     if (object) {
-      if (typeof pointRadius === "function") contextSink.pointRadius(+pointRadius.apply(this, arguments));
-      stream(object, projectionStream(contextSink));
+      if (typeof pointRadius === "function") contextStream.pointRadius(+pointRadius.apply(this, arguments));
+      stream(object, projectionStream(contextStream));
     }
-    return contextSink.result();
+    return contextStream.result();
   }
 
   path.area = function(object) {
@@ -42,14 +42,14 @@ export default function() {
 
   path.context = function(_) {
     if (!arguments.length) return context;
-    contextSink = (context = _) == null ? new PathString : new PathContext(_);
-    if (typeof pointRadius !== "function") contextSink.pointRadius(pointRadius);
+    contextStream = (context = _) == null ? new PathString : new PathContext(_);
+    if (typeof pointRadius !== "function") contextStream.pointRadius(pointRadius);
     return path;
   };
 
   path.pointRadius = function(_) {
     if (!arguments.length) return pointRadius;
-    pointRadius = typeof _ === "function" ? _ : (contextSink.pointRadius(+_), +_);
+    pointRadius = typeof _ === "function" ? _ : (contextStream.pointRadius(+_), +_);
     return path;
   };
 

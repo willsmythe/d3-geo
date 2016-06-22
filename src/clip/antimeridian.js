@@ -11,7 +11,7 @@ export default clip(
 // Takes a line and cuts into visible segments. Return values: 0 - there were
 // intersections or the line was empty; 1 - no intersections; 2 - there were
 // intersections, and the first and last segments should be rejoined.
-function clipAntimeridianLine(sink) {
+function clipAntimeridianLine(stream) {
   var lambda0 = NaN,
       phi0 = NaN,
       sign0 = NaN,
@@ -19,35 +19,35 @@ function clipAntimeridianLine(sink) {
 
   return {
     lineStart: function() {
-      sink.lineStart();
+      stream.lineStart();
       clean = 1;
     },
     point: function(lambda1, phi1) {
       var sign1 = lambda1 > 0 ? pi : -pi,
           delta = abs(lambda1 - lambda0);
       if (abs(delta - pi) < epsilon) { // line crosses a pole
-        sink.point(lambda0, phi0 = (phi0 + phi1) / 2 > 0 ? halfPi : -halfPi);
-        sink.point(sign0, phi0);
-        sink.lineEnd();
-        sink.lineStart();
-        sink.point(sign1, phi0);
-        sink.point(lambda1, phi0);
+        stream.point(lambda0, phi0 = (phi0 + phi1) / 2 > 0 ? halfPi : -halfPi);
+        stream.point(sign0, phi0);
+        stream.lineEnd();
+        stream.lineStart();
+        stream.point(sign1, phi0);
+        stream.point(lambda1, phi0);
         clean = 0;
       } else if (sign0 !== sign1 && delta >= pi) { // line crosses antimeridian
         if (abs(lambda0 - sign0) < epsilon) lambda0 -= sign0 * epsilon; // handle degeneracies
         if (abs(lambda1 - sign1) < epsilon) lambda1 -= sign1 * epsilon;
         phi0 = clipAntimeridianIntersect(lambda0, phi0, lambda1, phi1);
-        sink.point(sign0, phi0);
-        sink.lineEnd();
-        sink.lineStart();
-        sink.point(sign1, phi0);
+        stream.point(sign0, phi0);
+        stream.lineEnd();
+        stream.lineStart();
+        stream.point(sign1, phi0);
         clean = 0;
       }
-      sink.point(lambda0 = lambda1, phi0 = phi1);
+      stream.point(lambda0 = lambda1, phi0 = phi1);
       sign0 = sign1;
     },
     lineEnd: function() {
-      sink.lineEnd();
+      stream.lineEnd();
       lambda0 = phi0 = NaN;
     },
     clean: function() {
@@ -67,26 +67,26 @@ function clipAntimeridianIntersect(lambda0, phi0, lambda1, phi1) {
       : (phi0 + phi1) / 2;
 }
 
-function clipAntimeridianInterpolate(from, to, direction, sink) {
+function clipAntimeridianInterpolate(from, to, direction, stream) {
   var phi;
   if (from == null) {
     phi = direction * halfPi;
-    sink.point(-pi, phi);
-    sink.point(0, phi);
-    sink.point(pi, phi);
-    sink.point(pi, 0);
-    sink.point(pi, -phi);
-    sink.point(0, -phi);
-    sink.point(-pi, -phi);
-    sink.point(-pi, 0);
-    sink.point(-pi, phi);
+    stream.point(-pi, phi);
+    stream.point(0, phi);
+    stream.point(pi, phi);
+    stream.point(pi, 0);
+    stream.point(pi, -phi);
+    stream.point(0, -phi);
+    stream.point(-pi, -phi);
+    stream.point(-pi, 0);
+    stream.point(-pi, phi);
   } else if (abs(from[0] - to[0]) > epsilon) {
     var lambda = from[0] < to[0] ? pi : -pi;
     phi = direction * lambda / 2;
-    sink.point(-lambda, phi);
-    sink.point(0, phi);
-    sink.point(lambda, phi);
+    stream.point(-lambda, phi);
+    stream.point(0, phi);
+    stream.point(lambda, phi);
   } else {
-    sink.point(to[0], to[1]);
+    stream.point(to[0], to[1]);
   }
 }

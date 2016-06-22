@@ -2,20 +2,20 @@ export default function() {
   var pointCircle = circle(4.5),
       string = [];
 
-  var sink = {
+  var stream = {
     point: point,
     lineStart: lineStart,
     lineEnd: lineEnd,
     polygonStart: function() {
-      sink.lineEnd = lineEndPolygon;
+      stream.lineEnd = lineEndPolygon;
     },
     polygonEnd: function() {
-      sink.lineEnd = lineEnd;
-      sink.point = point;
+      stream.lineEnd = lineEnd;
+      stream.point = point;
     },
     pointRadius: function(_) {
       pointCircle = circle(_);
-      return sink;
+      return stream;
     },
     result: function() {
       if (string.length) {
@@ -32,7 +32,7 @@ export default function() {
 
   function pointLineStart(x, y) {
     string.push("M", x, ",", y);
-    sink.point = pointLine;
+    stream.point = pointLine;
   }
 
   function pointLine(x, y) {
@@ -40,18 +40,18 @@ export default function() {
   }
 
   function lineStart() {
-    sink.point = pointLineStart;
+    stream.point = pointLineStart;
   }
 
   function lineEnd() {
-    sink.point = point;
+    stream.point = point;
   }
 
   function lineEndPolygon() {
     string.push("Z");
   }
 
-  return sink;
+  return stream;
 }
 
 function circle(radius) {

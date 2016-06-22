@@ -5,7 +5,7 @@ var x0 = Infinity,
     x1 = -x0,
     y1 = x1;
 
-var boundsSink = {
+var boundsStream = {
   point: boundsPoint,
   lineStart: noop,
   lineEnd: noop,
@@ -25,4 +25,4 @@ function boundsPoint(x, y) {
   if (y > y1) y1 = y;
 }
 
-export default boundsSink;
+export default boundsStream;

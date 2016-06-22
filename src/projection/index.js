@@ -27,8 +27,8 @@ export function projectionMutator(projectAt) {
       theta = null, preclip = clipAntimeridian, // clip angle
       x0 = null, y0, x1, y1, postclip = identity, // clip extent
       delta2 = 0.5, projectResample = resample(projectTransform, delta2), // precision
-      stream,
-      streamSink;
+      cache,
+      cacheStream;
 
   function projection(point) {
     point = projectRotate(point[0] * radians, point[1] * radians);
@@ -44,8 +44,8 @@ export function projectionMutator(projectAt) {
     return x = project(x, y), [x[0] * k + dx, dy - x[1] * k];
   }
 
-  projection.stream = function(sink) {
-    return stream && streamSink === sink ? stream : stream = transformRadians(preclip(rotate, projectResample(postclip(streamSink = sink))));
+  projection.stream = function(stream) {
+    return cache && cacheStream === stream ? cache : cache = transformRadians(preclip(rotate, projectResample(postclip(cacheStream = stream))));
   };
 
   projection.clipAngle = function(_) {
@@ -85,7 +85,7 @@ export function projectionMutator(projectAt) {
   }
 
   function reset() {
-    stream = streamSink = null;
+    cache = cacheStream = null;
     return projection;
   }
 

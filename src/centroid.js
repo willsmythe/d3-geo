@@ -9,18 +9,18 @@ var W0, W1,
     lambda00, phi00, // first point
     x0, y0, z0; // previous point
 
-var centroidSink = {
+var centroidStream = {
   sphere: noop,
   point: centroidPoint,
   lineStart: centroidLineStart,
   lineEnd: centroidLineEnd,
   polygonStart: function() {
-    centroidSink.lineStart = centroidRingStart;
-    centroidSink.lineEnd = centroidRingEnd;
+    centroidStream.lineStart = centroidRingStart;
+    centroidStream.lineEnd = centroidRingEnd;
   },
   polygonEnd: function() {
-    centroidSink.lineStart = centroidLineStart;
-    centroidSink.lineEnd = centroidLineEnd;
+    centroidStream.lineStart = centroidLineStart;
+    centroidStream.lineEnd = centroidLineEnd;
   }
 };
 
@@ -39,7 +39,7 @@ function centroidPointCartesian(x, y, z) {
 }
 
 function centroidLineStart() {
-  centroidSink.point = centroidLinePointFirst;
+  centroidStream.point = centroidLinePointFirst;
 }
 
 function centroidLinePointFirst(lambda, phi) {
@@ -48,7 +48,7 @@ function centroidLinePointFirst(lambda, phi) {
   x0 = cosPhi * cos(lambda);
   y0 = cosPhi * sin(lambda);
   z0 = sin(phi);
-  centroidSink.point = centroidLinePoint;
+  centroidStream.point = centroidLinePoint;
   centroidPointCartesian(x0, y0, z0);
 }
 
@@ -67,24 +67,24 @@ function centroidLinePoint(lambda, phi) {
 }
 
 function centroidLineEnd() {
-  centroidSink.point = centroidPoint;
+  centroidStream.point = centroidPoint;
 }
 
 // See J. E. Brock, The Inertia Tensor for a Spherical Triangle,
 // J. Applied Mechanics 42, 239 (1975).
 function centroidRingStart() {
-  centroidSink.point = centroidRingPointFirst;
+  centroidStream.point = centroidRingPointFirst;
 }
 
 function centroidRingEnd() {
   centroidRingPoint(lambda00, phi00);
-  centroidSink.point = centroidPoint;
+  centroidStream.point = centroidPoint;
 }
 
 function centroidRingPointFirst(lambda, phi) {
   lambda00 = lambda, phi00 = phi;
   lambda *= radians, phi *= radians;
-  centroidSink.point = centroidRingPoint;
+  centroidStream.point = centroidRingPoint;
   var cosPhi = cos(phi);
   x0 = cosPhi * cos(lambda);
   y0 = cosPhi * sin(lambda);
@@ -120,7 +120,7 @@ export default function(object) {
   X0 = Y0 = Z0 =
   X1 = Y1 = Z1 =
   X2 = Y2 = Z2 = 0;
-  stream(object, centroidSink);
+  stream(object, centroidStream);
 
   var x = X2,
       y = Y2,

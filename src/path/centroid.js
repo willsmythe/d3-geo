@@ -16,18 +16,18 @@ var X0 = 0,
     x0,
     y0;
 
-var centroidSink = {
+var centroidStream = {
   point: centroidPoint,
   lineStart: centroidLineStart,
   lineEnd: centroidLineEnd,
   polygonStart: function() {
-    centroidSink.lineStart = centroidRingStart;
-    centroidSink.lineEnd = centroidRingEnd;
+    centroidStream.lineStart = centroidRingStart;
+    centroidStream.lineEnd = centroidRingEnd;
   },
   polygonEnd: function() {
-    centroidSink.point = centroidPoint;
-    centroidSink.lineStart = centroidLineStart;
-    centroidSink.lineEnd = centroidLineEnd;
+    centroidStream.point = centroidPoint;
+    centroidStream.lineStart = centroidLineStart;
+    centroidStream.lineEnd = centroidLineEnd;
   },
   result: function() {
     var centroid = Z2 ? [X2 / Z2, Y2 / Z2]
@@ -48,11 +48,11 @@ function centroidPoint(x, y) {
 }
 
 function centroidLineStart() {
-  centroidSink.point = centroidPointFirstLine;
+  centroidStream.point = centroidPointFirstLine;
 }
 
 function centroidPointFirstLine(x, y) {
-  centroidSink.point = centroidPointLine;
+  centroidStream.point = centroidPointLine;
   centroidPoint(x0 = x, y0 = y);
 }
 
@@ -65,11 +65,11 @@ function centroidPointLine(x, y) {
 }
 
 function centroidLineEnd() {
-  centroidSink.point = centroidPoint;
+  centroidStream.point = centroidPoint;
 }
 
 function centroidRingStart() {
-  centroidSink.point = centroidPointFirstRing;
+  centroidStream.point = centroidPointFirstRing;
 }
 
 function centroidRingEnd() {
@@ -77,7 +77,7 @@ function centroidRingEnd() {
 }
 
 function centroidPointFirstRing(x, y) {
-  centroidSink.point = centroidPointRing;
+  centroidStream.point = centroidPointRing;
   centroidPoint(x00 = x0 = x, y00 = y0 = y);
 }
 
@@ -97,4 +97,4 @@ function centroidPointRing(x, y) {
   centroidPoint(x0 = x, y0 = y);
 }
 
-export default centroidSink;
+export default centroidStream;

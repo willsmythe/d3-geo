@@ -9,8 +9,8 @@ export default function(radius, delta) {
       smallRadius = cr > 0,
       notHemisphere = abs(cr) > epsilon; // TODO optimise for this common case
 
-  function interpolate(from, to, direction, sink) {
-    circleStream(sink, radius, delta, direction, from, to);
+  function interpolate(from, to, direction, stream) {
+    circleStream(stream, radius, delta, direction, from, to);
   }
 
   function visible(lambda, phi) {
@@ -21,7 +21,7 @@ export default function(radius, delta) {
   // clipping: 0 - there were intersections or the line was empty; 1 - no
   // intersections 2 - there were intersections, and the first and last segments
   // should be rejoined.
-  function clipLine(sink) {
+  function clipLine(stream) {
     var point0, // previous point
         c0, // code for previous point
         v0, // visibility of previous point
@@ -39,7 +39,7 @@ export default function(radius, delta) {
             c = smallRadius
               ? v ? 0 : code(lambda, phi)
               : v ? code(lambda + (lambda < 0 ? pi : -pi), phi) : 0;
-        if (!point0 && (v00 = v0 = v)) sink.lineStart();
+        if (!point0 && (v00 = v0 = v)) stream.lineStart();
         // Handle degeneracies.
         // TODO ignore if not clipping polygons.
         if (v !== v0) {
@@ -54,14 +54,14 @@ export default function(radius, delta) {
           clean = 0;
           if (v) {
             // outside going in
-            sink.lineStart();
+            stream.lineStart();
             point2 = intersect(point1, point0);
-            sink.point(point2[0], point2[1]);
+            stream.point(point2[0], point2[1]);
           } else {
             // inside going out
             point2 = intersect(point0, point1);
-            sink.point(point2[0], point2[1]);
-            sink.lineEnd();
+            stream.point(point2[0], point2[1]);
+            stream.lineEnd();
           }
           point0 = point2;
         } else if (notHemisphere && point0 && smallRadius ^ v) {
@@ -71,25 +71,25 @@ export default function(radius, delta) {
           if (!(c & c0) && (t = intersect(point1, point0, true))) {
             clean = 0;
             if (smallRadius) {
-              sink.lineStart();
-              sink.point(t[0][0], t[0][1]);
-              sink.point(t[1][0], t[1][1]);
-              sink.lineEnd();
+              stream.lineStart();
+              stream.point(t[0][0], t[0][1]);
+              stream.point(t[1][0], t[1][1]);
+              stream.lineEnd();
             } else {
-              sink.point(t[1][0], t[1][1]);
-              sink.lineEnd();
-              sink.lineStart();
-              sink.point(t[0][0], t[0][1]);
+              stream.point(t[1][0], t[1][1]);
+              stream.lineEnd();
+              stream.lineStart();
+              stream.point(t[0][0], t[0][1]);
             }
           }
         }
         if (v && (!point0 || !pointEqual(point0, point1))) {
-          sink.point(point1[0], point1[1]);
+          stream.point(point1[0], point1[1]);
         }
         point0 = point1, v0 = v, c0 = c;
       },
       lineEnd: function() {
-        if (v0) sink.lineEnd();
+        if (v0) stream.lineEnd();
         point0 = null;
       },
       // Rejoin first and last segments if there were intersections and the first
