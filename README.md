@@ -23,7 +23,7 @@ var path = d3.geoPath();
 * [Math](#math)
 * [Shapes](#shapes)
 * [Projections](#projections)
-* [Transforms](#transforms)
+* [Streams](#streams)
 
 ### Math
 
