@@ -2,7 +2,7 @@
 
 D3 uses [GeoJSON](http://geojson.org/geojson-spec.html) to represent geographic features in JavaScript. (See also [TopoJSON](/mbostock/topojson), an extension of GeoJSON that is significantly more compact and encodes topology.) To convert shapefiles to GeoJSON, use ogr2ogr, part of the [GDAL package](http://www.gdal.org/).
 
-Something about adaptive sampling, antimeridian cutting… The *inside* of a polygon is all points that the polygon winds around in clockwise order. If your GeoJSON input has polygons in the wrong winding order, you must reverse them, say via [ST_ForceRHR](http://www.postgis.org/docs/ST_ForceRHR.html); if you use [TopoJSON](https://github.com/mbostock/topojson), this will be done by default.
+Yadda yadda, something about [adaptive sampling](https://bl.ocks.org/mbostock/3795544), [antimeridian cutting](https://bl.ocks.org/mbostock/3788999)… The *inside* of a polygon is all points that the polygon winds around in clockwise order. If your GeoJSON input has polygons in the opposite winding order, you should reverse them, say via [ST_ForceRHR](http://www.postgis.org/docs/ST_ForceRHR.html); if you use [TopoJSON](https://github.com/mbostock/topojson), this will be done by default.
 
 <a href="http://bl.ocks.org/mbostock/4060606"><img src="http://bl.ocks.org/mbostock/raw/4060606/thumbnail.png" height="120"></a>
 
@@ -26,6 +26,7 @@ var path = d3.geoPath();
 
 * [Spherical Math](#spherical-math)
 * [Spherical Shapes](#spherical-shapes)
+* [Paths](#paths)
 * [Projections](#projections)
 * [Streams](#streams)
 
@@ -157,7 +158,7 @@ If *step* is specified, sets the minor step for this graticule. If *step* is not
 
 If *precision* is specified, sets the precision for this graticule, in degrees. If *precision* is not specified, returns the current precision, which defaults to 2.5°.
 
-### Projections
+### Paths
 
 The geographic path generator, [d3.geoPath](#geoPath), is similar to the shape generators in [d3-shape](https://github.com/d3/d3-shape): given a GeoJSON geometry or feature object, it generates an SVG path data string or [renders the path to a Canvas](http://bl.ocks.org/mbostock/3783604). Canvas is recommended for dynamic or interactive projections to improve performance.
 
@@ -234,9 +235,21 @@ If a *context* is not specified, returns the current render context which defaul
 
 If *radius* is specified, sets the radius used to display Point and MultiPoint features to the specified number. If *radius* is not specified, returns the current radius accessor, which defaults to 4.5. While the radius is commonly specified as a number constant, it may also be specified as a function which is computed per feature, being passed the any arguments passed to the [path generator](#_path). For example, if your GeoJSON data has additional properties, you might access those properties inside the radius function to vary the point size; alternatively, you could [d3.symbol](https://github.com/d3/d3-shape#symbols) and a [projection](#geoProjection) for greater flexibility.
 
+### Projections
+
 <a href="#geoProjection" name="geoProjection">#</a> d3.<b>geoProjection</b>(<i>project</i>)
 
-…
+Constructs a new projection from the specified *project* function. The *project* function takes the *longitude* and *latitude* of a given point in [radians](http://mathworld.wolfram.com/Radian.html), often referred to as *lambda* (λ) and *phi* (φ), and returns a two-element array [*x*, *y*] representing its unit projection. The *project* function does not need to scale or translate the point, as these are applied automatically by [*projection*.scale](#projection_scale), [*projection*.translate](#projection_translate), and [*projection*.center](#projection_center). Likewise, the *project* function does not need to perform any spherical rotation, as [*projection*.rotate](#projection_rotate) is applied prior to projection.
+
+For example, a spherical Mercator projection can be implemented as:
+
+```js
+var mercator = d3.geoProjection(function(x, y) {
+  return [x, Math.log(Math.tan(Math.PI / 4 + y / 2))];
+});
+```
+
+If the *project* function exposes an *invert* method, the returned projection will also expose [*projection*.invert](#projection_invert).
 
 <a href="#geoProjectionMutator" name="geoProjectionMutator">#</a> d3.<b>geoProjectionMutator</b>(<i>projectFactory</i>)
 
