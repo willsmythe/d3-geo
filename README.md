@@ -65,6 +65,8 @@ Returns a new array [*longitude*, *latitude*] in degrees representing the locati
 
 ### Spherical Shapes
 
+To generate a [great arc](https://en.wikipedia.org/wiki/Great-circle_distance) (a segment of a great circle), simply pass a GeoJSON LineString geometry object to a [d3.geoPath](#geoPath). D3’s projections use great-arc interpolation for intermediate points, so there’s no need for a great arc shape generator.
+
 <a name="geoCircle" href="#geoCircle">#</a> d3.<b>geoCircle</b>()
 
 Returns a new circle generator.
@@ -113,15 +115,15 @@ Constructs a feature generator for creating graticules: a uniform grid of [merid
 
 <a name="_graticule" href="#_graticule">#</a> <i>graticule</i>()
 
-Returns a MultiLineString geometry object representing all meridians and parallels for this graticule.
+Returns a GeoJSON MultiLineString geometry object representing all meridians and parallels for this graticule.
 
 <a name="graticule_lines" href="#graticule_lines">#</a> <i>graticule</i>.<b>lines</b>()
 
-Returns an array of LineString geometry objects, one for each meridian or parallel for this graticule.
+Returns an array of GeoJSON LineString geometry objects, one for each meridian or parallel for this graticule.
 
 <a name="graticule_outline" href="#graticule_outline">#</a> <i>graticule</i>.<b>outline</b>()
 
-Returns a Polygon geometry object representing the outline of this graticule, i.e. along the meridians and parallels defining its extent.
+Returns a GeoJSON Polygon geometry object representing the outline of this graticule, i.e. along the meridians and parallels defining its extent.
 
 <a name="graticule_extent" href="#graticule_extent">#</a> <i>graticule</i>.<b>extent</b>([<i>extent</i>])
 
