@@ -33,7 +33,7 @@ Returns the spherical area of the specified GeoJSON *feature* in [steradians](ht
 
 <a name="geoBounds" href="#geoBounds">#</a> d3.<b>geoBounds</b>(<i>feature</i>)
 
-Returns the [spherical bounding box](https://www.jasondavies.com/maps/bounds/) for the specified GeoJSON *feature*. The bounding box is represented by a two-dimensional array: [[*left*, *bottom*], [*right*, *top*]], where *left* is the minimum longitude, *bottom* is the minimum latitude, *right* is maximum longitude, and *top* is the maximum latitude. Note that in projected planar coordinates, the minimum latitude is typically the maximum *y*-value, and the maximum latitude is typically the minimum *y*-value: in most graphics coordinate systems, the origin is in the top-left corner.
+Returns the [spherical bounding box](https://www.jasondavies.com/maps/bounds/) for the specified GeoJSON *feature*. The bounding box is represented by a two-dimensional array: [[*left*, *bottom*], [*right*, *top*]], where *left* is the minimum longitude, *bottom* is the minimum latitude, *right* is maximum longitude, and *top* is the maximum latitude. All coordinates are given in degrees. (Note that in projected planar coordinates, the minimum latitude is typically the maximum *y*-value, and the maximum latitude is typically the minimum *y*-value.)
 
 <a name="geoCentroid" href="#geoCentroid">#</a> d3.<b>geoCentroid</b>(<i>feature</i>)
 
@@ -49,11 +49,11 @@ Returns the great-arc length of the specified GeoJSON *feature* in [radians](htt
 
 <a name="geoInterpolate" href="#geoInterpolate">#</a> d3.<b>geoInterpolate</b>(<i>a</i>, <i>b</i>)
 
-Returns an interpolator given the two locations *a* and *b*. Each location must be specified as a two-element array [*longitude*, *latitude*] in degrees. The returned interpolator is a function which takes a single parameter *t* as input, where *t* ranges from 0 to 1. A value of 0 returns the location *a*, while a value of 1 returns the location *b*. Intermediate values interpolate from *a* to *b* along the spanning great arc.
+Returns an interpolator function given two locations *a* and *b*. Each location must be specified as a two-element array [*longitude*, *latitude*] in degrees. The returned interpolator function takes a single argument *t*, where *t* is a number ranging from 0 to 1; a value of 0 returns the location *a*, while a value of 1 returns the location *b*. Intermediate values interpolate from *a* to *b* along the great arc that passes through both *a* and *b*. If *a* and *b* are antipodes, an arbitrary great arc is chosen.
 
 <a name="geoRotation" href="#geoRotation">#</a> d3.<b>geoRotation</b>(<i>angles</i>)
 
-Returns a [rotation function](#_rotation) for the given *angles*, which must be a two- or three-element array of numbers [*lambda*, *phi*, *gamma*] specifying the rotation angles in degrees about [each spherical axis](http://bl.ocks.org/mbostock/4282586). If the rotation angle *gamma* is omitted, it defaults to 0.
+Returns a [rotation function](#_rotation) for the given *angles*, which must be a two- or three-element array of numbers [*lambda*, *phi*, *gamma*] specifying the rotation angles in degrees about [each spherical axis](http://bl.ocks.org/mbostock/4282586). If the rotation angle *gamma* is omitted, it defaults to 0. See also [*projection*.rotate](#projection_rotate).
 
 <a name="_rotation" href="#_rotation">#</a> <i>rotation</i>(<i>location</i>)
 
@@ -71,7 +71,7 @@ Returns a new circle generator.
 
 <a name="_circle" href="#_circle">#</a> <i>circle</i>(<i>arguments…</i>)
 
-Returns a new GeoJSON geometry object of type “Polygon” approximating a circle on the surface of a sphere, with the current [center](#circle_center), [radius](#circle_radius) and [precision](#circle_precision). Any *arguments* are passed to the  accessors.
+Returns a new GeoJSON geometry object of type “Polygon” approximating a circle on the surface of a sphere, with the current [center](#circle_center), [radius](#circle_radius) and [precision](#circle_precision). Any *arguments* are passed to the accessors.
 
 <a name="circle_center" href="#circle_center">#</a> <i>circle</i>.<b>center</b>([<i>center</i>])
 
@@ -107,7 +107,9 @@ Small circles do not follow great arcs and thus the generated polygon is only an
 
 <a name="geoGraticule" href="#geoGraticule">#</a> d3.<b>geoGraticule</b>()
 
-Constructs a feature generator for creating graticules.
+Constructs a feature generator for creating graticules: a uniform grid of [meridians](https://en.wikipedia.org/wiki/Meridian_\(geography\)) and [parallels](https://en.wikipedia.org/wiki/Circle_of_latitude) for showing projection distortion.
+
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/graticule.png" width="480" height="360">
 
 <a name="_graticule" href="#_graticule">#</a> <i>graticule</i>()
 
