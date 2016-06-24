@@ -46,7 +46,7 @@ Returns the spherical centroid of the specified GeoJSON *feature*. See also [*pa
 
 <a name="geoDistance" href="#geoDistance">#</a> d3.<b>geoDistance</b>(<i>a</i>, <i>b</i>)
 
-Returns the great-arc distance in [radians](http://mathworld.wolfram.com/Radian.html) between the two locations *a* and *b*. Each location must be specified as a two-element array [*longitude*, *latitude*] in degrees.
+Returns the great-arc distance in [radians](http://mathworld.wolfram.com/Radian.html) between the two points *a* and *b*. Each point must be specified as a two-element array [*longitude*, *latitude*] in degrees.
 
 <a name="geoLength" href="#geoLength">#</a> d3.<b>geoLength</b>(<i>feature</i>)
 
@@ -54,19 +54,19 @@ Returns the great-arc length of the specified GeoJSON *feature* in [radians](htt
 
 <a name="geoInterpolate" href="#geoInterpolate">#</a> d3.<b>geoInterpolate</b>(<i>a</i>, <i>b</i>)
 
-Returns an interpolator function given two locations *a* and *b*. Each location must be specified as a two-element array [*longitude*, *latitude*] in degrees. The returned interpolator function takes a single argument *t*, where *t* is a number ranging from 0 to 1; a value of 0 returns the location *a*, while a value of 1 returns the location *b*. Intermediate values interpolate from *a* to *b* along the great arc that passes through both *a* and *b*. If *a* and *b* are antipodes, an arbitrary great arc is chosen.
+Returns an interpolator function given two points *a* and *b*. Each point must be specified as a two-element array [*longitude*, *latitude*] in degrees. The returned interpolator function takes a single argument *t*, where *t* is a number ranging from 0 to 1; a value of 0 returns the point *a*, while a value of 1 returns the point *b*. Intermediate values interpolate from *a* to *b* along the great arc that passes through both *a* and *b*. If *a* and *b* are antipodes, an arbitrary great arc is chosen.
 
 <a name="geoRotation" href="#geoRotation">#</a> d3.<b>geoRotation</b>(<i>angles</i>)
 
-Returns a [rotation function](#_rotation) for the given *angles*, which must be a two- or three-element array of numbers [*lambda*, *phi*, *gamma*] specifying the rotation angles in degrees about [each spherical axis](http://bl.ocks.org/mbostock/4282586). If the rotation angle *gamma* is omitted, it defaults to 0. See also [*projection*.rotate](#projection_rotate).
+Returns a [rotation function](#_rotation) for the given *angles*, which must be a two- or three-element array of numbers [*lambda*, *phi*, *gamma*] specifying the rotation angles in degrees about [each spherical axis](http://bl.ocks.org/mbostock/4282586). (These correspond to [yaw, pitch and roll](http://en.wikipedia.org/wiki/Aircraft_principal_axes).) If the rotation angle *gamma* is omitted, it defaults to 0. See also [*projection*.rotate](#projection_rotate).
 
-<a name="_rotation" href="#_rotation">#</a> <i>rotation</i>(<i>location</i>)
+<a name="_rotation" href="#_rotation">#</a> <i>rotation</i>(<i>point</i>)
 
-Returns a new array [*longitude*, *latitude*] in degrees representing the rotated location of the given *location*. The location must be specified as a two-element array [*longitude*, *latitude*] in degrees.
+Returns a new array [*longitude*, *latitude*] in degrees representing the rotated point of the given *point*. The point must be specified as a two-element array [*longitude*, *latitude*] in degrees.
 
-<a name="rotation_invert" href="#rotation_invert">#</a> <i>rotation</i>.<b>invert</b>(<i>location</i>)
+<a name="rotation_invert" href="#rotation_invert">#</a> <i>rotation</i>.<b>invert</b>(<i>point</i>)
 
-Returns a new array [*longitude*, *latitude*] in degrees representing the location of the given rotated *location*; the inverse of [*rotation*](#_rotation). The location must be specified as a two-element array [*longitude*, *latitude*] in degrees.
+Returns a new array [*longitude*, *latitude*] in degrees representing the point of the given rotated *point*; the inverse of [*rotation*](#_rotation). The point must be specified as a two-element array [*longitude*, *latitude*] in degrees.
 
 ### Spherical Shapes
 
@@ -82,7 +82,7 @@ Returns a new GeoJSON geometry object of type “Polygon” approximating a circ
 
 <a name="circle_center" href="#circle_center">#</a> <i>circle</i>.<b>center</b>([<i>center</i>])
 
-If *center* is specified, sets the circle center to the specified location [*longitude*, *latitude*] in degrees, and returns this circle generator. The center may also be specified as a function; this function will be invoked whenever a circle is [generated](#_circle), being passed any arguments passed to the circle generator. If *center* is not specified, returns the current center accessor, which defaults to:
+If *center* is specified, sets the circle center to the specified point [*longitude*, *latitude*] in degrees, and returns this circle generator. The center may also be specified as a function; this function will be invoked whenever a circle is [generated](#_circle), being passed any arguments passed to the circle generator. If *center* is not specified, returns the current center accessor, which defaults to:
 
 ```js
 function center() {
@@ -251,53 +251,85 @@ var mercator = d3.geoProjection(function(x, y) {
 
 If the *project* function exposes an *invert* method, the returned projection will also expose [*projection*.invert](#projection_invert).
 
-<a href="#geoProjectionMutator" name="geoProjectionMutator">#</a> d3.<b>geoProjectionMutator</b>(<i>projectFactory</i>)
+<a href="#geoProjectionMutator" name="geoProjectionMutator">#</a> d3.<b>geoProjectionMutator</b>(<i>factory</i>)
 
-…
+Constructs a new projection from the specified *project* function *factory*, returning a *mutate* function to call whenever the raw projection function changes. For example, a conic projection typically has two configurable parallels. A suitable *factory* function would be:
+
+```js
+// y0 and y1 represent two parallels
+function conicFactory(y0, y1) {
+  return function conic(x, y) {
+    return […, …];
+  };
+}
+```
+
+Using d3.geoProjectionMutator, you can implement a standard projection that allows the parallels to be changed, reassigning the raw projection used internally by [d3.geoProjection](#geoProjection):
+
+```js
+function conic() {
+  var y0 = 29.5,
+      y1 = 45.5,
+      mutate = d3.geoProjectionMutator(conicFactory),
+      projection = mutate(y0, y1);
+
+  projection.parallels = function(_) {
+    return arguments.length ? mutate(y0 = +_[0], y1 = +_[1]) : [y0, y1];
+  };
+
+  return projection;
+}
+```
+
+When creating a mutable projection, the *mutate* function is typically not exposed.
 
 <a href="#_projection" name="_projection">#</a> <i>projection</i>(<i>point</i>)
 
-…
+Returns a new array [*x*, *y*] (typically in pixels) representing the projected point of the given *point*. The point must be specified as a two-element array [*longitude*, *latitude*] in degrees. May return null if the specified *point* has no defined projected position, such as when the point is outside the clipping bounds of the projection.
 
 <a href="#projection_invert" name="projection_invert">#</a> <i>projection</i>.<b>invert</b>(<i>point</i>)
 
-…
+Returns a new array [*longitude*, *latitude*] in degrees representing the unprojected point of the given projected *point*. The point must be specified as a two-element array [*x*, *y*] (typically in pixels). May return null if the specified *point* has no defined projected position, such as when the point is outside the clipping bounds of the projection.
+
+This method is only defined on invertible projections.
 
 <a href="#projection_stream" name="projection_stream">#</a> <i>projection</i>.<b>stream</b>(<i>stream</i>)
 
-…
+Returns a [projection stream](#streams) for the specified output *stream*. Any input geometry is projected before being streamed to the output stream. A typical projection involves several geometry transformations: the input geometry is first converted to radians, rotated on three axes, clipped to the small circle or cut along the antimeridian, and lastly projected to the plane with adaptive resampling, scale and translation.
 
 <a href="#projection_clipAngle" name="projection_clipAngle">#</a> <i>projection</i>.<b>clipAngle</b>([<i>angle</i>])
 
-…
+If *angle* is specified, sets the projection’s clipping circle radius to the specified angle in degrees and returns the projection. If *angle* is null, switches to [antimeridian cutting](http://bl.ocks.org/mbostock/3788999) rather than small-circle clipping. If *angle* is not specified, returns the current clip angle which defaults to null. Small-circle clipping is independent of viewport clipping via [*projection*.clipExtent](#projection_clipExtent).
 
 <a href="#projection_clipExtent" name="projection_clipExtent">#</a> <i>projection</i>.<b>clipExtent</b>([<i>extent</i>])
 
-…
+If *extent* is specified, sets the projection’s viewport clip extent to the specified bounds in pixels and returns the projection. The *extent* bounds are specified as an array [[<i>x₀</i>, <i>y₀</i>], [<i>x₁</i>, <i>y₁</i>]], where <i>x₀</i> is the left-side of the viewport, <i>y₀</i> is the top, <i>x₁</i> is the right and <i>y₁</i> is the bottom. If *extent* is null, no viewport clipping is performed. If *extent* is not specified, returns the current viewport clip extent which defaults to null. Viewport clipping is independent of small-circle clipping via [*projection*.clipAngle](#projection_clipAngle).
 
 <a href="#projection_scale" name="projection_scale">#</a> <i>projection</i>.<b>scale</b>([<i>scale</i>])
 
-…
+If *scale* is specified, sets the projection’s scale factor to the specified value and returns the projection. If *scale* is not specified, returns the current scale factor; the default scale is projection-specific. The scale factor corresponds linearly to the distance between projected points; however, absolute scale factors are not equivalent across projections.
 
 <a href="#projection_translate" name="projection_translate">#</a> <i>projection</i>.<b>translate</b>([<i>translate</i>])
 
-…
+If *translate* is specified, sets the projection’s translation offset to the specified two-element array [<i>t<sub>x</sub></i>, <i>t<sub>y</sub></i>] and returns the projection. If *translate* is not specified, returns the current translation offset which defaults to [480, 250]. The translation offset determines the pixel coordinates of the projection’s [center](#projection_center). The default translation offset places ⟨0°,0°⟩ at the center of a 960×500 area.
 
 <a href="#projection_center" name="projection_center">#</a> <i>projection</i>.<b>center</b>([<i>center</i>])
 
-…
+If *center* is specified, sets the projection’s center to the specified *center*, a two-element array of longitude and latitude in degrees and returns the projection. If *center* is not specified, returns the current center, which defaults to ⟨0°,0°⟩.
 
-<a href="#projection_rotate" name="projection_rotate">#</a> <i>projection</i>.<b>rotate</b>([<i>rotate</i>])
+<a href="#projection_rotate" name="projection_rotate">#</a> <i>projection</i>.<b>rotate</b>([<i>angles</i>])
 
-…
+If *rotation* is specified, sets the projection’s [three-axis rotation](http://bl.ocks.org/mbostock/4282586) to the specified *angles*, which must be a two- or three-element array of numbers [*lambda*, *phi*, *gamma*] specifying the rotation angles in degrees about [each spherical axis](http://bl.ocks.org/mbostock/4282586). (These correspond to [yaw, pitch and roll](http://en.wikipedia.org/wiki/Aircraft_principal_axes).) If the rotation angle *gamma* is omitted, it defaults to 0. See also [d3.geoRotation](#geoRotation). If *rotation* is not specified, returns the current rotation which defaults [0, 0, 0].
 
 <a href="#projection_precision" name="projection_precision">#</a> <i>projection</i>.<b>precision</b>([<i>precision</i>])
 
-…
+If *precision* is specified, sets the threshold for the projection’s [adaptive resampling](http://bl.ocks.org/mbostock/3795544) to the specified value in pixels and returns the projection. This value corresponds to the [Douglas–Peucker](http://en.wikipedia.org/wiki/Ramer–Douglas–Peucker_algorithm) distance. If *precision* is not specified, returns the projection’s current resampling precision which defaults to √0.5 ≅ 0.70710…
 
 <a href="#geoAlbers" name="geoAlbers">#</a> d3.<b>geoAlbers</b>()
 
 <img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/albers.png" width="480" height="250">
+
+See also [*conic*.parallels](#conic_parallels).
 
 <a href="#geoAlbersUsa" name="geoAlbersUsa">#</a> d3.<b>geoAlbersUsa</b>()
 
@@ -315,13 +347,19 @@ If the *project* function exposes an *invert* method, the returned projection wi
 
 <img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/conicConformal.png" width="480" height="250">
 
+See also [*conic*.parallels](#conic_parallels).
+
 <a href="#geoConicEqualArea" name="geoConicEqualArea">#</a> d3.<b>geoConicEqualArea</b>()
 
 <img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/conicEqualArea.png" width="480" height="250">
 
+See also [*conic*.parallels](#conic_parallels).
+
 <a href="#geoConicEquidistant" name="geoConicEquidistant">#</a> d3.<b>geoConicEquidistant</b>()
 
 <img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/conicEquidistant.png" width="480" height="250">
+
+See also [*conic*.parallels](#conic_parallels).
 
 <a href="#geoEquirectangular" name="geoEquirectangular">#</a> d3.<b>geoEquirectangular</b>()
 
@@ -335,6 +373,8 @@ If the *project* function exposes an *invert* method, the returned projection wi
 
 <img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/mercator.png" width="480" height="250">
 
+Defines a default [*projection*.clipExtent](#projection_clipExtent) such that the world is projected to a square, clipped to approximately ±85° latitude.
+
 <a href="#geoOrthographic" name="geoOrthographic">#</a> d3.<b>geoOrthographic</b>()
 
 <img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/orthographic.png" width="480" height="250">
@@ -346,6 +386,12 @@ If the *project* function exposes an *invert* method, the returned projection wi
 <a href="#geoTransverseMercator" name="geoTransverseMercator">#</a> d3.<b>geoTransverseMercator</b>()
 
 <img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/transverseMercator.png" width="480" height="250">
+
+Defines a default [*projection*.clipExtent](#projection_clipExtent) such that the world is projected to a square, clipped to approximately ±85° latitude.
+
+<a href="#conic_parallels" name="conic_parallels">#</a> <i>conic</i>.<b>parallels</b>([<i>parallels</i>])
+
+…
 
 ### Streams
 
