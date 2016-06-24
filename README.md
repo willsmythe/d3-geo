@@ -14,11 +14,9 @@ Alas, discrete geometry makes the challenge of projecting from the sphere to the
 
 The projection of polygons and polylines must also deal with the topological differences between the sphere and the plane. Some projections require cutting geometry that [cross the antimeridian](https://bl.ocks.org/mbostock/3788999), while others require [clipping geometry to a great circle](http://bl.ocks.org/mbostock/3021474). Furthermore, spherical polygons require a winding order convention to determine which side of the polygon is the inside: D3 and [TopoJSON](https://github.com/mbostock/topojson) use clockwise winding. (Spherical polygons can be [larger than a hemisphere](https://bl.ocks.org/mbostock/6713736)! See also [ST_ForceRHR](http://www.postgis.org/docs/ST_ForceRHR.html) in PostGIS.)
 
-D3’s approach affords great expressiveness: you can choose the right projection, and the right aspect, for your data. D3 supports a wide variety of common and [unusual map projections](https://github.com/d3/d3-geo-projection). For more on this topic, see Part 2 of [The Toolmaker’s Guide](https://vimeo.com/106198518#t=20m0s).
+D3’s approach affords great expressiveness: you can choose the right projection, and the right aspect, for your data. D3 supports a wide variety of common and [unusual map projections](https://github.com/d3/d3-geo-projection). For more, see Part 2 of [The Toolmaker’s Guide](https://vimeo.com/106198518#t=20m0s).
 
 D3 uses [GeoJSON](http://geojson.org/geojson-spec.html) to represent geographic features in JavaScript. (See also [TopoJSON](/mbostock/topojson), an extension of GeoJSON that is significantly more compact and encodes topology.) To convert shapefiles to GeoJSON, use ogr2ogr, part of the [GDAL package](http://www.gdal.org/). In addition to [map projections](#projections), D3 includes useful [spherical shape generators](#spherical-shapes) and [spherical math utilities](#spherical-math).
-
-<a href="http://bl.ocks.org/mbostock/4060606"><img src="http://bl.ocks.org/mbostock/raw/4060606/thumbnail.png" height="120"></a>
 
 ## Installing
 
