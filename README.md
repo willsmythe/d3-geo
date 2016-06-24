@@ -1,8 +1,22 @@
 # d3-geo
 
-D3 uses [GeoJSON](http://geojson.org/geojson-spec.html) to represent geographic features in JavaScript. (See also [TopoJSON](/mbostock/topojson), an extension of GeoJSON that is significantly more compact and encodes topology.) To convert shapefiles to GeoJSON, use ogr2ogr, part of the [GDAL package](http://www.gdal.org/).
+Map projections are often naïvely regarded as simple point transformations. Spherical Mercator, for instance, can be implemented concisely as:
 
-Yadda yadda, something about [adaptive sampling](https://bl.ocks.org/mbostock/3795544), [antimeridian cutting](https://bl.ocks.org/mbostock/3788999)… The *inside* of a polygon is all points that the polygon winds around in clockwise order. If your GeoJSON input has polygons in the opposite winding order, you should reverse them, say via [ST_ForceRHR](http://www.postgis.org/docs/ST_ForceRHR.html); if you use [TopoJSON](https://github.com/mbostock/topojson), this will be done by default.
+```js
+function mercator(x, y) {
+  return [x, Math.log(Math.tan(Math.PI / 4 + y / 2))];
+}
+```
+
+While this is a reasonable mathematical representation, it only works if geometry is represented continuously as infinite point sets! Of course computers do not have infinite memory, and must instead work with discrete geometry such as polygons and polylines.
+
+Discrete geometry makes the challenge of projecting from the sphere down to the plane much harder. The edges of a spherical polygon are not straight lines, but [geodesics](https://en.wikipedia.org/wiki/Geodesic) (also known as great arcs, or segments of a great circle). Geodesics are curves rather than straight lines in most map projections, and thus accurate projection requires interpolating along great arcs. D3 uses [adaptive interpolation](https://bl.ocks.org/mbostock/3795544), inspired by a popular [line simplification method](https://bost.ocks.org/mike/simplify/), to balance accuracy and performance.
+
+The projection of polygons and polylines must also deal with the difference in topology between the sphere and the plane. Some projections require cutting geometry that [cross the antimeridian](https://bl.ocks.org/mbostock/3788999), while others require [clipping geometry to a great circle](http://bl.ocks.org/mbostock/3021474). Furthermore, spherical polygons require a winding order convention to determine which side of the polygon is the inside: D3 and [TopoJSON](https://github.com/mbostock/topojson) use clockwise winding. (Spherical polygons can be [larger than a hemisphere](https://bl.ocks.org/mbostock/6713736)! See also [ST_ForceRHR](http://www.postgis.org/docs/ST_ForceRHR.html) in PostGIS.)
+
+D3’s approach affords great expressiveness: you can choose the right projection, and the right aspect, for your data. D3 supports a wide variety of common and [unusual map projections](https://github.com/d3/d3-geo-projection). For more on this topic, see Part 2 of [The Toolmaker’s Guide](https://vimeo.com/106198518#t=20m0s).
+
+D3 uses [GeoJSON](http://geojson.org/geojson-spec.html) to represent geographic features in JavaScript. (See also [TopoJSON](/mbostock/topojson), an extension of GeoJSON that is significantly more compact and encodes topology.) To convert shapefiles to GeoJSON, use ogr2ogr, part of the [GDAL package](http://www.gdal.org/). In addition to [map projections](#projections), D3 includes useful [spherical shape generators](#spherical-shapes) and [spherical math utilities](#spherical-math).
 
 <a href="http://bl.ocks.org/mbostock/4060606"><img src="http://bl.ocks.org/mbostock/raw/4060606/thumbnail.png" height="120"></a>
 
@@ -70,7 +84,7 @@ Returns a new array [*longitude*, *latitude*] in degrees representing the point 
 
 ### Spherical Shapes
 
-To generate a [great arc](https://en.wikipedia.org/wiki/Great-circle_distance) (a segment of a great circle), simply pass a GeoJSON LineString geometry object to a [d3.geoPath](#geoPath). D3’s projections use great-arc interpolation for intermediate points, so there’s no need for a great arc shape generator. To draw the whole sphere, use `{type: "Sphere"}`.
+To generate a [great arc](https://en.wikipedia.org/wiki/Great-circle_distance) (a segment of a great circle), simply pass a GeoJSON LineString geometry object to a [d3.geoPath](#geoPath). D3’s projections use great-arc interpolation for intermediate points, so there’s no need for a great arc shape generator.
 
 <a name="geoCircle" href="#geoCircle">#</a> d3.<b>geoCircle</b>()
 
