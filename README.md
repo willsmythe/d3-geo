@@ -65,7 +65,7 @@ Returns a new array [*longitude*, *latitude*] in degrees representing the locati
 
 ### Spherical Shapes
 
-To generate a [great arc](https://en.wikipedia.org/wiki/Great-circle_distance) (a segment of a great circle), simply pass a GeoJSON LineString geometry object to a [d3.geoPath](#geoPath). D3’s projections use great-arc interpolation for intermediate points, so there’s no need for a great arc shape generator.
+To generate a [great arc](https://en.wikipedia.org/wiki/Great-circle_distance) (a segment of a great circle), simply pass a GeoJSON LineString geometry object to a [d3.geoPath](#geoPath). D3’s projections use great-arc interpolation for intermediate points, so there’s no need for a great arc shape generator. To draw the whole sphere, use `{type: "Sphere"}`.
 
 <a name="geoCircle" href="#geoCircle">#</a> d3.<b>geoCircle</b>()
 
