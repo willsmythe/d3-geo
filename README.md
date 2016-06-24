@@ -107,7 +107,7 @@ Small circles do not follow great arcs and thus the generated polygon is only an
 
 <a name="geoGraticule" href="#geoGraticule">#</a> d3.<b>geoGraticule</b>()
 
-Constructs a feature generator for creating graticules: a uniform grid of [meridians](https://en.wikipedia.org/wiki/Meridian_\(geography\)) and [parallels](https://en.wikipedia.org/wiki/Circle_of_latitude) for showing projection distortion.
+Constructs a feature generator for creating graticules: a uniform grid of [meridians](https://en.wikipedia.org/wiki/Meridian_\(geography\)) and [parallels](https://en.wikipedia.org/wiki/Circle_of_latitude) for showing projection distortion. The default graticule has meridians and parallels every 10° between ±80° latitude; for the polar regions, there are meridians every 90°.
 
 <img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/graticule.png" width="480" height="360">
 
