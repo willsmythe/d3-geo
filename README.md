@@ -20,32 +20,32 @@ var path = d3.geoPath();
 
 ## API Reference
 
-* [Math](#math)
-* [Shapes](#shapes)
+* [Spherical Math](#spherical-math)
+* [Spherical Shapes](#spherical-shapes)
 * [Projections](#projections)
 * [Streams](#streams)
 
-### Math
+### Spherical Math
 
 <a name="geoArea" href="#geoArea">#</a> d3.<b>geoArea</b>(<i>feature</i>)
 
-Returns the spherical area of the specified *feature* in [steradians](http://mathworld.wolfram.com/Steradian.html). See also [path.area](#path_area), which computes the projected area on the Cartesian plane.
+Returns the spherical area of the specified GeoJSON *feature* in [steradians](http://mathworld.wolfram.com/Steradian.html). See also [*path*.area](#path_area), which computes the projected planar area.
 
 <a name="geoBounds" href="#geoBounds">#</a> d3.<b>geoBounds</b>(<i>feature</i>)
 
-Returns the spherical bounding box for the specified *feature*. The bounding box is represented by a two-dimensional array: [​[*left*, *bottom*], [*right*, *top*]​], where *left* is the minimum longitude, *bottom* is the minimum latitude, *right* is maximum longitude, and *top* is the maximum latitude.
+Returns the [spherical bounding box](https://www.jasondavies.com/maps/bounds/) for the specified GeoJSON *feature*. The bounding box is represented by a two-dimensional array: [[*left*, *bottom*], [*right*, *top*]], where *left* is the minimum longitude, *bottom* is the minimum latitude, *right* is maximum longitude, and *top* is the maximum latitude. Note that in projected planar coordinates, the minimum latitude is typically the maximum *y*-value, and the maximum latitude is typically the minimum *y*-value: in most graphics coordinate systems, the origin is in the top-left corner.
 
 <a name="geoCentroid" href="#geoCentroid">#</a> d3.<b>geoCentroid</b>(<i>feature</i>)
 
-Returns the spherical centroid of the specified *feature*. See also [path.centroid](#path_centroid), which computes the projected centroid on the Cartesian plane.
+Returns the spherical centroid of the specified GeoJSON *feature*. See also [*path*.centroid](#path_centroid), which computes the projected planar centroid.
 
 <a name="geoDistance" href="#geoDistance">#</a> d3.<b>geoDistance</b>(<i>a</i>, <i>b</i>)
 
-Returns the great-arc distance in radians between the two location *a* and *b*. Each location must be specified as a two-element array [*longitude*, *latitude*] in degrees.
+Returns the great-arc distance in [radians](http://mathworld.wolfram.com/Radian.html) between the two locations *a* and *b*. Each location must be specified as a two-element array [*longitude*, *latitude*] in degrees.
 
 <a name="geoLength" href="#geoLength">#</a> d3.<b>geoLength</b>(<i>feature</i>)
 
-Returns the great-arc length of the specified *feature* in [radians](http://mathworld.wolfram.com/Radian.html). For polygons, returns the perimeter of the exterior ring plus that of any interior rings.
+Returns the great-arc length of the specified GeoJSON *feature* in [radians](http://mathworld.wolfram.com/Radian.html). For polygons, returns the perimeter of the exterior ring plus that of any interior rings.
 
 <a name="geoInterpolate" href="#geoInterpolate">#</a> d3.<b>geoInterpolate</b>(<i>a</i>, <i>b</i>)
 
@@ -53,17 +53,17 @@ Returns an interpolator given the two locations *a* and *b*. Each location must 
 
 <a name="geoRotation" href="#geoRotation">#</a> d3.<b>geoRotation</b>(<i>angles</i>)
 
-Returns a rotation operator for the given *angles*, which must be a two- or three-element array of numbers [*lambda*, *phi*, *gamma*] specifying the rotation angles in degrees about [each spherical axis](http://bl.ocks.org/mbostock/4282586). If the rotation angle *gamma* is omitted, it defaults to 0.
+Returns a [rotation function](#_rotation) for the given *angles*, which must be a two- or three-element array of numbers [*lambda*, *phi*, *gamma*] specifying the rotation angles in degrees about [each spherical axis](http://bl.ocks.org/mbostock/4282586). If the rotation angle *gamma* is omitted, it defaults to 0.
 
 <a name="_rotation" href="#_rotation">#</a> <i>rotation</i>(<i>location</i>)
 
-Rotates the given *location* according to the angles specified for this rotation, in the order described above. The location must be specified as a two-element array [*longitude*, *latitude*] in degrees. Returns a new array representing the rotated location.
+Returns a new array [*longitude*, *latitude*] in degrees representing the rotated location of the given *location*. The location must be specified as a two-element array [*longitude*, *latitude*] in degrees.
 
 <a name="rotation_invert" href="#rotation_invert">#</a> <i>rotation</i>.<b>invert</b>(<i>location</i>)
 
-Rotates the given *location* according to the angles specified for this rotation, but with the order described above reversed. The location must be specified as a two-element array [*longitude*, *latitude*] in degrees. Returns a new array representing the rotated location.
+Returns a new array [*longitude*, *latitude*] in degrees representing the location of the given rotated *location*; the inverse of [*rotation*](#_rotation). The location must be specified as a two-element array [*longitude*, *latitude*] in degrees.
 
-### Shapes
+### Spherical Shapes
 
 <a name="geoCircle" href="#geoCircle">#</a> d3.<b>geoCircle</b>()
 
