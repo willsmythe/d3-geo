@@ -1,6 +1,10 @@
 # d3-geo
 
-…
+D3 uses [GeoJSON](http://geojson.org/geojson-spec.html) to represent geographic features in JavaScript. (See also [TopoJSON](/mbostock/topojson), an extension of GeoJSON that is significantly more compact and encodes topology.) To convert shapefiles to GeoJSON, use ogr2ogr, part of the [GDAL package](http://www.gdal.org/).
+
+Something about adaptive sampling, antimeridian cutting… The *inside* of a polygon is all points that the polygon winds around in clockwise order. If your GeoJSON input has polygons in the wrong winding order, you must reverse them, say via [ST_ForceRHR](http://www.postgis.org/docs/ST_ForceRHR.html); if you use [TopoJSON](https://github.com/mbostock/topojson), this will be done by default.
+
+<a href="http://bl.ocks.org/mbostock/4060606"><img src="http://bl.ocks.org/mbostock/raw/4060606/thumbnail.png" height="120"></a>
 
 ## Installing
 
@@ -155,37 +159,80 @@ If *precision* is specified, sets the precision for this graticule, in degrees. 
 
 ### Projections
 
+The geographic path generator, [d3.geoPath](#geoPath), is similar to the shape generators in [d3-shape](https://github.com/d3/d3-shape): given a GeoJSON geometry or feature object, it generates an SVG path data string or [renders the path to a Canvas](http://bl.ocks.org/mbostock/3783604). Canvas is recommended for dynamic or interactive projections to improve performance.
+
 <a href="#geoPath" name="geoPath">#</a> d3.<b>geoPath</b>()
 
-…
+Creates a new geographic path generator with the default settings.
 
-<a href="_path" name="_path">#</a> <i>path</i>(<i>object</i>)
+<a href="_path" name="_path">#</a> <i>path</i>(<i>object</i>[, <i>arguments…</i>])
 
-…
+Renders the given *object*, which may be any GeoJSON feature or geometry object:
+
+* Point - a single position.
+* MultiPoint - an array of positions.
+* LineString - an array of positions forming a continuous line.
+* MultiLineString - an array of arrays of positions forming several lines.
+* Polygon - an array of arrays of positions forming a polygon (possibly with holes).
+* MultiPolygon - a multidimensional array of positions forming multiple polygons.
+* GeometryCollection - an array of geometry objects.
+* Feature - a feature containing one of the above geometry objects.
+* FeatureCollection - an array of feature objects.
+
+The type *Sphere* is also supported, which is useful for rendering the outline of the globe; a sphere has no coordinates. Any additional *arguments* are passed along to the [pointRadius](#path_pointRadius) accessor.
+
+To display multiple features, combine them into a feature collection:
+
+```js
+svg.append("path")
+    .datum({type: "FeatureCollection", features: features})
+    .attr("d", d3.geoPath());
+```
+
+Or use multiple path elements:
+
+```js
+svg.selectAll("path")
+    .data(features)
+  .enter().append("path")
+    .attr("d", d3.geoPath());
+```
+
+Separate path elements are typically slower than a single path element. However, distinct path elements are useful for styling and interation (e.g., click or mouseover). Canvas rendering (see [*path*.context](#path_context)) is typically faster than SVG, but requires more effort to implement styling and interaction.
 
 <a href="#path_area" name="path_area">#</a> <i>path</i>.<b>area</b>(<i>object</i>)
 
-…
+Returns the projected planar area (typically in square pixels) for the specified GeoJSON *object*. Point, MultiPoint, LineString and MultiLineString features have zero area. For Polygon and MultiPolygon features, this method first computes the area of the exterior ring, and then subtracts the area of any interior holes. This method observes any clipping performed by the [projection](#path_projection); see [*projection*.clipAngle](#projection_clipAngle) and [*projection*.clipExtent](#projection_clipExtent).
 
 <a href="#path_bounds" name="path_bounds">#</a> <i>path</i>.<b>bounds</b>(<i>object</i>)
 
-…
+Returns the projected planar bounding box (typically in pixels) for the specified GeoJSON *object*. The bounding box is represented by a two-dimensional array: [[*x₀*, *y₀*], [*x₁*, *y₁*]], where *x₀* is the minimum *x*-coordinate, *y₀* is the minimum *y*-coordinate, *x₁* is maximum *x*-coordinate, and *y₁* is the maximum *y*-coordinate. This is handy for, say, zooming in to a particular feature. (Note that in projected planar coordinates, the minimum latitude is typically the maximum *y*-value, and the maximum latitude is typically the minimum *y*-value.) This method observes any clipping performed by the [projection](#path_projection); see [*projection*.clipAngle](#projection_clipAngle) and [*projection*.clipExtent](#projection_clipExtent).
 
 <a href="#path_centroid" name="path_centroid">#</a> <i>path</i>.<b>centroid</b>(<i>object</i>)
 
-…
+Returns the projected planar centroid (typically in pixels) for the specified GeoJSON *object*. This is handy for, say, labeling state or county boundaries, or displaying a symbol map. For example, a [noncontiguous cartogram](http://bl.ocks.org/mbostock/4055908) might scale each state around its centroid. This method observes any clipping performed by the [projection](#path_projection); see [*projection*.clipAngle](#projection_clipAngle) and [*projection*.clipExtent](#projection_clipExtent).
 
 <a href="#path_projection" name="path_projection">#</a><i>path</i>.<b>projection</b>([<i>projection</i>])
 
-…
+If a *projection* is specified, sets the current projection to the specified projection. If *projection* is not specified, returns the current projection, which defaults to null. The null projection represents the identity transformation: the input geometry is not projected and is instead rendered directly in raw coordinates. This can be useful for fast rendering of [pre-projected geometry](http://bl.ocks.org/mbostock/5557726), or for fast rendering of the equirectangular projection.
+
+The given *projection* is typically one of D3’s built-in [geographic projections](#geoProjection); however, any object that exposes a [*projection*.stream](#projection_stream) function can be used, enabling the use of [custom projections](http://bl.ocks.org/mbostock/5663666).
 
 <a href="#path_context" name="path_context">#</a><i>path</i>.<b>context</b>([<i>context</i>])
 
-…
+If *context* is specified, sets the current render context and returns the path generator. If the *context* is null, then the [path generator](#_path) will return an SVG path string; if the context is non-null, the path generator will instead call methods on the specified context to render geometry. The context must implement the following subset of the [CavnasRenderingContext2D API](https://www.w3.org/TR/2dcontext/#canvasrenderingcontext2d):
+
+* *context*.beginPath()
+* *context*.moveTo(*x*, *y*)
+* *context*.lineTo(*x*, *y*)
+* *context*.arc(*x*, *y*, *radius*, *startAngle*, *endAngle*)
+* *context*.closePath()
+
+If a *context* is not specified, returns the current render context which defaults to null.
 
 <a href="#path_pointRadius" name="path_pointRadius">#</a><i>path</i>.<b>pointRadius</b>([<i>radius</i>])
 
-…
+If *radius* is specified, sets the radius used to display Point and MultiPoint features to the specified number. If *radius* is not specified, returns the current radius accessor, which defaults to 4.5. While the radius is commonly specified as a number constant, it may also be specified as a function which is computed per feature, being passed the any arguments passed to the [path generator](#_path). For example, if your GeoJSON data has additional properties, you might access those properties inside the radius function to vary the point size; alternatively, you could [d3.symbol](https://github.com/d3/d3-shape#symbols) and a [projection](#geoProjection) for greater flexibility.
 
 <a href="#geoProjection" name="geoProjection">#</a> d3.<b>geoProjection</b>(<i>project</i>)
 
