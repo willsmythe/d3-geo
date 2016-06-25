@@ -401,30 +401,6 @@ Defines a default [*projection*.clipExtent](#projection_clipExtent) such that th
 
 …
 
-<a href="#geoTransform" name="geoTransform">#</a> d3.<b>geoTransform</b>(<i>prototype</i>)
-
-Defines a simple transform projection, implementing [*projection*.stream](#projection_stream), using any methods defined on the specified *prototype*. Any undefined methods will use passthrough methods that propagate inputs to the output stream. For example, to invert the *y*-coordinates:
-
-```js
-var flipY = d3.geoTransform({
-  point: function(x, y) {
-    this.stream.point(x, -y);
-  }
-});
-```
-
-Or to define an affine matrix transformation:
-
-```js
-function matrix(a, b, c, d, tx, ty) {
-  return d3.geoTransform({
-    point: function(x, y) {
-      this.stream.point(a * x + b * y + tx, c * x + d * y + ty);
-    }
-  });
-}
-```
-
 <a href="#geoClipExtent" name="geoClipExtent">#</a> d3.<b>geoClipExtent</b>()
 
 …
@@ -488,6 +464,30 @@ Indicates the end of a polygon.
 <a name="stream_sphere" href="#stream_sphere">#</a> <i>stream</i>.<b>sphere</b>()
 
 Indicates the sphere (the globe; the unit sphere centered at ⟨0,0,0⟩).
+
+<a href="#geoTransform" name="geoTransform">#</a> d3.<b>geoTransform</b>(<i>prototype</i>)
+
+Defines a simple transform projection, implementing [*projection*.stream](#projection_stream), using any methods defined on the specified *prototype*. Any undefined methods will use passthrough methods that propagate inputs to the output stream. For example, to invert the *y*-coordinates:
+
+```js
+var flipY = d3.geoTransform({
+  point: function(x, y) {
+    this.stream.point(x, -y);
+  }
+});
+```
+
+Or to define an affine matrix transformation:
+
+```js
+function matrix(a, b, c, d, tx, ty) {
+  return d3.geoTransform({
+    point: function(x, y) {
+      this.stream.point(a * x + b * y + tx, c * x + d * y + ty);
+    }
+  });
+}
+```
 
 <a href="#geoStream" name="geoStream">#</a> d3.<b>geoStream</b>(<i>object</i>, <i>stream</i>)
 
