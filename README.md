@@ -38,9 +38,7 @@ var path = d3.geoPath();
 
 * [Spherical Math](#spherical-math)
 * [Spherical Shapes](#spherical-shapes)
-* [Paths](#paths)
 * [Projections](#projections)
-* [Streams](#streams)
 
 ### Spherical Math
 
@@ -170,7 +168,7 @@ If *step* is specified, sets the minor step for this graticule. If *step* is not
 
 If *precision* is specified, sets the precision for this graticule, in degrees. If *precision* is not specified, returns the current precision, which defaults to 2.5°.
 
-### Paths
+### Projections
 
 The geographic path generator, [d3.geoPath](#geoPath), is similar to the shape generators in [d3-shape](https://github.com/d3/d3-shape): given a GeoJSON geometry or feature object, it generates an SVG path data string or [renders the path to a Canvas](http://bl.ocks.org/mbostock/3783604). Canvas is recommended for dynamic or interactive projections to improve performance.
 
@@ -246,8 +244,6 @@ If a *context* is not specified, returns the current render context which defaul
 <a href="#path_pointRadius" name="path_pointRadius">#</a><i>path</i>.<b>pointRadius</b>([<i>radius</i>])
 
 If *radius* is specified, sets the radius used to display Point and MultiPoint features to the specified number. If *radius* is not specified, returns the current radius accessor, which defaults to 4.5. While the radius is commonly specified as a number constant, it may also be specified as a function which is computed per feature, being passed the any arguments passed to the [path generator](#_path). For example, if your GeoJSON data has additional properties, you might access those properties inside the radius function to vary the point size; alternatively, you could [d3.symbol](https://github.com/d3/d3-shape#symbols) and a [projection](#geoProjection) for greater flexibility.
-
-### Projections
 
 <a href="#geoProjection" name="geoProjection">#</a> d3.<b>geoProjection</b>(<i>project</i>)
 
@@ -405,9 +401,37 @@ Defines a default [*projection*.clipExtent](#projection_clipExtent) such that th
 
 …
 
-### Streams
+<a href="#geoStream" name="geoStream">#</a> d3.<b>geoStream</b>(<i>object</i>, <i>stream</i>)
 
-Yadda yadda some introduction about how D3 transforms geometry using sequences of function calls to minimize the overhead of intermediate representations…
+Streams the specified [GeoJSON](http://geojson.org) *object* to the specified [projection *stream*](#projection-streams). While both features and geometry objects are supported as input, the stream interface only describes the geometry, and thus additional feature properties are not visible to streams.
+
+<a href="#geoTransform" name="geoTransform">#</a> d3.<b>geoTransform</b>(<i>prototype</i>)
+
+Defines a simple transform projection, implementing [*projection*.stream](#projection_stream), using any methods defined on the specified *prototype*. Any undefined methods will use passthrough methods that propagate inputs to the output stream. For example, to invert the *y*-coordinates:
+
+```js
+var flipY = d3.geoTransform({
+  point: function(x, y) {
+    this.stream.point(x, -y);
+  }
+});
+```
+
+Or to define an affine matrix transformation:
+
+```js
+function matrix(a, b, c, d, tx, ty) {
+  return d3.geoTransform({
+    point: function(x, y) {
+      this.stream.point(a * x + b * y + tx, c * x + d * y + ty);
+    }
+  });
+}
+```
+
+#### Projection Streams
+
+Yadda yadda some introduction about how D3 transforms geometry using sequences of function calls to minimize the overhead of intermediate representations… Despite the name “stream”, these method calls are currently synchronous.
 
 Streams must implement several methods to receive input geometry. Streams are inherently stateful; the meaning of a [point](#point) depends on whether the point is inside of a [line](#lineStart), and likewise a line is distinguished from a ring by a [polygon](#polygonStart).
 
@@ -456,31 +480,3 @@ Indicates the end of a polygon.
 <a name="stream_sphere" href="#stream_sphere">#</a> <i>stream</i>.<b>sphere</b>()
 
 Indicates the sphere (the globe; the unit sphere centered at ⟨0,0,0⟩).
-
-<a href="#geoStream" name="geoStream">#</a> d3.<b>geoStream</b>(<i>object</i>, <i>stream</i>)
-
-Streams the specified [GeoJSON](http://geojson.org) *object* to the specified *stream*. (Despite the name “stream”, these method calls are currently synchronous.) While both features and geometry objects are supported as input, the stream interface only describes the geometry, and thus additional feature properties are not visible to streams.
-
-<a href="#geoTransform" name="geoTransform">#</a> d3.<b>geoTransform</b>(<i>prototype</i>)
-
-Defines a simple transform projection, implementing [*projection*.stream](#projection_stream), using any methods defined on the specified *prototype*. Any undefined methods will use passthrough methods that propagate inputs to the output stream. For example, to invert the *y*-coordinates:
-
-```js
-var flipY = d3.geoTransform({
-  point: function(x, y) {
-    this.stream.point(x, -y);
-  }
-});
-```
-
-Or to define an affine matrix transformation:
-
-```js
-function matrix(a, b, c, d, tx, ty) {
-  return d3.geoTransform({
-    point: function(x, y) {
-      this.stream.point(a * x + b * y + tx, c * x + d * y + ty);
-    }
-  });
-}
-```
