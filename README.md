@@ -401,10 +401,6 @@ Defines a default [*projection*.clipExtent](#projection_clipExtent) such that th
 
 …
 
-<a href="#geoStream" name="geoStream">#</a> d3.<b>geoStream</b>(<i>object</i>, <i>stream</i>)
-
-Streams the specified [GeoJSON](http://geojson.org) *object* to the specified [projection *stream*](#projection-streams). While both features and geometry objects are supported as input, the stream interface only describes the geometry, and thus additional feature properties are not visible to streams.
-
 <a href="#geoTransform" name="geoTransform">#</a> d3.<b>geoTransform</b>(<i>prototype</i>)
 
 Defines a simple transform projection, implementing [*projection*.stream](#projection_stream), using any methods defined on the specified *prototype*. Any undefined methods will use passthrough methods that propagate inputs to the output stream. For example, to invert the *y*-coordinates:
@@ -428,6 +424,18 @@ function matrix(a, b, c, d, tx, ty) {
   });
 }
 ```
+
+<a href="#geoClipExtent" name="geoClipExtent">#</a> d3.<b>geoClipExtent</b>()
+
+…
+
+<a href="#extent_extent" name="extent_extent">#</a> <i>extent</i>.<b>extent</b>([<i>extent</i>])
+
+…
+
+<a href="#extent_stream" name="extent_stream">#</a> <i>extent</i>.<b>stream</b>(<i>stream</i>)
+
+… See [*projection*.stream](#projection_stream).
 
 #### Projection Streams
 
@@ -480,3 +488,7 @@ Indicates the end of a polygon.
 <a name="stream_sphere" href="#stream_sphere">#</a> <i>stream</i>.<b>sphere</b>()
 
 Indicates the sphere (the globe; the unit sphere centered at ⟨0,0,0⟩).
+
+<a href="#geoStream" name="geoStream">#</a> d3.<b>geoStream</b>(<i>object</i>, <i>stream</i>)
+
+Streams the specified [GeoJSON](http://geojson.org) *object* to the specified [projection *stream*](#projection-streams). While both features and geometry objects are supported as input, the stream interface only describes the geometry, and thus additional feature properties are not visible to streams.
