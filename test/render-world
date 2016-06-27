@@ -20,7 +20,7 @@ var world = require("./data/world-50m.json");
 var graticule = d3_geo.geoGraticule();
 
 var path = d3_geo.geoPath()
-    .projection(d3_geo[projectionSymbol]())
+    .projection(d3_geo[projectionSymbol]().precision(0.1))
     .context(context);
 
 context.fillStyle = "#fff";
@@ -34,6 +34,11 @@ context.fill();
 context.beginPath();
 path(graticule());
 context.strokeStyle = "rgba(119,119,119,0.5)";
+context.stroke();
+
+context.beginPath();
+path({type: "Sphere"});
+context.strokeStyle = "#000";
 context.stroke();
 
 console.warn("↳ test/output/" + projectionName + ".png");
