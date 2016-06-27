@@ -13,14 +13,14 @@ for i in \
     stereographic \
     transverseMercator; do
   test/render-world $i \
-      && [ "$(compare -metric rmse test/images/$i.png test/output/$i.png null: 2>&1)" = "0 (0)" ] \
-      || echo "✗ test/output/$i.png and test/images/$i.png differ"
+      && [ "$(compare -metric rmse img/$i.png test/output/$i.png null: 2>&1)" = "0 (0)" ] \
+      || echo "✗ test/output/$i.png and img/$i.png differ"
 done
 
 for i in \
     albers \
     albersUsa; do
   test/render-us $i \
-      && [ "$(compare -metric rmse test/images/$i.png test/output/$i.png null: 2>&1)" = "0 (0)" ] \
-      || echo "✗ test/output/$i.png and test/images/$i.png differ"
+      && [ "$(compare -metric rmse img/$i.png test/output/$i.png null: 2>&1)" = "0 (0)" ] \
+      || echo "✗ test/output/$i.png and img/$i.png differ"
 done

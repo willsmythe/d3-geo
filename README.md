@@ -335,65 +335,65 @@ If *precision* is specified, sets the threshold for the projection’s [adaptive
 
 <a href="#geoAlbers" name="geoAlbers">#</a> d3.<b>geoAlbers</b>()
 
-<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/albers.png" width="480" height="250">
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/albers.png" width="480" height="250">
 
 See also [*conic*.parallels](#conic_parallels).
 
 <a href="#geoAlbersUsa" name="geoAlbersUsa">#</a> d3.<b>geoAlbersUsa</b>()
 
-<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/albersUsa.png" width="480" height="250">
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/albersUsa.png" width="480" height="250">
 
 <a href="#geoAzimuthalEqualArea" name="geoAzimuthalEqualArea">#</a> d3.<b>geoAzimuthalEqualArea</b>()
 
-<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/azimuthalEqualArea.png" width="480" height="250">
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/azimuthalEqualArea.png" width="480" height="250">
 
 <a href="#geoAzimuthalEquidistant" name="geoAzimuthalEquidistant">#</a> d3.<b>geoAzimuthalEquidistant</b>()
 
-<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/azimuthalEquidistant.png" width="480" height="250">
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/azimuthalEquidistant.png" width="480" height="250">
 
 <a href="#geoConicConformal" name="geoConicConformal">#</a> d3.<b>geoConicConformal</b>()
 
-<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/conicConformal.png" width="480" height="250">
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/conicConformal.png" width="480" height="250">
 
 See also [*conic*.parallels](#conic_parallels).
 
 <a href="#geoConicEqualArea" name="geoConicEqualArea">#</a> d3.<b>geoConicEqualArea</b>()
 
-<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/conicEqualArea.png" width="480" height="250">
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/conicEqualArea.png" width="480" height="250">
 
 See also [*conic*.parallels](#conic_parallels).
 
 <a href="#geoConicEquidistant" name="geoConicEquidistant">#</a> d3.<b>geoConicEquidistant</b>()
 
-<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/conicEquidistant.png" width="480" height="250">
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/conicEquidistant.png" width="480" height="250">
 
 See also [*conic*.parallels](#conic_parallels).
 
 <a href="#geoEquirectangular" name="geoEquirectangular">#</a> d3.<b>geoEquirectangular</b>()
 
-<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/equirectangular.png" width="480" height="250">
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/equirectangular.png" width="480" height="250">
 
 <a href="#geoGnomonic" name="geoGnomonic">#</a> d3.<b>geoGnomonic</b>()
 
-<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/gnomonic.png" width="480" height="250">
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/gnomonic.png" width="480" height="250">
 
 <a href="#geoMercator" name="geoMercator">#</a> d3.<b>geoMercator</b>()
 
-<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/mercator.png" width="480" height="250">
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/mercator.png" width="480" height="250">
 
 Defines a default [*projection*.clipExtent](#projection_clipExtent) such that the world is projected to a square, clipped to approximately ±85° latitude.
 
 <a href="#geoOrthographic" name="geoOrthographic">#</a> d3.<b>geoOrthographic</b>()
 
-<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/orthographic.png" width="480" height="250">
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/orthographic.png" width="480" height="250">
 
 <a href="#geoStereographic" name="geoStereographic">#</a> d3.<b>geoStereographic</b>()
 
-<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/stereographic.png" width="480" height="250">
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/stereographic.png" width="480" height="250">
 
 <a href="#geoTransverseMercator" name="geoTransverseMercator">#</a> d3.<b>geoTransverseMercator</b>()
 
-<img src="https://raw.githubusercontent.com/d3/d3-geo/master/test/images/transverseMercator.png" width="480" height="250">
+<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/transverseMercator.png" width="480" height="250">
 
 Defines a default [*projection*.clipExtent](#projection_clipExtent) such that the world is projected to a square, clipped to approximately ±85° latitude.
 
