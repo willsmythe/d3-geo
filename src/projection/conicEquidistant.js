@@ -1,13 +1,13 @@
 import {abs, atan2, cos, epsilon, sign, sin, sqrt} from "../math";
 import {conicProjection} from "./conic";
-import {equirectangular} from "./equirectangular";
+import {equirectangularRaw} from "./equirectangular";
 
-function conicEquidistant(y0, y1) {
+export function conicEquidistantRaw(y0, y1) {
   var cy0 = cos(y0),
       n = y0 === y1 ? sin(y0) : (cy0 - cos(y1)) / (y1 - y0),
       g = cy0 / n + y0;
 
-  if (abs(n) < epsilon) return equirectangular;
+  if (abs(n) < epsilon) return equirectangularRaw;
 
   function project(x, y) {
     var gy = g - y, nx = n * x;
@@ -23,7 +23,7 @@ function conicEquidistant(y0, y1) {
 }
 
 export default function() {
-  return conicProjection(conicEquidistant)
+  return conicProjection(conicEquidistantRaw)
       .scale(128)
       .translate([480, 280]);
 }

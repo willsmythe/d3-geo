@@ -1,16 +1,16 @@
 import {atan, exp, halfPi, log, tan} from "../math";
 import {mercatorProjection} from "./mercator";
 
-function transverseMercator(lambda, phi) {
+export function transverseMercatorRaw(lambda, phi) {
   return [log(tan((halfPi + phi) / 2)), -lambda];
 }
 
-transverseMercator.invert = function(x, y) {
+transverseMercatorRaw.invert = function(x, y) {
   return [-y, 2 * atan(exp(x)) - halfPi];
 };
 
 export default function() {
-  var m = mercatorProjection(transverseMercator),
+  var m = mercatorProjection(transverseMercatorRaw),
       center = m.center,
       rotate = m.rotate;
 

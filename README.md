@@ -247,7 +247,7 @@ If *radius* is specified, sets the radius used to display Point and MultiPoint f
 
 <a href="#geoProjection" name="geoProjection">#</a> d3.<b>geoProjection</b>(<i>project</i>)
 
-Constructs a new projection from the specified *project* function. The *project* function takes the *longitude* and *latitude* of a given point in [radians](http://mathworld.wolfram.com/Radian.html), often referred to as *lambda* (λ) and *phi* (φ), and returns a two-element array [*x*, *y*] representing its unit projection. The *project* function does not need to scale or translate the point, as these are applied automatically by [*projection*.scale](#projection_scale), [*projection*.translate](#projection_translate), and [*projection*.center](#projection_center). Likewise, the *project* function does not need to perform any spherical rotation, as [*projection*.rotate](#projection_rotate) is applied prior to projection.
+Constructs a new projection from the specified [raw projection](#raw-projection), *project*. The *project* function takes the *longitude* and *latitude* of a given point in [radians](http://mathworld.wolfram.com/Radian.html), often referred to as *lambda* (λ) and *phi* (φ), and returns a two-element array [*x*, *y*] representing its unit projection. The *project* function does not need to scale or translate the point, as these are applied automatically by [*projection*.scale](#projection_scale), [*projection*.translate](#projection_translate), and [*projection*.center](#projection_center). Likewise, the *project* function does not need to perform any spherical rotation, as [*projection*.rotate](#projection_rotate) is applied prior to projection.
 
 For example, a spherical Mercator projection can be implemented as:
 
@@ -261,12 +261,12 @@ If the *project* function exposes an *invert* method, the returned projection wi
 
 <a href="#geoProjectionMutator" name="geoProjectionMutator">#</a> d3.<b>geoProjectionMutator</b>(<i>factory</i>)
 
-Constructs a new projection from the specified *project* function *factory*, returning a *mutate* function to call whenever the raw projection function changes. For example, a conic projection typically has two configurable parallels. A suitable *factory* function would be:
+Constructs a new projection from the specified [raw projection](#raw-projections) *factory* and returns a *mutate* function to call whenever the raw projection function changes. The *factory* must return a raw projection. The returned *mutate* function returns the wrapped projection. For example, a conic projection typically has two configurable parallels. A suitable *factory* function would be:
 
 ```js
 // y0 and y1 represent two parallels
-function conicFactory(y0, y1) {
-  return function conic(x, y) {
+function conicFactory(phi0, phi1) {
+  return function conicRaw(lambda, phi) {
     return […, …];
   };
 }
@@ -275,14 +275,14 @@ function conicFactory(y0, y1) {
 Using d3.geoProjectionMutator, you can implement a standard projection that allows the parallels to be changed, reassigning the raw projection used internally by [d3.geoProjection](#geoProjection):
 
 ```js
-function conic() {
-  var y0 = 29.5,
-      y1 = 45.5,
+function conicCustom() {
+  var phi0 = 29.5,
+      phi1 = 45.5,
       mutate = d3.geoProjectionMutator(conicFactory),
-      projection = mutate(y0, y1);
+      projection = mutate(phi0, phi1);
 
   projection.parallels = function(_) {
-    return arguments.length ? mutate(y0 = +_[0], y1 = +_[1]) : [y0, y1];
+    return arguments.length ? mutate(phi0 = +_[0], phi1 = +_[1]) : [phi0, phi1];
   };
 
   return projection;
@@ -412,6 +412,54 @@ Defines a default [*projection*.clipExtent](#projection_clipExtent) such that th
 <a href="#extent_stream" name="extent_stream">#</a> <i>extent</i>.<b>stream</b>(<i>stream</i>)
 
 … See [*projection*.stream](#projection_stream).
+
+#### Raw Projections
+
+Raw projections are used internally by the above projections. These projections are defined as simple point transformations: they take a spherical coordinate [*lambda*, *phi*] expressed in radians, and return a point [*x*, *y*], typically in the unit square centered around the origin. These functions are typically not used directly, but can be useful for deriving related custom projections when used in conjunction with [d3.geoProjection](#geoProjection) or [d3.geoProjectionMutator](#geoProjectionMutator).
+
+<a href="#geoAzimuthalEqualAreaRaw" name="geoAzimuthalEqualAreaRaw">#</a> d3.<b>geoAzimuthalEqualAreaRaw</b>(<i>lambda</i>, <i>phi</i>)
+
+…
+
+<a href="#geoAzimuthalEquidistantRaw" name="geoAzimuthalEquidistantRaw">#</a> d3.<b>geoAzimuthalEquidistantRaw</b>(<i>lambda</i>, <i>phi</i>)
+
+…
+
+<a href="#geoConicConformalRaw" name="geoConicConformalRaw">#</a> d3.<b>geoConicConformalRaw</b>(<i>phi0</i>, <i>phi1</i>)
+
+…
+
+<a href="#geoConicEqualAreaRaw" name="geoConicEqualAreaRaw">#</a> d3.<b>geoConicEqualAreaRaw</b>(<i>phi0</i>, <i>phi1</i>)
+
+…
+
+<a href="#geoConicEquidistantRaw" name="geoConicEquidistantRaw">#</a> d3.<b>geoConicEquidistantRaw</b>(<i>phi0</i>, <i>phi1</i>)
+
+…
+
+<a href="#geoEquirectangularRaw" name="geoEquirectangularRaw">#</a> d3.<b>geoEquirectangularRaw</b>(<i>lambda</i>, <i>phi</i>)
+
+…
+
+<a href="#geoGnomonicRaw" name="geoGnomonicRaw">#</a> d3.<b>geoGnomonicRaw</b>(<i>lambda</i>, <i>phi</i>)
+
+…
+
+<a href="#geoMercatorRaw" name="geoMercatorRaw">#</a> d3.<b>geoMercatorRaw</b>(<i>lambda</i>, <i>phi</i>)
+
+…
+
+<a href="#geoOrthographicRaw" name="geoOrthographicRaw">#</a> d3.<b>geoOrthographicRaw</b>(<i>lambda</i>, <i>phi</i>)
+
+…
+
+<a href="#geoStereographicRaw" name="geoStereographicRaw">#</a> d3.<b>geoStereographicRaw</b>(<i>lambda</i>, <i>phi</i>)
+
+…
+
+<a href="#geoTransverseMercatorRaw" name="geoTransverseMercatorRaw">#</a> d3.<b>geoTransverseMercatorRaw</b>(<i>lambda</i>, <i>phi</i>)
+
+…
 
 #### Projection Streams
 

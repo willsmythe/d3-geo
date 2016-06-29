@@ -1,7 +1,7 @@
 import {asin, atan2, cos, sin, sqrt} from "../math";
 import {conicProjection} from "./conic";
 
-function conicEqualArea(y0, y1) {
+export function conicEqualAreaRaw(y0, y1) {
   var sy0 = sin(y0),
       n = (sy0 + sin(y1)) / 2,
       c = 1 + sy0 * (2 * n - sy0),
@@ -21,7 +21,7 @@ function conicEqualArea(y0, y1) {
 }
 
 export default function() {
-  return conicProjection(conicEqualArea)
+  return conicProjection(conicEqualAreaRaw)
       .scale(151)
       .translate([480, 347]);
 }

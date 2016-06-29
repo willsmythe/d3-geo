@@ -1,17 +1,17 @@
 import {atan, atan2, cos, epsilon, halfPi, log, pow, sign, sin, sqrt, tan} from "../math";
 import {conicProjection} from "./conic";
-import {mercator} from "./mercator";
+import {mercatorRaw} from "./mercator";
 
 function tany(y) {
   return tan((halfPi + y) / 2);
 }
 
-function conicConformal(y0, y1) {
+export function conicConformalRaw(y0, y1) {
   var cy0 = cos(y0),
       n = y0 === y1 ? sin(y0) : log(cy0 / cos(y1)) / log(tany(y1) / tany(y0)),
       f = cy0 * pow(tany(y0), n) / n;
 
-  if (!n) return mercator;
+  if (!n) return mercatorRaw;
 
   function project(x, y) {
     if (f > 0) { if (y < -halfPi + epsilon) y = -halfPi + epsilon; }
@@ -29,5 +29,5 @@ function conicConformal(y0, y1) {
 }
 
 export default function() {
-  return conicProjection(conicConformal);
+  return conicProjection(conicConformalRaw);
 }
