@@ -17,8 +17,9 @@ function multiplex(streams) {
 }
 
 // A composite projection for the United States, configured by default for
-// 960×500. Also works quite well at 960×600 with scale 1285. The set of
-// standard parallels for each region comes from USGS, which is published here:
+// 960×500. The projection also works quite well at 960×600 if you change the
+// scale to 1285 and adjust the translate accordingly. The set of standard
+// parallels for each region comes from USGS, which is published here:
 // http://egsc.usgs.gov/isb/pubs/MapProjections/projections.html#albers
 export default function() {
   var cache,
