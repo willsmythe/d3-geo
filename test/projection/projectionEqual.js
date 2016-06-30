@@ -5,8 +5,8 @@ tape.Test.prototype.projectionEqual = function(projection, location, point, delt
       && sphericalEqual(projection.invert(point), location, delta || 1e-3), {
     message: "should be projected equivalents",
     operator: "planarEqual",
-    actual: location,
-    expected: point
+    actual: [projection.invert(point), projection(location)],
+    expected: [location, point]
   });
 };
 
