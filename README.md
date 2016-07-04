@@ -429,51 +429,27 @@ The transverse spherical Mercator projection. Defines a default [*projection*.cl
 
 #### Raw Projections
 
-Raw projections are used internally by the above projections. These projections are defined as simple point transformations: they take a spherical coordinate [*lambda*, *phi*] expressed in radians, and return a point [*x*, *y*], typically in the unit square centered around the origin. These functions are typically not used directly, but can be useful for deriving related custom projections when used in conjunction with [d3.geoProjection](#geoProjection) or [d3.geoProjectionMutator](#geoProjectionMutator).
+Raw projections are used to implement projections; they typically passed to [d3.geoProjection](#geoProjection) or [d3.geoProjectionMutator](#geoProjectionMutator). They are exposed here to facilitate the derivation of related projections. Raw projections define simple point transformations: they take spherical coordinates [*lambda*, *phi*] in radians and return a point [*x*, *y*], typically in the unit square centered around the origin.
 
-<a href="#geoAzimuthalEqualAreaRaw" name="geoAzimuthalEqualAreaRaw">#</a> d3.<b>geoAzimuthalEqualAreaRaw</b>(<i>lambda</i>, <i>phi</i>)
+<a href="#_project" name="_project">#</a> <i>project</i>(<i>lambda</i>, <i>phi</i>)
 
-…
+Projects the specified point [<i>lambda</i>, <i>phi</i>] in radians, returning a new point [*x*, *y*] in unitless coordinates.
 
-<a href="#geoAzimuthalEquidistantRaw" name="geoAzimuthalEquidistantRaw">#</a> d3.<b>geoAzimuthalEquidistantRaw</b>(<i>lambda</i>, <i>phi</i>)
+<a href="#project_invert" name="project_invert">#</a> <i>project</i>.<b>invert</b>(<i>x</i>, <i>y</i>)
 
-…
+The inverse of [*project*](#_project).
 
+<a href="#geoAzimuthalEqualAreaRaw" name="geoAzimuthalEqualAreaRaw">#</a> d3.<b>geoAzimuthalEqualAreaRaw</b>
+<a href="#geoAzimuthalEquidistantRaw" name="geoAzimuthalEquidistantRaw">#</a> d3.<b>geoAzimuthalEquidistantRaw</b>
 <a href="#geoConicConformalRaw" name="geoConicConformalRaw">#</a> d3.<b>geoConicConformalRaw</b>(<i>phi0</i>, <i>phi1</i>)
-
-…
-
 <a href="#geoConicEqualAreaRaw" name="geoConicEqualAreaRaw">#</a> d3.<b>geoConicEqualAreaRaw</b>(<i>phi0</i>, <i>phi1</i>)
-
-…
-
 <a href="#geoConicEquidistantRaw" name="geoConicEquidistantRaw">#</a> d3.<b>geoConicEquidistantRaw</b>(<i>phi0</i>, <i>phi1</i>)
-
-…
-
-<a href="#geoEquirectangularRaw" name="geoEquirectangularRaw">#</a> d3.<b>geoEquirectangularRaw</b>(<i>lambda</i>, <i>phi</i>)
-
-…
-
-<a href="#geoGnomonicRaw" name="geoGnomonicRaw">#</a> d3.<b>geoGnomonicRaw</b>(<i>lambda</i>, <i>phi</i>)
-
-…
-
-<a href="#geoMercatorRaw" name="geoMercatorRaw">#</a> d3.<b>geoMercatorRaw</b>(<i>lambda</i>, <i>phi</i>)
-
-…
-
-<a href="#geoOrthographicRaw" name="geoOrthographicRaw">#</a> d3.<b>geoOrthographicRaw</b>(<i>lambda</i>, <i>phi</i>)
-
-…
-
-<a href="#geoStereographicRaw" name="geoStereographicRaw">#</a> d3.<b>geoStereographicRaw</b>(<i>lambda</i>, <i>phi</i>)
-
-…
-
-<a href="#geoTransverseMercatorRaw" name="geoTransverseMercatorRaw">#</a> d3.<b>geoTransverseMercatorRaw</b>(<i>lambda</i>, <i>phi</i>)
-
-…
+<a href="#geoEquirectangularRaw" name="geoEquirectangularRaw">#</a> d3.<b>geoEquirectangularRaw</b>
+<a href="#geoGnomonicRaw" name="geoGnomonicRaw">#</a> d3.<b>geoGnomonicRaw</b>
+<a href="#geoMercatorRaw" name="geoMercatorRaw">#</a> d3.<b>geoMercatorRaw</b>
+<a href="#geoOrthographicRaw" name="geoOrthographicRaw">#</a> d3.<b>geoOrthographicRaw</b>
+<a href="#geoStereographicRaw" name="geoStereographicRaw">#</a> d3.<b>geoStereographicRaw</b>
+<a href="#geoTransverseMercatorRaw" name="geoTransverseMercatorRaw">#</a> d3.<b>geoTransverseMercatorRaw</b>
 
 #### Projection Streams
 
