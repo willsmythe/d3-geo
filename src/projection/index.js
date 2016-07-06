@@ -7,6 +7,8 @@ import {degrees, radians, sqrt} from "../math";
 import {rotateRadians} from "../rotation";
 import {transform} from "../transform";
 import resample from "./resample";
+import {default as geoStream} from "../stream";
+import boundsStream from "../path/bounds";
 
 var transformRadians = transform({
   point: function(x, y) {
@@ -74,6 +76,23 @@ export function projectionMutator(projectAt) {
 
   projection.precision = function(_) {
     return arguments.length ? (projectResample = resample(projectTransform, delta2 = _ * _), reset()) : sqrt(delta2);
+  };
+
+  projection.contain = function(object, width, height, scaleFactor) {
+
+    k = 1;
+    x = y = 0;
+    recenter();
+
+    geoStream(object, this.stream(boundsStream));
+    var b = boundsStream.result();
+
+    k = scaleFactor / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height);
+    x = (width - k * (b[1][0] + b[0][0])) / 2;
+    y = (height - k * (b[1][1] + b[0][1])) / 2;
+
+    recenter();
+
   };
 
   function recenter() {
