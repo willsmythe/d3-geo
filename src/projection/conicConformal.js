@@ -29,5 +29,6 @@ export function conicConformalRaw(y0, y1) {
 }
 
 export default function() {
-  return conicProjection(conicConformalRaw);
+  return conicProjection(conicConformalRaw)
+      .scale(131.8);
 }

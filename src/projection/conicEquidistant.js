@@ -24,6 +24,6 @@ export function conicEquidistantRaw(y0, y1) {
 
 export default function() {
   return conicProjection(conicEquidistantRaw)
-      .scale(128)
-      .translate([480, 280]);
+      .scale(131.154)
+      .center([0, 13.9389]);
 }

@@ -13,6 +13,6 @@ stereographicRaw.invert = azimuthalInvert(function(z) {
 
 export default function() {
   return projection(stereographicRaw)
-      .scale(240)
+      .scale(250)
       .clipAngle(142);
 }

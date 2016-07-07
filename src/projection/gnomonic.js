@@ -11,6 +11,6 @@ gnomonicRaw.invert = azimuthalInvert(atan);
 
 export default function() {
   return projection(gnomonicRaw)
-      .scale(139)
+      .scale(144.049)
       .clipAngle(60);
 }

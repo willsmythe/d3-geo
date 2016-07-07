@@ -22,6 +22,6 @@ export function conicEqualAreaRaw(y0, y1) {
 
 export default function() {
   return conicProjection(conicEqualAreaRaw)
-      .scale(151)
-      .translate([480, 347]);
+      .scale(155.424)
+      .center([0, 33.6442]);
 }

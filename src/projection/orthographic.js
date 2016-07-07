@@ -10,6 +10,6 @@ orthographicRaw.invert = azimuthalInvert(asin);
 
 export default function() {
   return projection(orthographicRaw)
-      .scale(240)
+      .scale(249.5)
       .clipAngle(90 + epsilon);
 }

@@ -15,9 +15,13 @@ var fs = require("fs"),
 var canvas = new Canvas(width, height),
     context = canvas.getContext("2d");
 
-var world = require("./data/world-50m.json");
+var world = require("./data/world-50m.json"),
+    graticule = d3_geo.geoGraticule(),
+    outline = {type: "Sphere"};
 
-var graticule = d3_geo.geoGraticule();
+// switch (projectionName) {
+//   case "littrow": outline = graticule.extent([[-90, -60], [90, 60]]).outline(); break;
+// }
 
 var path = d3_geo.geoPath()
     .projection(d3_geo[projectionSymbol]().precision(0.1))
@@ -25,6 +29,16 @@ var path = d3_geo.geoPath()
 
 context.fillStyle = "#fff";
 context.fillRect(0, 0, width, height);
+context.save();
+
+// switch (projectionName) {
+//   case "armadillo": {
+//     context.beginPath();
+//     path(outline);
+//     context.clip();
+//     break;
+//   }
+// }
 
 context.beginPath();
 path(topojson.feature(world, world.objects.land));
@@ -36,8 +50,10 @@ path(graticule());
 context.strokeStyle = "rgba(119,119,119,0.5)";
 context.stroke();
 
+context.restore();
+
 context.beginPath();
-path({type: "Sphere"});
+path(outline);
 context.strokeStyle = "#000";
 context.stroke();
 

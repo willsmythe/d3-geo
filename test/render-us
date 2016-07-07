@@ -18,7 +18,7 @@ var canvas = new Canvas(width, height),
 var us = require("./data/us-10m.json");
 
 var path = d3_geo.geoPath()
-    .projection(d3_geo[projectionSymbol]())
+    .projection(d3_geo[projectionSymbol]().precision(0.1))
     .context(context);
 
 context.fillStyle = "#fff";

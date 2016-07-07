@@ -12,6 +12,6 @@ azimuthalEqualAreaRaw.invert = azimuthalInvert(function(z) {
 
 export default function() {
   return projection(azimuthalEqualAreaRaw)
-      .scale(120)
+      .scale(124.75)
       .clipAngle(180 - 1e-3);
 }

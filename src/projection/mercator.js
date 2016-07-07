@@ -10,7 +10,8 @@ mercatorRaw.invert = function(x, y) {
 };
 
 export default function() {
-  return mercatorProjection(mercatorRaw);
+  return mercatorProjection(mercatorRaw)
+      .scale(961 / tau);
 }
 
 export function mercatorProjection(project) {
@@ -31,12 +32,13 @@ export function mercatorProjection(project) {
   m.clipExtent = function(_) {
     if (!arguments.length) return clipAuto ? null : clipExtent();
     if (clipAuto = _ == null) {
-      var k = pi * scale(), t = translate();
+      var k = pi * scale(),
+          t = translate();
       _ = [[t[0] - k, t[1] - k], [t[0] + k, t[1] + k]];
     }
     clipExtent(_);
     return m;
   };
 
-  return m.clipExtent(null).scale(961 / tau);
+  return m.clipExtent(null);
 }
