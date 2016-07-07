@@ -30,5 +30,6 @@ export function conicConformalRaw(y0, y1) {
 
 export default function() {
   return conicProjection(conicConformalRaw)
-      .scale(131.8);
+      .scale(109.5)
+      .parallels([30, 30]);
 }

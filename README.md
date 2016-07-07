@@ -361,7 +361,7 @@ The azimuthal equidistant projection.
 
 [<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/conicConformal.png" width="480" height="250">](http://bl.ocks.org/mbostock/3734321)
 
-The conic conformal projection. See also [*conic*.parallels](#conic_parallels).
+The conic conformal projection. The parallels default to [30°, 30°] resulting in flat top. See also [*conic*.parallels](#conic_parallels).
 
 <a href="#geoConicEqualArea" name="geoConicEqualArea">#</a> d3.<b>geoConicEqualArea</b>()
 
