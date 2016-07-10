@@ -223,13 +223,13 @@ Returns the projected planar bounding box (typically in pixels) for the specifie
 
 Returns the projected planar centroid (typically in pixels) for the specified GeoJSON *object*. This is handy for, say, labeling state or county boundaries, or displaying a symbol map. For example, a [noncontiguous cartogram](http://bl.ocks.org/mbostock/4055908) might scale each state around its centroid. This method observes any clipping performed by the [projection](#path_projection); see [*projection*.clipAngle](#projection_clipAngle) and [*projection*.clipExtent](#projection_clipExtent).
 
-<a href="#path_projection" name="path_projection">#</a><i>path</i>.<b>projection</b>([<i>projection</i>])
+<a href="#path_projection" name="path_projection">#</a> <i>path</i>.<b>projection</b>([<i>projection</i>])
 
 If a *projection* is specified, sets the current projection to the specified projection. If *projection* is not specified, returns the current projection, which defaults to null. The null projection represents the identity transformation: the input geometry is not projected and is instead rendered directly in raw coordinates. This can be useful for fast rendering of [pre-projected geometry](http://bl.ocks.org/mbostock/5557726), or for fast rendering of the equirectangular projection.
 
 The given *projection* is typically one of D3’s built-in [geographic projections](#geoProjection); however, any object that exposes a [*projection*.stream](#projection_stream) function can be used, enabling the use of [custom projections](http://bl.ocks.org/mbostock/5663666).
 
-<a href="#path_context" name="path_context">#</a><i>path</i>.<b>context</b>([<i>context</i>])
+<a href="#path_context" name="path_context">#</a> <i>path</i>.<b>context</b>([<i>context</i>])
 
 If *context* is specified, sets the current render context and returns the path generator. If the *context* is null, then the [path generator](#_path) will return an SVG path string; if the context is non-null, the path generator will instead call methods on the specified context to render geometry. The context must implement the following subset of the [CavnasRenderingContext2D API](https://www.w3.org/TR/2dcontext/#canvasrenderingcontext2d):
 
@@ -241,7 +241,7 @@ If *context* is specified, sets the current render context and returns the path 
 
 If a *context* is not specified, returns the current render context which defaults to null.
 
-<a href="#path_pointRadius" name="path_pointRadius">#</a><i>path</i>.<b>pointRadius</b>([<i>radius</i>])
+<a href="#path_pointRadius" name="path_pointRadius">#</a> <i>path</i>.<b>pointRadius</b>([<i>radius</i>])
 
 If *radius* is specified, sets the radius used to display Point and MultiPoint features to the specified number. If *radius* is not specified, returns the current radius accessor, which defaults to 4.5. While the radius is commonly specified as a number constant, it may also be specified as a function which is computed per feature, being passed the any arguments passed to the [path generator](#_path). For example, if your GeoJSON data has additional properties, you might access those properties inside the radius function to vary the point size; alternatively, you could [d3.symbol](https://github.com/d3/d3-shape#symbols) and a [projection](#geoProjection) for greater flexibility.
 
