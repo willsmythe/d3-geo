@@ -231,7 +231,7 @@ The given *projection* is typically one of D3’s built-in [geographic projectio
 
 <a href="#path_context" name="path_context">#</a> <i>path</i>.<b>context</b>([<i>context</i>])
 
-If *context* is specified, sets the current render context and returns the path generator. If the *context* is null, then the [path generator](#_path) will return an SVG path string; if the context is non-null, the path generator will instead call methods on the specified context to render geometry. The context must implement the following subset of the [CavnasRenderingContext2D API](https://www.w3.org/TR/2dcontext/#canvasrenderingcontext2d):
+If *context* is specified, sets the current render context and returns the path generator. If the *context* is null, then the [path generator](#_path) will return an SVG path string; if the context is non-null, the path generator will instead call methods on the specified context to render geometry. The context must implement the following subset of the [CanvasRenderingContext2D API](https://www.w3.org/TR/2dcontext/#canvasrenderingcontext2d):
 
 * *context*.beginPath()
 * *context*.moveTo(*x*, *y*)
