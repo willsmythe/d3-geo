@@ -80,6 +80,10 @@ export function projectionMutator(projectAt) {
 
   projection.contain = function(object, width, height, scaleFactor) {
 
+    if (arguments.length < 4) {
+      scaleFactor = 1;
+    }
+
     k = 1;
     x = y = 0;
     recenter();
