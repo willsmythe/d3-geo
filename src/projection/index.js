@@ -78,24 +78,25 @@ export function projectionMutator(projectAt) {
     return arguments.length ? (projectResample = resample(projectTransform, delta2 = _ * _), reset()) : sqrt(delta2);
   };
 
-  projection.contain = function(object, width, height, scaleFactor) {
+  projection.fit = function(object, extent) {
 
-    if (arguments.length < 4) {
-      scaleFactor = 1;
-    }
+    var w = extent[1][0] - extent[0][0],
+        h = extent[1][1] - extent[0][1],
+        b;
 
     k = 1;
-    x = y = 0;
-    recenter();
+
+    // Can't update x, y manually, some projections replace default translate()
+    this.translate([0, 0]);
 
     geoStream(object, this.stream(boundsStream));
-    var b = boundsStream.result();
+    b = boundsStream.result();
 
-    k = scaleFactor / Math.max((b[1][0] - b[0][0]) / width, (b[1][1] - b[0][1]) / height);
-    x = (width - k * (b[1][0] + b[0][0])) / 2;
-    y = (height - k * (b[1][1] + b[0][1])) / 2;
+    k = 1 / Math.max((b[1][0] - b[0][0]) / w, (b[1][1] - b[0][1]) / h);
+    x = extent[0][0] + (w - k * (b[1][0] + b[0][0])) / 2;
+    y = extent[0][1] + (h - k * (b[1][1] + b[0][1])) / 2;
 
-    recenter();
+    return recenter();
 
   };
 
