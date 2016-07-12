@@ -1,5 +1,4 @@
 var tape = require("tape"),
-    array = require("d3-array"),
     d3 = require("../");
 
 require("./inDelta");
