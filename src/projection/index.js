@@ -7,7 +7,7 @@ import {degrees, radians, sqrt} from "../math";
 import {rotateRadians} from "../rotation";
 import {transform} from "../transform";
 import resample from "./resample";
-import fit from "./fit";
+import {fit} from "./fit";
 
 var transformRadians = transform({
   point: function(x, y) {
