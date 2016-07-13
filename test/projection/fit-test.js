@@ -232,3 +232,17 @@ tape("fit: null geometries - MultiPolygon", function(test) {
   test.end();
 
 });
+
+tape("fit: custom projection", function(test) {
+
+  var projection = d3.geoProjection(function(x, y) {
+    return [x, Math.pow(y, 3)];
+  });
+
+  projection.fit(world, [[50, 50], [950, 950]]);
+
+  test.inDelta(projection.scale(), 128.901140, 1e-6);
+  test.inDelta(projection.translate(), [500, 450.406949], 1e-6);
+  test.end();
+
+});
