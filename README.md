@@ -333,6 +333,24 @@ If *rotation* is specified, sets the projection’s [three-axis rotation](http:/
 
 If *precision* is specified, sets the threshold for the projection’s [adaptive resampling](http://bl.ocks.org/mbostock/3795544) to the specified value in pixels and returns the projection. This value corresponds to the [Douglas–Peucker](http://en.wikipedia.org/wiki/Ramer–Douglas–Peucker_algorithm) distance. If *precision* is not specified, returns the projection’s current resampling precision which defaults to √0.5 ≅ 0.70710…
 
+<a href="#projection_fit" name="projection_fit">#</a> <i>projection</i>.<b>fit</b>(<i>object</i>, <i>extent</i>)
+
+Updates the projection's [scale](#projection_scale) and [translate](#projection_translate) to fit and center the specified GeoJSON *object* in the bounding box defined by *extent*. The *extent* is specified as an array [[x₀, y₀], [x₁, y₁]], where x₀ is the left side of the bounding box, y₀ is the top, x₁ is the right and y₁ is the bottom.
+
+For example, this would update the projection to fit the GeoJSON *object* in the center of a 960x500 bounding box:
+
+```js
+var projection = d3.geoAlbersUsa()
+    .fit(object, [[0, 0], [960, 500]]);
+```
+
+While this would fit the *object* in a 960x500 bounding box with 20 pixels of padding on each side:
+
+```js
+var projection = d3.geoAlbersUsa()
+    .fit(object, [[20, 20], [940, 480]]);
+```
+
 <a href="#geoAlbers" name="geoAlbers">#</a> d3.<b>geoAlbers</b>()
 
 [<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/albers.png" width="480" height="250">](http://bl.ocks.org/mbostock/3734308)
