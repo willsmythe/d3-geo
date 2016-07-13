@@ -7,8 +7,7 @@ import {degrees, radians, sqrt} from "../math";
 import {rotateRadians} from "../rotation";
 import {transform} from "../transform";
 import resample from "./resample";
-import {default as geoStream} from "../stream";
-import boundsStream from "../path/bounds";
+import fit from "./fit";
 
 var transformRadians = transform({
   point: function(x, y) {
@@ -78,19 +77,7 @@ export function projectionMutator(projectAt) {
     return arguments.length ? (projectResample = resample(projectTransform, delta2 = _ * _), reset()) : sqrt(delta2);
   };
 
-  projection.fit = function(object, extent) {
-    var w = extent[1][0] - extent[0][0],
-        h = extent[1][1] - extent[0][1];
-
-    k = 1;
-    this.translate([0, 0]);
-    geoStream(object, this.stream(boundsStream));
-    var b = boundsStream.result();
-    k = 1 / Math.max((b[1][0] - b[0][0]) / w, (b[1][1] - b[0][1]) / h);
-    x = extent[0][0] + (w - k * (b[1][0] + b[0][0])) / 2;
-    y = extent[0][1] + (h - k * (b[1][1] + b[0][1])) / 2;
-    return recenter();
-  };
+  projection.fit = fit(projection);
 
   function recenter() {
     projectRotate = compose(rotate = rotateRadians(deltaLambda, deltaPhi, deltaGamma), project);
