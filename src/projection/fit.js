@@ -14,8 +14,8 @@ export function fit(project) {
     geoStream(object, project.stream(boundsStream));
     var b = boundsStream.result();
     var s = 1 / Math.max((b[1][0] - b[0][0]) / w, (b[1][1] - b[0][1]) / h),
-        x = extent[0][0] + (w - k * (b[1][0] + b[0][0])) / 2;
-        y = extent[0][1] + (h - k * (b[1][1] + b[0][1])) / 2;
+        x = extent[0][0] + (w - s * (b[1][0] + b[0][0])) / 2;
+        y = extent[0][1] + (h - s * (b[1][1] + b[0][1])) / 2;
 
     return project.scale(s)
         .translate([x, y]);
