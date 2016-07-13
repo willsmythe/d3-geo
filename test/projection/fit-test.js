@@ -7,10 +7,9 @@ var usTopo = require("../data/us-10m.json"),
     worldTopo = require("../data/world-50m.json"),
     world = topojson.feature(worldTopo, worldTopo.objects.land);
 
-// TODO: hemisphere, pole, clipExtent, custom projection
-
 require("../inDelta");
-tape("fit: world Equirectangular", function(test){
+
+tape("fit: world equirectangular", function(test){
 
   var projection = d3.geoEquirectangular();
 
@@ -22,7 +21,7 @@ tape("fit: world Equirectangular", function(test){
 
 });
 
-tape("fit: world AzimuthalEqualArea", function(test){
+tape("fit: world azimuthalEqualArea", function(test){
 
   var projection = d3.geoAzimuthalEqualArea();
 
@@ -34,7 +33,7 @@ tape("fit: world AzimuthalEqualArea", function(test){
 
 });
 
-tape("fit: world AzimuthalEquidistant", function(test){
+tape("fit: world azimuthalEquidistant", function(test){
 
   var projection = d3.geoAzimuthalEquidistant();
 
@@ -46,7 +45,7 @@ tape("fit: world AzimuthalEquidistant", function(test){
 
 });
 
-tape("fit: world ConicConformal", function(test){
+tape("fit: world conicConformal", function(test){
 
   var projection = d3.geoConicConformal()
       .clipAngle(30)
@@ -61,7 +60,7 @@ tape("fit: world ConicConformal", function(test){
 
 });
 
-tape("fit: world ConicEqualArea", function(test){
+tape("fit: world conicEqualArea", function(test){
 
   var projection = d3.geoConicEqualArea();
 
@@ -73,7 +72,7 @@ tape("fit: world ConicEqualArea", function(test){
 
 });
 
-tape("fit: world ConicEquidistant", function(test){
+tape("fit: world conicEquidistant", function(test){
 
   var projection = d3.geoConicEquidistant();
 
@@ -85,7 +84,7 @@ tape("fit: world ConicEquidistant", function(test){
 
 });
 
-tape("fit: world Equirectangular", function(test){
+tape("fit: world equirectangular", function(test){
 
   var projection = d3.geoEquirectangular();
 
@@ -97,7 +96,7 @@ tape("fit: world Equirectangular", function(test){
 
 });
 
-tape("fit: world Gnomonic", function(test){
+tape("fit: world gnomonic", function(test){
 
   var projection = d3.geoGnomonic()
       .clipAngle(45);
@@ -110,7 +109,7 @@ tape("fit: world Gnomonic", function(test){
 
 });
 
-tape("fit: world Mercator", function(test){
+tape("fit: world mercator", function(test){
 
   var projection = d3.geoMercator();
 
@@ -122,7 +121,7 @@ tape("fit: world Mercator", function(test){
 
 });
 
-tape("fit: world Orthographic", function(test){
+tape("fit: world orthographic", function(test){
 
   var projection = d3.geoOrthographic();
 
@@ -134,7 +133,7 @@ tape("fit: world Orthographic", function(test){
 
 });
 
-tape("fit: world Stereographic", function(test){
+tape("fit: world stereographic", function(test){
 
   var projection = d3.geoStereographic();
 
@@ -146,7 +145,7 @@ tape("fit: world Stereographic", function(test){
 
 });
 
-tape("fit: world TransverseMercator", function(test){
+tape("fit: world transverseMercator", function(test){
 
   var projection = d3.geoTransverseMercator();
 
@@ -158,7 +157,7 @@ tape("fit: world TransverseMercator", function(test){
 
 });
 
-tape("fit: USA AlbersUsa", function(test){
+tape("fit: USA albersUsa", function(test){
 
   var projection = d3.geoAlbersUsa();
 
@@ -166,6 +165,70 @@ tape("fit: USA AlbersUsa", function(test){
 
   test.inDelta(projection.scale(), 1152.889035, 1e-6);
   test.inDelta(projection.translate(), [533.52541, 496.232028], 1e-6);
+  test.end();
+
+});
+
+tape("fit: null geometries - Feature", function(test) {
+
+  var proj = d3.geoEquirectangular();
+
+  proj.fit({type: "Feature", geometry: null}, [[50, 50], [950, 950]]);
+
+  var s = proj.scale(),
+      t = proj.translate();
+
+  test.assert(!s);
+  test.assert(isNaN(t[0]));
+  test.assert(isNaN(t[1]));
+  test.end();
+
+});
+
+tape("fit: null geometries - MultiPoint", function(test) {
+
+  var proj = d3.geoEquirectangular();
+
+  proj.fit({type: "MultiPoint", coordinates: []}, [[50, 50], [950, 950]]);
+
+  var s = proj.scale(),
+      t = proj.translate();
+
+  test.assert(!s);
+  test.assert(isNaN(t[0]));
+  test.assert(isNaN(t[1]));
+  test.end();
+
+});
+
+tape("fit: null geometries - MultiLineString", function(test) {
+
+  var proj = d3.geoEquirectangular();
+
+  proj.fit({type: "MultiLineString", coordinates: []}, [[50, 50], [950, 950]]);
+
+  var s = proj.scale(),
+      t = proj.translate();
+
+  test.assert(!s);
+  test.assert(isNaN(t[0]));
+  test.assert(isNaN(t[1]));
+  test.end();
+
+});
+
+tape("fit: null geometries - MultiPolygon", function(test) {
+
+  var proj = d3.geoEquirectangular();
+
+  proj.fit({type: "MultiPolygon", coordinates: []}, [[50, 50], [950, 950]]);
+
+  var s = proj.scale(),
+      t = proj.translate();
+
+  test.assert(!s);
+  test.assert(isNaN(t[0]));
+  test.assert(isNaN(t[1]));
   test.end();
 
 });
