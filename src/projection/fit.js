@@ -31,7 +31,7 @@ function fit(project, extent, object) {
       .precision(precision)
       .scale(s)
       .translate([x, y]);
-};
+}
 
 export function fitSize(project) {
   return function(size, object) {
