@@ -7,7 +7,7 @@ import {degrees, radians, sqrt} from "../math";
 import {rotateRadians} from "../rotation";
 import {transform} from "../transform";
 import resample from "./resample";
-import {fit} from "./fit";
+import {fitExtent, fitSize} from "./fit";
 
 var transformRadians = transform({
   point: function(x, y) {
@@ -77,7 +77,9 @@ export function projectionMutator(projectAt) {
     return arguments.length ? (projectResample = resample(projectTransform, delta2 = _ * _), reset()) : sqrt(delta2);
   };
 
-  projection.fit = fit(projection);
+  projection.fitExtent = fitExtent(projection);
+
+  projection.fitSize = fitSize(projection);
 
   function recenter() {
     projectRotate = compose(rotate = rotateRadians(deltaLambda, deltaPhi, deltaGamma), project);
