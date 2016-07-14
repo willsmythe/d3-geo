@@ -335,9 +335,9 @@ If *precision* is specified, sets the threshold for the projection’s [adaptive
 
 <a href="#projection_fitSize" name="projection_fitSize">#</a> <i>projection</i>.<b>fitSize</b>(<i>size</i>, <i>object</i>)
 
-Updates the projection's [scale](#projection_scale) and [translate](#projection_translate) to fit the specified GeoJSON *object* in the center of the bounding box defined by *size*. The *size* is specified as a two-element array [*width*, *height*] (typically in pixels). Any [clipExtent](#projection_clipExtent) is ignored when determining the new scale and translate. Returns the projection.
+Updates the projection’s [scale](#projection_scale) and [translate](#projection_translate) to fit the specified GeoJSON *object* in the center of the bounding box defined by *size*. The *size* is specified as a two-element array [*width*, *height*] (typically in pixels). Any clip extent is ignored when determining the new scale and translate. Returns the projection.
 
-For example, this would scale and translate the [New Jersey State Plane projection](http://bl.ocks.org/mbostock/5126418) to fit the GeoJSON object *nj* in the center of a 960x500 bounding box:
+For example, this would scale and translate the [New Jersey State Plane projection](http://bl.ocks.org/mbostock/5126418) to fit the GeoJSON object *nj* in the center of a 960×500 bounding box:
 
 ```js
 var projection = d3.geoTransverseMercator()
@@ -347,9 +347,9 @@ var projection = d3.geoTransverseMercator()
 
 <a href="#projection_fitExtent" name="projection_fitExtent">#</a> <i>projection</i>.<b>fitExtent</b>(<i>extent</i>, <i>object</i>)
 
-Similar to [projection.fitSize](#projection_fitSize), but fits and centers the GeoJSON *object* in the bounding box defined by *extent*. The extent is specified as an array [[x₀, y₀], [x₁, y₁]], where x₀ is the left side of the bounding box, y₀ is the top, x₁ is the right and y₁ is the bottom.
+Similar to [*projection*.fitSize](#projection_fitSize), but fits and centers the GeoJSON *object* in the bounding box defined by *extent*. The extent is specified as an array [[x₀, y₀], [x₁, y₁]], where x₀ is the left side of the bounding box, y₀ is the top, x₁ is the right and y₁ is the bottom.
 
-For example, this would scale and translate the [New Jersey State Plane projection](http://bl.ocks.org/mbostock/5126418) to fit the GeoJSON object *nj* in the center of a 960x500 bounding box with 20 pixels of padding on each side:
+For example, this would scale and translate the [New Jersey State Plane projection](http://bl.ocks.org/mbostock/5126418) to fit the GeoJSON object *nj* in the center of a 960×500 bounding box with 20 pixels of padding on each side:
 
 ```js
 var projection = d3.geoTransverseMercator()
@@ -357,7 +357,7 @@ var projection = d3.geoTransverseMercator()
     .fitExtent([[20, 20], [940, 480]], nj);
 ```
 
-The following two examples are equivalent:
+The following two statements are equivalent:
 
 ```js
 projection.fitExtent([[0, 0], [width, height]], object);
