@@ -306,5 +306,4 @@ tape("fitExtent chaining: world transverseMercator", function(test){
   test.inDelta(projection.translate(), [473.829753, 500], 1e-6);
   test.end();
 
-
 });
