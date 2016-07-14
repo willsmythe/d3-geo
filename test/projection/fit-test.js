@@ -270,3 +270,41 @@ tape("fitExtent: custom projection", function(test) {
   test.end();
 
 });
+
+tape("fitSize ignore clipExtent: world equirectangular", function(test){
+
+  var p1 = d3.geoEquirectangular()
+      .fitSize([1000, 1000], world);
+
+  var s1 = p1.scale(),
+      t1 = p1.translate(),
+      c1 = p1.clipExtent();
+
+  var p2 = d3.geoEquirectangular()
+      .clipExtent([[100, 200], [700, 600]])
+      .fitSize([1000, 1000], world);
+
+  var s2 = p2.scale(),
+      t2 = p2.translate(),
+      c2 = p2.clipExtent();
+
+  test.inDelta(s1, s2, 1e-6);
+  test.inDelta(t1, t2, 1e-6);
+  test.equal(c1, null);
+  test.deepEqual(c2, [[100, 200], [700, 600]]);
+  test.end();
+
+});
+
+tape("fitExtent chaining: world transverseMercator", function(test){
+
+  var projection = d3.geoTransverseMercator()
+      .fitExtent([[50, 50], [950, 950]], world)
+      .scale(500);
+
+  test.equal(projection.scale(), 500);
+  test.inDelta(projection.translate(), [473.829753, 500], 1e-6);
+  test.end();
+
+
+});
