@@ -4,11 +4,11 @@ import boundsStream from "../path/bounds";
 function fit(project, extent, object) {
   var w = extent[1][0] - extent[0][0],
       h = extent[1][1] - extent[0][1],
-      precisionRatio = project.precision() / project.scale(),
+      precision = project.precision(),
       clip = project.clipExtent && project.clipExtent();
 
   project
-      .precision(precisionRatio)
+      .precision(precision / project.scale())
       .scale(1)
       .translate([0, 0]);
 
@@ -28,7 +28,7 @@ function fit(project, extent, object) {
   }
 
   return project
-      .precision(precisionRatio * s)
+      .precision(precision)
       .scale(s)
       .translate([x, y]);
 };
