@@ -9,7 +9,6 @@ function fit(project, extent, object) {
       clip = project.clipExtent && project.clipExtent();
 
   project
-      .precision(precisionRatio)
       .scale(1)
       .translate([0, 0]);
 
