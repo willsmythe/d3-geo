@@ -361,7 +361,6 @@ The following two statements are equivalent:
 
 ```js
 projection.fitExtent([[0, 0], [width, height]], object);
-
 projection.fitSize([[width, height], object);
 ```
 
