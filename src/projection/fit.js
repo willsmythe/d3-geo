@@ -8,7 +8,7 @@ function fit(project, extent, object) {
       clip = project.clipExtent && project.clipExtent();
 
   project
-      .precision(precision / project.scale())
+      .precision(precision ? 1e-3 : 0)
       .scale(1)
       .translate([0, 0]);
 
@@ -35,7 +35,7 @@ function fit(project, extent, object) {
 
 export function fitSize(project) {
   return function(size, object) {
-    return fit(project,  [[0, 0], size], object);
+    return fit(project, [[0, 0], size], object);
   };
 }
 
