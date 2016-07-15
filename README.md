@@ -333,6 +333,37 @@ If *rotation* is specified, sets the projection’s [three-axis rotation](http:/
 
 If *precision* is specified, sets the threshold for the projection’s [adaptive resampling](http://bl.ocks.org/mbostock/3795544) to the specified value in pixels and returns the projection. This value corresponds to the [Douglas–Peucker](http://en.wikipedia.org/wiki/Ramer–Douglas–Peucker_algorithm) distance. If *precision* is not specified, returns the projection’s current resampling precision which defaults to √0.5 ≅ 0.70710…
 
+<a href="#projection_fitSize" name="projection_fitSize">#</a> <i>projection</i>.<b>fitSize</b>(<i>size</i>, <i>object</i>)
+
+Updates the projection’s [scale](#projection_scale) and [translate](#projection_translate) to fit the specified GeoJSON *object* in the center of the bounding box defined by *size*. The *size* is specified as a two-element array [*width*, *height*] (typically in pixels). Any clip extent is ignored when determining the new scale and translate. Returns the projection.
+
+For example, this would scale and translate the [New Jersey State Plane projection](http://bl.ocks.org/mbostock/5126418) to fit the GeoJSON object *nj* in the center of a 960×500 bounding box:
+
+```js
+var projection = d3.geoTransverseMercator()
+    .rotate([74 + 30 / 60, -38 - 50 / 60])
+    .fitSize([960, 500], nj);
+```
+
+<a href="#projection_fitExtent" name="projection_fitExtent">#</a> <i>projection</i>.<b>fitExtent</b>(<i>extent</i>, <i>object</i>)
+
+Similar to [*projection*.fitSize](#projection_fitSize), but fits and centers the GeoJSON *object* in the bounding box defined by *extent*. The extent is specified as an array [[x₀, y₀], [x₁, y₁]], where x₀ is the left side of the bounding box, y₀ is the top, x₁ is the right and y₁ is the bottom.
+
+For example, this would scale and translate the [New Jersey State Plane projection](http://bl.ocks.org/mbostock/5126418) to fit the GeoJSON object *nj* in the center of a 960×500 bounding box with 20 pixels of padding on each side:
+
+```js
+var projection = d3.geoTransverseMercator()
+    .rotate([74 + 30 / 60, -38 - 50 / 60])
+    .fitExtent([[20, 20], [940, 480]], nj);
+```
+
+The following two statements are equivalent:
+
+```js
+projection.fitExtent([[0, 0], [width, height]], object);
+projection.fitSize([[width, height], object);
+```
+
 <a href="#geoAlbers" name="geoAlbers">#</a> d3.<b>geoAlbers</b>()
 
 [<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/albers.png" width="480" height="250">](http://bl.ocks.org/mbostock/3734308)
