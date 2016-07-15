@@ -335,7 +335,7 @@ If *precision* is specified, sets the threshold for the projection’s [adaptive
 
 <a href="#projection_fitSize" name="projection_fitSize">#</a> <i>projection</i>.<b>fitSize</b>(<i>size</i>, <i>object</i>)
 
-Updates the projection’s [scale](#projection_scale) and [translate](#projection_translate) to fit the specified GeoJSON *object* in the center of the bounding box defined by *size*. The *size* is specified as a two-element array [*width*, *height*] (typically in pixels). Any clip extent is ignored when determining the new scale and translate. Returns the projection.
+Updates the projection’s [scale](#projection_scale) and [translate](#projection_translate) to fit the specified GeoJSON *object* in the center of the bounding box defined by *size*. The *size* is specified as a two-element array [*width*, *height*], typically in pixels. Any [clip extent](#projection_clipExtent) is ignored when determining the new scale and translate. Returns the projection.
 
 For example, this would scale and translate the [New Jersey State Plane projection](http://bl.ocks.org/mbostock/5126418) to fit the GeoJSON object *nj* in the center of a 960×500 bounding box:
 
