@@ -9,6 +9,14 @@ var usTopo = require("../data/us-10m.json"),
 
 require("../inDelta");
 
+tape("projection.fitExtent(…) sphere equirectangular", function(test) {
+  var projection = d3.geoEquirectangular();
+  projection.fitExtent([[50, 50], [950, 950]], {type: "Sphere"});
+  test.inDelta(projection.scale(), 900 / (2 * Math.PI), 1e-6);
+  test.inDelta(projection.translate(), [500, 500], 1e-6);
+  test.end();
+});
+
 tape("projection.fitExtent(…) world equirectangular", function(test) {
   var projection = d3.geoEquirectangular();
   projection.fitExtent([[50, 50], [950, 950]], world);
@@ -65,7 +73,7 @@ tape("projection.fitExtent(…) world equirectangular", function(test) {
   test.end();
 });
 
-tape("fitSize: world equirectangular", function(test) {
+tape("projection.fitSize(…) world equirectangular", function(test) {
   var projection = d3.geoEquirectangular();
   projection.fitSize([900, 900], world);
   test.inDelta(projection.scale(), 143.239449, 1e-6);
@@ -97,7 +105,7 @@ tape("projection.fitExtent(…) world orthographic", function(test) {
   test.end();
 });
 
-tape("fitSize: world orthographic", function(test) {
+tape("projection.fitSize(…) world orthographic", function(test) {
   var projection = d3.geoOrthographic();
   projection.fitSize([900, 900], world);
   test.inDelta(projection.scale(), 451.428643, 1e-6);
