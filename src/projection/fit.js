@@ -4,32 +4,25 @@ import boundsStream from "../path/bounds";
 function fit(project, extent, object) {
   var w = extent[1][0] - extent[0][0],
       h = extent[1][1] - extent[0][1],
-      precision = project.precision(),
       clip = project.clipExtent && project.clipExtent();
 
   project
-      .precision(precision ? 1e-3 : 0)
-      .scale(1)
+      .scale(150)
       .translate([0, 0]);
 
-  if (clip != null) {
-    project.clipExtent(null);
-  }
+  if (clip != null) project.clipExtent(null);
 
   geoStream(object, project.stream(boundsStream));
 
   var b = boundsStream.result(),
-      s = 1 / Math.max((b[1][0] - b[0][0]) / w, (b[1][1] - b[0][1]) / h),
-      x = +extent[0][0] + (w - s * (b[1][0] + b[0][0])) / 2,
-      y = +extent[0][1] + (h - s * (b[1][1] + b[0][1])) / 2;
+      k = Math.min(w / (b[1][0] - b[0][0]), h / (b[1][1] - b[0][1])),
+      x = +extent[0][0] + (w - k * (b[1][0] + b[0][0])) / 2,
+      y = +extent[0][1] + (h - k * (b[1][1] + b[0][1])) / 2;
 
-  if (clip != null) {
-    project.clipExtent(clip);
-  }
+  if (clip != null) project.clipExtent(clip);
 
   return project
-      .precision(precision)
-      .scale(s)
+      .scale(k * 150)
       .translate([x, y]);
 }
 
