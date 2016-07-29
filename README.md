@@ -1,6 +1,6 @@
 # d3-geo
 
-Map projections are often naïvely regarded as simple point transformations. Spherical Mercator, for instance, can be implemented concisely as:
+Map projections are sometimes implemented as point transformations. For instance, spherical Mercator:
 
 ```js
 function mercator(x, y) {
@@ -8,11 +8,11 @@ function mercator(x, y) {
 }
 ```
 
-While this is a reasonable mathematical representation, it only works if your geometry is represented continuously as infinite point sets! Of course computers do not have infinite memory, and so we must instead work with discrete geometry such as polygons and polylines.
+This is a reasonable *mathematical* approach if your geometry consists of continuous, infinite point sets. Yet computers do not have infinite memory, so we must instead work with discrete geometry such as polygons and polylines!
 
-Alas, discrete geometry makes the challenge of projecting from the sphere to the plane much harder. The edges of a spherical polygon are [geodesics](https://en.wikipedia.org/wiki/Geodesic) (also known as great arcs, or segments of a great circle), not straight lines. Even projected to the plane, geodesics remain curves in all map projections except [gnomonic](#geoGnomonic), and thus accurate projection requires interpolating along great arcs. D3 uses [adaptive sampling](https://bl.ocks.org/mbostock/3795544), inspired by a popular [line simplification method](https://bost.ocks.org/mike/simplify/), to balance accuracy and performance.
+Discrete geometry makes the challenge of projecting from the sphere to the plane much harder. The edges of a spherical polygon are [geodesics](https://en.wikipedia.org/wiki/Geodesic) (segments of great circles), not straight lines. Projected to the plane, geodesics are curves in all map projections except [gnomonic](#geoGnomonic), and thus accurate projection requires interpolation along each arc. D3 uses [adaptive sampling](https://bl.ocks.org/mbostock/3795544) inspired by a popular [line simplification method](https://bost.ocks.org/mike/simplify/) to balance accuracy and performance.
 
-The projection of polygons and polylines must also deal with the topological differences between the sphere and the plane. Some projections require cutting geometry that [cross the antimeridian](https://bl.ocks.org/mbostock/3788999), while others require [clipping geometry to a great circle](http://bl.ocks.org/mbostock/3021474). Furthermore, spherical polygons require a winding order convention to determine which side of the polygon is the inside: D3 and [TopoJSON](https://github.com/mbostock/topojson) use clockwise winding. (Spherical polygons can be [larger than a hemisphere](https://bl.ocks.org/mbostock/6713736)! See also [ST_ForceRHR](http://www.postgis.org/docs/ST_ForceRHR.html) in PostGIS.)
+The projection of polygons and polylines must also deal with the topological differences between the sphere and the plane. Some projections require cutting geometry that [crosses the antimeridian](https://bl.ocks.org/mbostock/3788999), while others require [clipping geometry to a great circle](http://bl.ocks.org/mbostock/3021474). Furthermore, spherical polygons require a winding order convention to determine which side of the polygon is the inside: D3 and [TopoJSON](https://github.com/mbostock/topojson) use clockwise winding. (Spherical polygons can be [larger than a hemisphere](https://bl.ocks.org/mbostock/6713736)! See also [ST_ForceRHR](http://www.postgis.org/docs/ST_ForceRHR.html) in PostGIS.)
 
 D3’s approach affords great expressiveness: you can choose the right projection, and the right aspect, for your data. D3 supports a wide variety of common and [unusual map projections](https://github.com/d3/d3-geo-projection). For more, see Part 2 of [The Toolmaker’s Guide](https://vimeo.com/106198518#t=20m0s).
 
