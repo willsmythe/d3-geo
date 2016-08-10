@@ -353,7 +353,7 @@ A convenience method for [*projection*.fitExtent](#projection_fitExtent) where t
 
 ```js
 projection.fitExtent([[0, 0], [width, height]], object);
-projection.fitSize([[width, height], object);
+projection.fitSize([width, height], object);
 ```
 
 <a href="#geoAlbers" name="geoAlbers">#</a> d3.<b>geoAlbers</b>()
