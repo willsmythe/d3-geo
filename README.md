@@ -172,7 +172,7 @@ If *precision* is specified, sets the precision for this graticule, in degrees. 
 
 The geographic path generator, [d3.geoPath](#geoPath), is similar to the shape generators in [d3-shape](https://github.com/d3/d3-shape): given a GeoJSON geometry or feature object, it generates an SVG path data string or [renders the path to a Canvas](http://bl.ocks.org/mbostock/3783604). Canvas is recommended for dynamic or interactive projections to improve performance.
 
-<a href="#geoPath" name="geoPath">#</a> d3.<b>geoPath</b>()
+<a href="#geoPath" name="geoPath">#</a> d3.<b>geoPath</b>() [<>](https://github.com/d3/d3-geo/blob/master/src/path/index.js "Source")
 
 Creates a new geographic path generator with the default settings.
 
