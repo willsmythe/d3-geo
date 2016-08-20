@@ -80,3 +80,16 @@ tape("geoPath(FeatureCollection) renders a feature collection", function(test) {
   }), "M165,160L170,160L170,165Z");
   test.end();
 });
+
+tape("geoPath(LineString) then geoPath(Point) does not treat the point as part of a line", function(test) {
+  var path = d3_geo.geoPath().projection(equirectangular);
+  test.pathEqual(path({
+    type: "LineString",
+    coordinates: [[-63, 18], [-62, 18], [-62, 17]]
+  }), "M165,160L170,160L170,165");
+  test.pathEqual(path({
+    type: "Point",
+    coordinates: [-63, 18]
+  }), "M165,160m0,4.500000a4.500000,4.500000 0 1,1 0,-9a4.500000,4.500000 0 1,1 0,9z");
+  test.end();
+});

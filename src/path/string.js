@@ -17,10 +17,8 @@ PathString.prototype = {
     this._point = 0;
   },
   lineEnd: function() {
-    if (this._line === 0) {
-      this._string.push("Z");
-      this._line = NaN;
-    }
+    if (this._line === 0) this._string.push("Z");
+    this._point = NaN;
   },
   point: function(x, y) {
     switch (this._point) {

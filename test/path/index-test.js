@@ -174,3 +174,25 @@ tape("geoPath.context(null)(Unknown) returns undefined", function(test) {
   test.strictEqual(path({type: "__proto__"}), undefined);
   test.end();
 });
+
+tape("geoPath(LineString) then geoPath(Point) does not treat the point as part of a line", function(test) {
+  var context = testContext(), path = d3_geo.geoPath().projection(equirectangular).context(context);
+  path({
+    type: "LineString",
+    coordinates: [[-63, 18], [-62, 18], [-62, 17]]
+  });
+  test.deepEqual(context.result(), [
+    {type: "moveTo", x: 165, y: 160},
+    {type: "lineTo", x: 170, y: 160},
+    {type: "lineTo", x: 170, y: 165}
+  ]);
+  path({
+    type: "Point",
+    coordinates: [-63, 18]
+  });
+  test.deepEqual(context.result(), [
+    {type: "moveTo", x: 170, y: 160},
+    {type: "arc", x: 165, y: 160, r: 4.5}
+  ]);
+  test.end();
+});
