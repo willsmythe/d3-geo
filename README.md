@@ -390,7 +390,7 @@ The conic conformal projection. The parallels default to [30°, 30°] resulting 
 
 [<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/conicEqualArea.png" width="480" height="250">](http://bl.ocks.org/mbostock/3734308)
 
-The Albers’ equal-area conic projection. See also [*conic*.parallels](#conic_parallels).
+The Albers’ equal-area conic projection. The limit case where its standard parallels are symmetrical north and south of the Equator is undefined: use a cylindrical projection instead. See also [*conic*.parallels](#conic_parallels).
 
 <a href="#geoConicEquidistant" name="geoConicEquidistant">#</a> d3.<b>geoConicEquidistant</b>() [<>](https://github.com/d3/d3-geo/blob/master/src/projection/conicEquidistant.js "Source")
 
@@ -436,7 +436,7 @@ The transverse spherical Mercator projection. Defines a default [*projection*.cl
 
 <a href="#conic_parallels" name="conic_parallels">#</a> <i>conic</i>.<b>parallels</b>([<i>parallels</i>]) [<>](https://github.com/d3/d3-geo/blob/master/src/projection/conic.js#L10 "Source")
 
-…
+The [two standard parallels](https://en.wikipedia.org/wiki/Map_projection#Conic) that define the map layout in conic projections.
 
 <a href="#geoClipExtent" name="geoClipExtent">#</a> d3.<b>geoClipExtent</b>() [<>](https://github.com/d3/d3-geo/blob/master/src/clip/extent.js "Source")
 
