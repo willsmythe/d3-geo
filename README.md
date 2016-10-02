@@ -390,7 +390,7 @@ The conic conformal projection. The parallels default to [30°, 30°] resulting 
 
 [<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/conicEqualArea.png" width="480" height="250">](http://bl.ocks.org/mbostock/3734308)
 
-The Albers’ equal-area conic projection. The limit case where its standard parallels are symmetrical north and south of the Equator is undefined: use a cylindrical projection instead. See also [*conic*.parallels](#conic_parallels).
+The Albers’ equal-area conic projection. See also [*conic*.parallels](#conic_parallels).
 
 <a href="#geoConicEquidistant" name="geoConicEquidistant">#</a> d3.<b>geoConicEquidistant</b>() [<>](https://github.com/d3/d3-geo/blob/master/src/projection/conicEquidistant.js "Source")
 
