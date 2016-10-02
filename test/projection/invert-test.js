@@ -3,8 +3,6 @@ var tape = require("tape"),
 
 require("./projectionEqual");
 
-var pi = Math.PI;
-
 tape("projection.invert(projection(point)) returns the point", function(test) {
   [
     d3.geoAlbers(),
