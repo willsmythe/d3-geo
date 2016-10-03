@@ -29,7 +29,7 @@ tape("projection.invert(projection(point)) returns the point", function(test) {
     d3.geoTransverseMercator(),
   ]
   .forEach(function(projection) {
-     [ [0, 0], [30, 24], [ -10, 42 ] ]
+     [ [0, 0], [30.3, 24.1], [ -10, 42 ], [ -2, -5 ] ]
      .forEach(function(point) {
          test.projectionEqual(projection, point, projection(point));
      });
