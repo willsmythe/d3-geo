@@ -1,18 +1,14 @@
 import {abs, asin, atan2, cos, epsilon, sign, sin, sqrt} from "../math";
 import {conicProjection} from "./conic";
+import {cylindricalEqualAreaRaw} from "./cylindricalEqualArea";
 
 export function conicEqualAreaRaw(y0, y1) {
-  var sy0 = sin(y0),
-      n = (sy0 + sin(y1)) / 2,
-      c = 1 + sy0 * (2 * n - sy0);
+  var sy0 = sin(y0), n = (sy0 + sin(y1)) / 2;
 
-  // gracefully handle the limit case where the two standard parallels
-  // are symetrical with the Equator
-  if (abs(n) < epsilon) {
-    n = (n < 0 ? -1 : 1) * epsilon;
-  }
+  // Are the parallels symmetrical around the Equator?
+  if (abs(n) < epsilon) return cylindricalEqualAreaRaw(y0);
 
-  var r0 = sqrt(c) / n;
+  var c = 1 + sy0 * (2 * n - sy0), r0 = sqrt(c) / n;
 
   function project(x, y) {
     var r = sqrt(c - 2 * n * sin(y)) / n;
