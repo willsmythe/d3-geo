@@ -595,7 +595,7 @@ The clip extent transform can clip planar geometry to a rectangular extent.
 
 <a href="#clipExtent_extent" name="clipExtent_extent">#</a> <i>clipExtent</i>.<b>extent</b>([<i>extent</i>])
 
-If *extent* is specified, sets the transform’s viewport clip extent to the specified bounds in pixels and returns the transform. The *extent* bounds are specified as an array \[\[<i>x₀</i>, <i>y₀</i>\], \[<i>x₁</i>, <i>y₁</i>\]\], where <i>x₀</i> is the left-side of the viewport, <i>y₀</i> is the top, <i>x₁</i> is the right and <i>y₁</i> is the bottom. If *extent* is not specified, returns the current viewport clip extent which defaults to \[\[0, 0\], \[960, 500\]\]. Similar to [*projection*.clipExtent](#projection_clipExtent).
+If *extent* is specified, sets the transform’s clip extent to the specified bounds in pixels and returns the transform. The *extent* bounds are specified as an array \[\[<i>x₀</i>, <i>y₀</i>\], \[<i>x₁</i>, <i>y₁</i>\]\], where <i>x₀</i> is the left-side of the viewport, <i>y₀</i> is the top, <i>x₁</i> is the right and <i>y₁</i> is the bottom. If *extent* is not specified, returns the current clip extent which defaults to \[\[0, 0\], \[960, 500\]\]. Similar to [*projection*.clipExtent](#projection_clipExtent).
 
 <a href="#geoIdentity" name="geoIdentity">#</a> d3.<b>geoIdentity</b>() [<>](https://github.com/d3/d3-geo/blob/master/src/projection/identity.js "Source")
 
