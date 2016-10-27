@@ -133,7 +133,7 @@ For many more projections, see [d3-geo-projection](https://github.com/d3/d3-geo-
 
 <a href="#_projection" name="_projection">#</a> <i>projection</i>(<i>point</i>) [<>](https://github.com/d3/d3-geo/blob/master/src/projection/index.js#L34 "Source")
 
-Returns a new array [*x*, *y*] (typically in pixels) representing the projected point of the given *point*. The point must be specified as a two-element array [*longitude*, *latitude*] in degrees. May return null if the specified *point* has no defined projected position, such as when the point is outside the clipping bounds of the projection.
+Returns a new array \[*x*, *y*\] (typically in pixels) representing the projected point of the given *point*. The point must be specified as a two-element array [*longitude*, *latitude*] in degrees. May return null if the specified *point* has no defined projected position, such as when the point is outside the clipping bounds of the projection.
 
 <a href="#projection_invert" name="projection_invert">#</a> <i>projection</i>.<b>invert</b>(<i>point</i>) [<>](https://github.com/d3/d3-geo/blob/master/src/projection/index.js#L39 "Source")
 
