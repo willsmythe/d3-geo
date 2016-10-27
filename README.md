@@ -591,7 +591,11 @@ function matrix(a, b, c, d, tx, ty) {
 
 <a href="#geoClipExtent" name="geoClipExtent">#</a> d3.<b>geoClipExtent</b>() [<>](https://github.com/d3/d3-geo/blob/master/src/clip/extent.js "Source")
 
-The clip extent transform can clip planar geometry to an extent. It implements [*projection*.clipExtent](#projection_clipExtent).
+The clip extent transform can clip planar geometry to an extent.
+
+<a href="#clipExtent_extent" name="clipExtent_extent">#</a> <i>clipExtent</i>.<b>extent</b>([<i>extent</i>])
+
+If *extent* is specified, sets the transform’s viewport clip extent to the specified bounds in pixels and returns the transform. The *extent* bounds are specified as an array \[\[<i>x₀</i>, <i>y₀</i>\], \[<i>x₁</i>, <i>y₁</i>\]\], where <i>x₀</i> is the left-side of the viewport, <i>y₀</i> is the top, <i>x₁</i> is the right and <i>y₁</i> is the bottom. If *extent* is not specified, returns the current viewport clip extent which defaults to \[\[0, 0\], \[960, 500\]\]. Similar to [*projection*.clipExtent](#projection_clipExtent).
 
 <a href="#geoIdentity" name="geoIdentity">#</a> d3.<b>geoIdentity</b>() [<>](https://github.com/d3/d3-geo/blob/master/src/projection/identity.js "Source")
 
