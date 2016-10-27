@@ -591,7 +591,7 @@ function matrix(a, b, c, d, tx, ty) {
 
 <a href="#geoClipExtent" name="geoClipExtent">#</a> d3.<b>geoClipExtent</b>() [<>](https://github.com/d3/d3-geo/blob/master/src/clip/extent.js "Source")
 
-The clip extent transform can clip planar geometry to an extent.
+The clip extent transform can clip planar geometry to a rectangular extent.
 
 <a href="#clipExtent_extent" name="clipExtent_extent">#</a> <i>clipExtent</i>.<b>extent</b>([<i>extent</i>])
 
