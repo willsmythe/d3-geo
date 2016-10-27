@@ -129,7 +129,7 @@ Projections transform spherical polygonal geometry to planar polygonal geometry.
 * [Conic](#conic-projections)
 * [Cylindrical](#cylindrical-projections)
 
-For many more projections, see [d3-geo-projection](https://github.com/d3/d3-geo-projection).
+For many more projections, see [d3-geo-projection](https://github.com/d3/d3-geo-projection). You can implement [custom projections](#raw-projections) using [d3.geoProjection](#geoProjection) or [d3.geoProjectionMutator](#geoProjectionMutator).
 
 <a href="#_projection" name="_projection">#</a> <i>projection</i>(<i>point</i>) [<>](https://github.com/d3/d3-geo/blob/master/src/projection/index.js#L34 "Source")
 
