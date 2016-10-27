@@ -28,6 +28,10 @@ export default function() {
     return arguments.length ? (dx = +_[0], dy = +_[1], reset()) : [dx, dy];
   };
 
+  projection.toString = function() {
+    return "translate(" + dx + "," + dy + ") scale(" + k + ")";
+  };
+
   projection.fitExtent = fitExtent(projection);
 
   projection.fitSize = fitSize(projection);
