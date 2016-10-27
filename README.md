@@ -206,7 +206,7 @@ Or use multiple path elements:
 
 ```js
 svg.selectAll("path")
-    .data(features)
+  .data(features)
   .enter().append("path")
     .attr("d", d3.geoPath());
 ```
