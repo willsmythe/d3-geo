@@ -591,15 +591,11 @@ function matrix(a, b, c, d, tx, ty) {
 
 <a href="#geoClipExtent" name="geoClipExtent">#</a> d3.<b>geoClipExtent</b>() [<>](https://github.com/d3/d3-geo/blob/master/src/clip/extent.js "Source")
 
-…
-
-<a href="#extent_extent" name="extent_extent">#</a> <i>extent</i>.<b>extent</b>([<i>extent</i>]) [<>](https://github.com/d3/d3-geo/blob/master/src/clip/extent.js#L183 "Source")
-
-…
+The clip extent transform can clip planar geometry to an extent. It implements [*projection*.clipExtent](#projection_clipExtent).
 
 <a href="#geoIdentity" name="geoIdentity">#</a> d3.<b>geoIdentity</b>() [<>](https://github.com/d3/d3-geo/blob/master/src/projection/identity.js "Source")
 
-The identity projection is a simple planar transform that can be used to scale and translate geometry. It implements [*projection*.scale](#projection_scale), [*projection*.translate](#projection_translate), [*projection*.fitExtent](#projection_fitExtent) and [*projection*.fitSize](#projection_fitSize).
+The identity transform can be used to scale and translate planar geometry. It implements [*projection*.scale](#projection_scale), [*projection*.translate](#projection_translate), [*projection*.fitExtent](#projection_fitExtent) and [*projection*.fitSize](#projection_fitSize).
 
 <a href="#identity_toString" name="identity_toString">#</a> <i>identity</i>.<b>toString</b>() [<>](https://github.com/d3/d3-geo/blob/master/src/projection/identity.js#L31 "Source")
 
