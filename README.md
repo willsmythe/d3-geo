@@ -599,7 +599,7 @@ function matrix(a, b, c, d, tx, ty) {
 
 <a href="#geoIdentity" name="geoIdentity">#</a> d3.<b>geoIdentity</b>() [<>](https://github.com/d3/d3-geo/blob/master/src/projection/identity.js "Source")
 
-Implements [*projection*.scale](#projection_scale), [*projection*.translate](#projection_translate), [*projection*.fitExtent](#projection_fitExtent) and [*projection*.fitSize](#projection_fitSize).
+The identity projection is a simple planar transform that can be used to scale and translate geometry. It implements [*projection*.scale](#projection_scale), [*projection*.translate](#projection_translate), [*projection*.fitExtent](#projection_fitExtent) and [*projection*.fitSize](#projection_fitSize).
 
 <a href="#identity_toString" name="identity_toString">#</a> <i>identity</i>.<b>toString</b>() [<>](https://github.com/d3/d3-geo/blob/master/src/projection/identity.js#L31 "Source")
 
