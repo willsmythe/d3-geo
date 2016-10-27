@@ -1,45 +1,46 @@
+import {clipExtent} from "../clip/extent";
+import identity from "../identity";
 import {transform} from "../transform";
 import {fitExtent, fitSize} from "./fit";
 
+function scaleTranslate(k, tx, ty) {
+  return k === 1 && tx === 0 && ty === 0 ? identity : transform({
+    point: function(x, y) {
+      this.stream.point(x * k + tx, y * k + ty);
+    }
+  });
+}
+
 export default function() {
-  var k = 1, // scale
-      dx = 0, dy = 0, // translate
+  var k = 1, tx = 0, ty = 0, transform = identity, // scale and translate
+      x0 = null, y0, x1, y1, clip = identity, // clip extent
       cache,
       cacheStream,
-      identityTransform = transform({point: function(x, y) { this.stream.point(x * k + dx, y * k + dy); }});
-
-  function projection(point) {
-    return [point[0] * k + dx, point[1] * k + dy];
-  }
-
-  projection.invert = function(point) {
-    return [(point[0] - dx) / k, (point[1] - dy) / k];
-  };
-
-  projection.stream = function(stream) {
-    return cache && cacheStream === stream ? cache : cache = identityTransform(cacheStream = stream);
-  };
-
-  projection.scale = function(_) {
-    return arguments.length ? (k = +_, reset()) : k;
-  };
-
-  projection.translate = function(_) {
-    return arguments.length ? (dx = +_[0], dy = +_[1], reset()) : [dx, dy];
-  };
-
-  projection.toString = function() {
-    return "translate(" + dx + "," + dy + ") scale(" + k + ")";
-  };
-
-  projection.fitExtent = fitExtent(projection);
-
-  projection.fitSize = fitSize(projection);
+      projection;
 
   function reset() {
     cache = cacheStream = null;
     return projection;
   }
 
-  return reset();
+  return projection = {
+    stream: function(stream) {
+      return cache && cacheStream === stream ? cache : cache = transform(clip(cacheStream = stream));
+    },
+    clipExtent: function(_) {
+      return arguments.length ? (clip = _ == null ? (x0 = y0 = x1 = y1 = null, identity) : clipExtent(x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1]), reset()) : x0 == null ? null : [[x0, y0], [x1, y1]];
+    },
+    scale: function(_) {
+      return arguments.length ? (transform = scaleTranslate(k = +_, tx, ty), reset()) : k;
+    },
+    translate: function(_) {
+      return arguments.length ? (transform = scaleTranslate(k, tx = +_[0], ty = +_[1]), reset()) : [tx, ty];
+    },
+    fitExtent: function(extent, object) {
+      return fitExtent(projection, extent, object);
+    },
+    fitSize: function(size, object) {
+      return fitSize(projection, size, object);
+    }
+  };
 }

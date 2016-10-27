@@ -589,24 +589,6 @@ function matrix(a, b, c, d, tx, ty) {
 }
 ```
 
-<a href="#geoClipExtent" name="geoClipExtent">#</a> d3.<b>geoClipExtent</b>() [<>](https://github.com/d3/d3-geo/blob/master/src/clip/extent.js "Source")
-
-The clip extent transform can clip planar geometry to a rectangular extent.
-
-<a href="#clipExtent_extent" name="clipExtent_extent">#</a> <i>clipExtent</i>.<b>extent</b>([<i>extent</i>])
-
-If *extent* is specified, sets the transform’s clip extent to the specified bounds in pixels and returns the transform. The *extent* bounds are specified as an array \[\[<i>x₀</i>, <i>y₀</i>\], \[<i>x₁</i>, <i>y₁</i>\]\], where <i>x₀</i> is the left-side of the viewport, <i>y₀</i> is the top, <i>x₁</i> is the right and <i>y₁</i> is the bottom. If *extent* is not specified, returns the current clip extent which defaults to \[\[0, 0\], \[960, 500\]\]. Similar to [*projection*.clipExtent](#projection_clipExtent).
-
 <a href="#geoIdentity" name="geoIdentity">#</a> d3.<b>geoIdentity</b>() [<>](https://github.com/d3/d3-geo/blob/master/src/projection/identity.js "Source")
 
-The identity transform can be used to scale and translate planar geometry. It implements [*projection*.scale](#projection_scale), [*projection*.translate](#projection_translate), [*projection*.fitExtent](#projection_fitExtent) and [*projection*.fitSize](#projection_fitSize).
-
-<a href="#identity_toString" name="identity_toString">#</a> <i>identity</i>.<b>toString</b>() [<>](https://github.com/d3/d3-geo/blob/master/src/projection/identity.js#L31 "Source")
-
-Returns a string representing the [SVG transform](https://www.w3.org/TR/SVG/coords.html#TransformAttribute) corresponding to this transform. Equivalent to:
-
-```js
-function toString() {
-  return "translate(" + this.translate() + ") scale(" + this.scale() + ")";
-}
-```
+The identity transform can be used to scale, translate and clip planar geometry. It implements [*projection*.scale](#projection_scale), [*projection*.translate](#projection_translate), [*projection*.fitExtent](#projection_fitExtent), [*projection*.fitSize](#projection_fitSize) and [*projection*.clipExtent](#projection_clipExtent).
