@@ -17,6 +17,31 @@ function testPath(projection, object) {
   return context.result();
 }
 
+tape("geoPath.projection() defaults to undefined", function(test) {
+  var path = d3_geo.geoPath();
+  test.strictEqual(path.projection(), undefined);
+  test.end();
+});
+
+tape("geoPath.context() defaults to undefined", function(test) {
+  var path = d3_geo.geoPath();
+  test.strictEqual(path.context(), undefined);
+  test.end();
+});
+
+tape("d3.geoPath(projection) sets the initial projection", function(test) {
+  var projection = d3_geo.geoAlbers(), path = d3_geo.geoPath(projection);
+  test.strictEqual(path.projection(), projection);
+  test.end();
+});
+
+tape("d3.geoPath(projection, context) sets the initial projection and context", function(test) {
+  var context = testContext(), projection = d3_geo.geoAlbers(), path = d3_geo.geoPath(projection, context);
+  test.strictEqual(path.projection(), projection);
+  test.strictEqual(path.context(), context);
+  test.end();
+});
+
 tape("geoPath(Point) renders a point", function(test) {
   test.deepEqual(testPath(equirectangular, {
     type: "Point",

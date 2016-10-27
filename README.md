@@ -27,7 +27,8 @@ If you use NPM, `npm install d3-geo`. Otherwise, download the [latest release](h
 <script src="https://d3js.org/d3-geo.v1.min.js"></script>
 <script>
 
-var path = d3.geoPath();
+var projection = d3.geoAlbers(),
+    path = d3.geoPath(projection);
 
 </script>
 ```
@@ -47,9 +48,9 @@ var path = d3.geoPath();
 
 The geographic path generator, [d3.geoPath](#geoPath), is similar to the shape generators in [d3-shape](https://github.com/d3/d3-shape): given a GeoJSON geometry or feature object, it generates an SVG path data string or [renders the path to a Canvas](http://bl.ocks.org/mbostock/3783604). Canvas is recommended for dynamic or interactive projections to improve performance. Paths can be used with [projections](#projections) or [transforms](#transforms), or they can be used to render planar geometry directly to Canvas or SVG.
 
-<a href="#geoPath" name="geoPath">#</a> d3.<b>geoPath</b>() [<>](https://github.com/d3/d3-geo/blob/master/src/path/index.js "Source")
+<a href="#geoPath" name="geoPath">#</a> d3.<b>geoPath</b>([<i>projection</i>[, <i>context</i>]]) [<>](https://github.com/d3/d3-geo/blob/master/src/path/index.js "Source")
 
-Creates a new geographic path generator with the default settings.
+Creates a new geographic path generator with the default settings. If *projection* is specified, sets the [current projection](#path_projection). If *context* is specified, sets the [current context](#path_context).
 
 <a href="_path" name="_path">#</a> <i>path</i>(<i>object</i>[, <i>arguments…</i>]) [<>](https://github.com/d3/d3-geo/blob/master/src/path/index.js#L16 "Source")
 
