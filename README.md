@@ -419,7 +419,7 @@ See [d3-composite-projections](http://geoexamples.com/d3-composite-projections/)
 
 #### Conic Projections
 
-Conic projections project the sphere onto a cone, and then unroll the cone onto the plane.
+Conic projections project the sphere onto a cone, and then unroll the cone onto the plane. Conic projections have [two configurable parallels](#conic_parallels).
 
 <a href="#conic_parallels" name="conic_parallels">#</a> <i>conic</i>.<b>parallels</b>([<i>parallels</i>]) [<>](https://github.com/d3/d3-geo/blob/master/src/projection/conic.js#L10 "Source")
 
