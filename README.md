@@ -249,7 +249,7 @@ If *radius* is specified, sets the radius used to display Point and MultiPoint f
 
 ### Projections
 
-Projections transform spherical polygonal geometry to planar polygonal geometry. The [d3.geoProjection](#geoProjection) and [d3.geoProjectionMutator](#geoProjectionMutator) methods allow you to define custom projections based on point transformations; these point transformations are called [*raw projections*](#raw-projections). D3 also provides several standard projections:
+Projections transform spherical polygonal geometry to planar polygonal geometry. The [d3.geoProjection](#geoProjection) and [d3.geoProjectionMutator](#geoProjectionMutator) methods allow you to define custom projections based on point transformations; these point transformations are called [*raw projections*](#raw-projections). D3 also provides several classes of standard projections:
 
 * [Azimuthal](#azimuthal-projections)
 * [Composite](#composite-projections)
@@ -403,12 +403,6 @@ The orthographic projection.
 
 The stereographic projection.
 
-<a href="#geoTransverseMercator" name="geoTransverseMercator">#</a> d3.<b>geoTransverseMercator</b>() [<>](https://github.com/d3/d3-geo/blob/master/src/projection/transverseMercator.js "Source")
-
-[<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/transverseMercator.png" width="480" height="250">](http://bl.ocks.org/mbostock/5126418)
-
-The transverse spherical Mercator projection. Defines a default [*projection*.clipExtent](#projection_clipExtent) such that the world is projected to a square, clipped to approximately ±85° latitude.
-
 #### Composite Projections
 
 Composite consist of multiple projections that are composed into a single display. The constituent projections have fixed clip, center and rotation, and thus composite projections do not support [*projection*.center](#projection_center), [*projection*.rotate](#projection_rotate), [*projection*.clipAngle](#projection_clipAngle), or [*projection*.clipExtent](#projection_clipExtent).
@@ -468,6 +462,12 @@ The equirectangular (plate carrée) projection.
 [<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/mercator.png" width="480" height="250">](http://bl.ocks.org/mbostock/3757132)
 
 The spherical Mercator projection. Defines a default [*projection*.clipExtent](#projection_clipExtent) such that the world is projected to a square, clipped to approximately ±85° latitude.
+
+<a href="#geoTransverseMercator" name="geoTransverseMercator">#</a> d3.<b>geoTransverseMercator</b>() [<>](https://github.com/d3/d3-geo/blob/master/src/projection/transverseMercator.js "Source")
+
+[<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/transverseMercator.png" width="480" height="250">](http://bl.ocks.org/mbostock/5126418)
+
+The transverse spherical Mercator projection. Defines a default [*projection*.clipExtent](#projection_clipExtent) such that the world is projected to a square, clipped to approximately ±85° latitude.
 
 #### Raw Projections
 
