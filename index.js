@@ -17,6 +17,7 @@ export {default as geoConicEqualArea, conicEqualAreaRaw as geoConicEqualAreaRaw}
 export {default as geoConicEquidistant, conicEquidistantRaw as geoConicEquidistantRaw} from "./src/projection/conicEquidistant";
 export {default as geoEquirectangular, equirectangularRaw as geoEquirectangularRaw} from "./src/projection/equirectangular";
 export {default as geoGnomonic, gnomonicRaw as geoGnomonicRaw} from "./src/projection/gnomonic";
+export {default as geoIdentity} from "./src/projection/identity";
 export {default as geoProjection, projectionMutator as geoProjectionMutator} from "./src/projection/index";
 export {default as geoMercator, mercatorRaw as geoMercatorRaw} from "./src/projection/mercator";
 export {default as geoOrthographic, orthographicRaw as geoOrthographicRaw} from "./src/projection/orthographic";
