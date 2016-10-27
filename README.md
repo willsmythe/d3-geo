@@ -122,7 +122,7 @@ If *radius* is specified, sets the radius used to display Point and MultiPoint f
 
 ### Projections
 
-Projections transform spherical polygonal geometry to planar polygonal geometry. The [d3.geoProjection](#geoProjection) and [d3.geoProjectionMutator](#geoProjectionMutator) methods allow you to define custom projections based on point transformations; these point transformations are called [*raw projections*](#raw-projections). D3 also provides several classes of standard projections:
+Projections transform spherical polygonal geometry to planar polygonal geometry. D3 provides implementations of several classes of standard projections:
 
 * [Azimuthal](#azimuthal-projections)
 * [Composite](#composite-projections)
@@ -130,52 +130,6 @@ Projections transform spherical polygonal geometry to planar polygonal geometry.
 * [Cylindrical](#cylindrical-projections)
 
 For many more projections, see [d3-geo-projection](https://github.com/d3/d3-geo-projection).
-
-<a href="#geoProjection" name="geoProjection">#</a> d3.<b>geoProjection</b>(<i>project</i>) [<>](https://github.com/d3/d3-geo/blob/master/src/projection/index.js#L18 "Source")
-
-Constructs a new projection from the specified [raw projection](#raw-projections), *project*. The *project* function takes the *longitude* and *latitude* of a given point in [radians](http://mathworld.wolfram.com/Radian.html), often referred to as *lambda* (λ) and *phi* (φ), and returns a two-element array [*x*, *y*] representing its unit projection. The *project* function does not need to scale or translate the point, as these are applied automatically by [*projection*.scale](#projection_scale), [*projection*.translate](#projection_translate), and [*projection*.center](#projection_center). Likewise, the *project* function does not need to perform any spherical rotation, as [*projection*.rotate](#projection_rotate) is applied prior to projection.
-
-For example, a spherical Mercator projection can be implemented as:
-
-```js
-var mercator = d3.geoProjection(function(x, y) {
-  return [x, Math.log(Math.tan(Math.PI / 4 + y / 2))];
-});
-```
-
-If the *project* function exposes an *invert* method, the returned projection will also expose [*projection*.invert](#projection_invert).
-
-<a href="#geoProjectionMutator" name="geoProjectionMutator">#</a> d3.<b>geoProjectionMutator</b>(<i>factory</i>) [<>](https://github.com/d3/d3-geo/blob/master/src/projection/index.js#L22 "Source")
-
-Constructs a new projection from the specified [raw projection](#raw-projections) *factory* and returns a *mutate* function to call whenever the raw projection function changes. The *factory* must return a raw projection. The returned *mutate* function returns the wrapped projection. For example, a conic projection typically has two configurable parallels. A suitable *factory* function would be:
-
-```js
-// y0 and y1 represent two parallels
-function conicFactory(phi0, phi1) {
-  return function conicRaw(lambda, phi) {
-    return […, …];
-  };
-}
-```
-
-Using d3.geoProjectionMutator, you can implement a standard projection that allows the parallels to be changed, reassigning the raw projection used internally by [d3.geoProjection](#geoProjection):
-
-```js
-function conicCustom() {
-  var phi0 = 29.5,
-      phi1 = 45.5,
-      mutate = d3.geoProjectionMutator(conicFactory),
-      projection = mutate(phi0, phi1);
-
-  projection.parallels = function(_) {
-    return arguments.length ? mutate(phi0 = +_[0], phi1 = +_[1]) : [phi0, phi1];
-  };
-
-  return projection;
-}
-```
-
-When creating a mutable projection, the *mutate* function is typically not exposed.
 
 <a href="#_projection" name="_projection">#</a> <i>projection</i>(<i>point</i>) [<>](https://github.com/d3/d3-geo/blob/master/src/projection/index.js#L34 "Source")
 
@@ -346,7 +300,7 @@ The transverse spherical Mercator projection. Defines a default [*projection*.cl
 
 #### Raw Projections
 
-Raw projections are point transformations that are used to implement projections; they typically passed to [d3.geoProjection](#geoProjection) or [d3.geoProjectionMutator](#geoProjectionMutator). They are exposed here to facilitate the derivation of related projections. Raw projections define simple point transformations: they take spherical coordinates [*lambda*, *phi*] in radians and return a point [*x*, *y*], typically in the unit square centered around the origin.
+Raw projections are point transformation functions that are used to implement custom projections; they typically passed to [d3.geoProjection](#geoProjection) or [d3.geoProjectionMutator](#geoProjectionMutator). They are exposed here to facilitate the derivation of related projections. Raw projections take spherical coordinates [*lambda*, *phi*] in radians (not degrees!) and return a point [*x*, *y*], typically in the unit square centered around the origin.
 
 <a href="#_project" name="_project">#</a> <i>project</i>(<i>lambda</i>, <i>phi</i>)
 
@@ -355,6 +309,52 @@ Projects the specified point [<i>lambda</i>, <i>phi</i>] in radians, returning a
 <a href="#project_invert" name="project_invert">#</a> <i>project</i>.<b>invert</b>(<i>x</i>, <i>y</i>)
 
 The inverse of [*project*](#_project).
+
+<a href="#geoProjection" name="geoProjection">#</a> d3.<b>geoProjection</b>(<i>project</i>) [<>](https://github.com/d3/d3-geo/blob/master/src/projection/index.js#L18 "Source")
+
+Constructs a new projection from the specified [raw projection function](#_project), *project*. The *project* function takes the *longitude* and *latitude* of a given point in [radians](http://mathworld.wolfram.com/Radian.html), often referred to as *lambda* (λ) and *phi* (φ), and returns a two-element array [*x*, *y*] representing its unit projection. The *project* function does not need to scale or translate the point, as these are applied automatically by [*projection*.scale](#projection_scale), [*projection*.translate](#projection_translate), and [*projection*.center](#projection_center). Likewise, the *project* function does not need to perform any spherical rotation, as [*projection*.rotate](#projection_rotate) is applied prior to projection.
+
+For example, a spherical Mercator projection can be implemented as:
+
+```js
+var mercator = d3.geoProjection(function(x, y) {
+  return [x, Math.log(Math.tan(Math.PI / 4 + y / 2))];
+});
+```
+
+If the *project* function exposes an *invert* method, the returned projection will also expose [*projection*.invert](#projection_invert).
+
+<a href="#geoProjectionMutator" name="geoProjectionMutator">#</a> d3.<b>geoProjectionMutator</b>(<i>factory</i>) [<>](https://github.com/d3/d3-geo/blob/master/src/projection/index.js#L22 "Source")
+
+Constructs a new projection from the specified [raw projection function](#_project) *factory* and returns a *mutate* function to call whenever the raw projection function changes. The *factory* must return a raw projection. The returned *mutate* function returns the wrapped projection. For example, a conic projection typically has two configurable parallels. A suitable *factory* function would be:
+
+```js
+// y0 and y1 represent two parallels
+function conicFactory(phi0, phi1) {
+  return function conicRaw(lambda, phi) {
+    return […, …];
+  };
+}
+```
+
+Using d3.geoProjectionMutator, you can implement a standard projection that allows the parallels to be changed, reassigning the raw projection used internally by [d3.geoProjection](#geoProjection):
+
+```js
+function conicCustom() {
+  var phi0 = 29.5,
+      phi1 = 45.5,
+      mutate = d3.geoProjectionMutator(conicFactory),
+      projection = mutate(phi0, phi1);
+
+  projection.parallels = function(_) {
+    return arguments.length ? mutate(phi0 = +_[0], phi1 = +_[1]) : [phi0, phi1];
+  };
+
+  return projection;
+}
+```
+
+When creating a mutable projection, the *mutate* function is typically not exposed.
 
 <a href="#geoAzimuthalEqualAreaRaw" name="geoAzimuthalEqualAreaRaw">#</a> d3.<b>geoAzimuthalEqualAreaRaw</b> [<>](https://github.com/d3/d3-geo/blob/master/src/projection/azimuthalEqualArea.js "Source")
 <br><a href="#geoAzimuthalEquidistantRaw" name="geoAzimuthalEquidistantRaw">#</a> d3.<b>geoAzimuthalEquidistantRaw</b> [<>](https://github.com/d3/d3-geo/blob/master/src/projection/azimuthalEquidistant.js "Source")
