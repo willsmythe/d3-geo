@@ -190,7 +190,7 @@ Any [clip extent](#projection_clipExtent) is ignored when determining the new sc
 
 <a href="#projection_fitSize" name="projection_fitSize">#</a> <i>projection</i>.<b>fitSize</b>(<i>size</i>, <i>object</i>) [<>](https://github.com/d3/d3-geo/blob/master/src/projection/index.js#L82 "Source")
 
-A convenience method for [*projection*.fitExtent](#projection_fitExtent) where the top-left corner of the extent is [0,0]. The following two statements are equivalent:
+A convenience method for [*projection*.fitExtent](#projection_fitExtent) where the top-left corner of the extent is [0, 0]. The following two statements are equivalent:
 
 ```js
 projection.fitExtent([[0, 0], [width, height]], object);
