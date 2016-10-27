@@ -5,11 +5,11 @@ import compose from "../compose";
 import identity from "../identity";
 import {degrees, radians, sqrt} from "../math";
 import {rotateRadians} from "../rotation";
-import {transform} from "../transform";
+import {transformer} from "../transform";
 import {fitExtent, fitSize} from "./fit";
 import resample from "./resample";
 
-var transformRadians = transform({
+var transformRadians = transformer({
   point: function(x, y) {
     this.stream.point(x * radians, y * radians);
   }

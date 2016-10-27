@@ -1,10 +1,10 @@
 import {clipExtent} from "../clip/extent";
 import identity from "../identity";
-import {transform} from "../transform";
+import {transformer} from "../transform";
 import {fitExtent, fitSize} from "./fit";
 
 function scaleTranslate(k, tx, ty) {
-  return k === 1 && tx === 0 && ty === 0 ? identity : transform({
+  return k === 1 && tx === 0 && ty === 0 ? identity : transformer({
     point: function(x, y) {
       this.stream.point(x * k + tx, y * k + ty);
     }

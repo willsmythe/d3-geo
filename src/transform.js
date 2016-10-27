@@ -1,22 +1,22 @@
 export default function(methods) {
   return {
-    stream: transform(methods)
+    stream: transformer(methods)
   };
 }
 
-export function transform(methods) {
+export function transformer(methods) {
   return function(stream) {
-    var t = new Transform;
-    for (var key in methods) t[key] = methods[key];
-    t.stream = stream;
-    return t;
+    var s = new TransformStream;
+    for (var key in methods) s[key] = methods[key];
+    s.stream = stream;
+    return s;
   };
 }
 
-function Transform() {}
+function TransformStream() {}
 
-Transform.prototype = {
-  constructor: Transform,
+TransformStream.prototype = {
+  constructor: TransformStream,
   point: function(x, y) { this.stream.point(x, y); },
   sphere: function() { this.stream.sphere(); },
   lineStart: function() { this.stream.lineStart(); },
