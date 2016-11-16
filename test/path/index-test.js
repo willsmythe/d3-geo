@@ -17,15 +17,15 @@ function testPath(projection, object) {
   return context.result();
 }
 
-tape("geoPath.projection() defaults to undefined", function(test) {
+tape("geoPath.projection() defaults to null", function(test) {
   var path = d3_geo.geoPath();
-  test.strictEqual(path.projection(), undefined);
+  test.strictEqual(path.projection(), null);
   test.end();
 });
 
-tape("geoPath.context() defaults to undefined", function(test) {
+tape("geoPath.context() defaults to null", function(test) {
   var path = d3_geo.geoPath();
-  test.strictEqual(path.context(), undefined);
+  test.strictEqual(path.context(), null);
   test.end();
 });
 
