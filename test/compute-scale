@@ -7,7 +7,7 @@ var width = 960 - 1,
 
 if (!/^[a-z0-9]+$/i.test(projectionName)) throw new Error;
 
-var topojson = require("topojson"),
+var topojson = require("topojson-client"),
     d3_format = require("d3-format"),
     d3_geo = require("../");
 

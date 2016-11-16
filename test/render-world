@@ -8,7 +8,7 @@ var width = 960,
 if (!/^[a-z0-9]+$/i.test(projectionName)) throw new Error;
 
 var fs = require("fs"),
-    topojson = require("topojson"),
+    topojson = require("topojson-client"),
     Canvas = require("canvas"),
     d3_geo = require("../");
 

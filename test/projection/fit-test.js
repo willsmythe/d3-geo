@@ -1,5 +1,5 @@
 var tape = require("tape"),
-    topojson = require("topojson"),
+    topojson = require("topojson-client"),
     d3 = require("../../");
 
 var usTopo = require("../data/us-10m.json"),

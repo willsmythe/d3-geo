@@ -4,7 +4,7 @@ var width = 960,
     height = 500;
 
 var fs = require("fs"),
-    topojson = require("topojson"),
+    topojson = require("topojson-client"),
     Canvas = require("canvas"),
     d3 = require("d3");
 
