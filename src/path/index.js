@@ -4,6 +4,7 @@ import pathArea from "./area";
 import pathBounds from "./bounds";
 import pathCentroid from "./centroid";
 import PathContext from "./context";
+import pathLength from "./length";
 import PathString from "./string";
 
 export default function(projection, context) {
@@ -23,6 +24,16 @@ export default function(projection, context) {
     stream(object, projectionStream(pathArea));
     return pathArea.result();
   };
+
+  Object.defineProperty(path, "length", {
+    writable: true,
+    enumerable: true,
+    configurable: true,
+    value: function(object) {
+      stream(object, projectionStream(pathLength));
+      return pathLength.result();
+    }
+  });
 
   path.bounds = function(object) {
     stream(object, projectionStream(pathBounds));

@@ -1,6 +1,5 @@
 var tape = require("tape"),
-    d3_geo = require("../../"),
-    testContext = require("./test-context");
+    d3_geo = require("../../");
 
 var equirectangular = d3_geo.geoEquirectangular()
     .scale(900 / Math.PI)
