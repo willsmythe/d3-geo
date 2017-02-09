@@ -62,6 +62,17 @@ tape("bounds: LineString - simple", function(test) {
   test.end();
 });
 
+tape("bounds: LineString - symmetry", function(test) {
+  test.deepEqual(d3.geoBounds({
+    type: "LineString",
+    coordinates: [[-30, -20], [130, 40]]
+  }), d3.geoBounds({
+    type: "LineString",
+    coordinates: [[-30, -20], [130, 40]].reverse()
+  }));
+  test.end();
+});
+
 tape("bounds: LineString - containing coincident points", function(test) {
   test.deepEqual(d3.geoBounds({
     type: "LineString",
