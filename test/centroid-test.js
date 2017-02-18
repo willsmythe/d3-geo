@@ -89,10 +89,10 @@ tape("the centroid of a set of polygons is the (spherical) average of its surfac
   test.inDelta(d3.geoCentroid({
     type: "MultiPolygon",
     coordinates: [
-      circle.radius(45).center([0, 0])().coordinates,
-      circle.radius(60).center([180, 0])().coordinates
+      circle.radius(45).center([90, 0])().coordinates,
+      circle.radius(60).center([-90, 0])().coordinates
     ]
-  }), [180, 0], 1e-6);
+  }), [-90, 0], 1e-6);
   test.end();
 });
 
