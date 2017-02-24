@@ -1,6 +1,6 @@
 import {default as polygonContains} from "./polygonContains";
 import {default as distance} from "./distance";
-import {epsilon} from "./math";
+import {epsilon,radians} from "./math";
 
 var contains = {
   Sphere: function() {
@@ -84,7 +84,7 @@ function ringRadians(ring) {
 }
 
 function pointRadians(point) {
-  return [point[0] * Math.PI / 180, point[1] * Math.PI / 180];
+  return [point[0] * radians, point[1] * radians];
 }
 
 export default function(feature, point) {
