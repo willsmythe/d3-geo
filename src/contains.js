@@ -36,9 +36,7 @@ var contains = {
     return false;
   },
   Polygon: function(feature, point) {
-    return polygonContains(feature.coordinates.map(ringRadians), pointRadians(point))
-      ? true
-      : false;
+    return !!polygonContains(feature.coordinates.map(ringRadians), pointRadians(point));
   },
   MultiPolygon: function(feature, point) {
     var coordinates = feature.coordinates, i = -1, n = coordinates.length, f;
