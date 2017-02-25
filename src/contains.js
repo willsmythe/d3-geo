@@ -61,9 +61,7 @@ var contains = {
   },
   Feature: function(feature, point) {
     var geometry = feature.geometry;
-    return contains[geometry.type](geometry, point)
-      ? true
-      : false;
+    return contains[geometry.type](geometry, point);
   },
   FeatureCollection: function(feature, point) {
     var features = feature.features, i = -1, n = features.length;
