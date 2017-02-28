@@ -12,7 +12,7 @@ This is a reasonable *mathematical* approach if your geometry consists of contin
 
 Discrete geometry makes the challenge of projecting from the sphere to the plane much harder. The edges of a spherical polygon are [geodesics](https://en.wikipedia.org/wiki/Geodesic) (segments of great circles), not straight lines. Projected to the plane, geodesics are curves in all map projections except [gnomonic](#geoGnomonic), and thus accurate projection requires interpolation along each arc. D3 uses [adaptive sampling](https://bl.ocks.org/mbostock/3795544) inspired by a popular [line simplification method](https://bost.ocks.org/mike/simplify/) to balance accuracy and performance.
 
-The projection of polygons and polylines must also deal with the topological differences between the sphere and the plane. Some projections require cutting geometry that [crosses the antimeridian](https://bl.ocks.org/mbostock/3788999), while others require [clipping geometry to a great circle](http://bl.ocks.org/mbostock/3021474). Furthermore, spherical polygons require a winding order convention to determine which side of the polygon is the inside: D3 and [TopoJSON](https://github.com/mbostock/topojson) use clockwise winding. (Spherical polygons can be [larger than a hemisphere](https://bl.ocks.org/mbostock/6713736)! See also [ST_ForceRHR](http://www.postgis.org/docs/ST_ForceRHR.html) in PostGIS.)
+The projection of polygons and polylines must also deal with the topological differences between the sphere and the plane. Some projections require cutting geometry that [crosses the antimeridian](https://bl.ocks.org/mbostock/3788999), while others require [clipping geometry to a great circle](http://bl.ocks.org/mbostock/3021474). Furthermore, spherical polygons require a winding order convention to determine which side of the polygon is the inside: D3 and [TopoJSON](https://github.com/mbostock/topojson) use clockwise winding. (Spherical polygons can be [larger than a hemisphere](https://bl.ocks.org/mbostock/6713736)! See also [ST_ForceRHR](http://www.postgis.org/docs/ST_ForceRHR.html) in PostGIS. Note that GeoJSON [RFC 7946](https://tools.ietf.org/html/rfc7946#section-3.1.6) uses counterclockwise polygon winding.)
 
 D3’s approach affords great expressiveness: you can choose the right projection, and the right aspect, for your data. D3 supports a wide variety of common and [unusual map projections](https://github.com/d3/d3-geo-projection). For more, see Part 2 of [The Toolmaker’s Guide](https://vimeo.com/106198518#t=20m0s).
 
@@ -535,7 +535,7 @@ Indicates the end of a line or ring. Within a polygon, indicates the end of a ri
 {
   "type": "Polygon",
   "coordinates": [
-    [[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]
+    [[0, 0], [0, 1], [1, 1], [1, 0], [0, 0]]
   ]
 }
 ```
@@ -546,9 +546,9 @@ Will produce the following series of method calls on the stream:
 stream.polygonStart();
 stream.lineStart();
 stream.point(0, 0);
-stream.point(1, 0);
-stream.point(1, 1);
 stream.point(0, 1);
+stream.point(1, 1);
+stream.point(1, 0);
 stream.lineEnd();
 stream.polygonEnd();
 ```
