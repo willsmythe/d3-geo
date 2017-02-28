@@ -38,30 +38,30 @@ tape("a MultiLineString contains any point on one of its components", function(t
 });
 
 tape("a Polygon contains a point", function(test) {
-    var polygon = d3.geoCircle().radius(60)();
-    test.equal(d3.geoContains(polygon, [1, 1]), true);
-    test.equal(d3.geoContains(polygon, [-180, 0]), false);
-    test.end();
+  var polygon = d3.geoCircle().radius(60)();
+  test.equal(d3.geoContains(polygon, [1, 1]), true);
+  test.equal(d3.geoContains(polygon, [-180, 0]), false);
+  test.end();
 });
 
 tape("a Polygon with a hole doesn't contain a point", function(test) {
-    var outer = d3.geoCircle().radius(60)().coordinates[0],
+  var outer = d3.geoCircle().radius(60)().coordinates[0],
       inner = d3.geoCircle().radius(3)().coordinates[0],
       polygon = {type:"Polygon", coordinates: [outer, inner]};
-    test.equal(d3.geoContains(polygon, [1, 1]), false);
-    test.equal(d3.geoContains(polygon, [5, 0]), true);
-    test.equal(d3.geoContains(polygon, [65, 0]), false);
-    test.end();
+  test.equal(d3.geoContains(polygon, [1, 1]), false);
+  test.equal(d3.geoContains(polygon, [5, 0]), true);
+  test.equal(d3.geoContains(polygon, [65, 0]), false);
+  test.end();
 });
 
 tape("a MultiPolygon contains a point", function(test) {
-    var p1 = d3.geoCircle().radius(6)().coordinates,
+  var p1 = d3.geoCircle().radius(6)().coordinates,
       p2 = d3.geoCircle().radius(6).center([90,0])().coordinates,
       polygon = {type:"MultiPolygon", coordinates: [p1, p2]};
-    test.equal(d3.geoContains(polygon, [1, 0]), true);
-    test.equal(d3.geoContains(polygon, [90, 1]), true);
-    test.equal(d3.geoContains(polygon, [90, 45]), false);
-    test.end();
+  test.equal(d3.geoContains(polygon, [1, 0]), true);
+  test.equal(d3.geoContains(polygon, [90, 1]), true);
+  test.equal(d3.geoContains(polygon, [90, 45]), false);
+  test.end();
 });
 
 tape("a GeometryCollection contains a point", function(test) {
@@ -106,5 +106,10 @@ tape("a FeatureCollection contains a point", function(test) {
   test.equal(d3.geoContains(featureCollection, [45, 0]), true);
   test.equal(d3.geoContains(featureCollection, [-45, 0]), true);
   test.equal(d3.geoContains(featureCollection, [12, 25]), false);
+  test.end();
+});
+
+tape("null contains nothing", function(test) {
+  test.equal(d3.geoContains(null, [0, 0]), false);
   test.end();
 });
