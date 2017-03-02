@@ -22,22 +22,22 @@ export function mercatorProjection(project) {
       clipAuto;
 
   m.scale = function(_) {
-    return arguments.length ? (scale(_), clipAuto && m.clipExtent(null), m) : scale();
+    return arguments.length ? (scale(_), clipAuto ? m.clipExtent(null) : m) : scale();
   };
 
   m.translate = function(_) {
-    return arguments.length ? (translate(_), clipAuto && m.clipExtent(null), m) : translate();
+    return arguments.length ? (translate(_), clipAuto ? m.clipExtent(null) : m) : translate();
   };
 
   m.clipExtent = function(_) {
     if (!arguments.length) return clipAuto ? null : clipExtent();
-    if (clipAuto = _ == null) {
-      var k = pi * scale(),
-          t = translate();
-      _ = [[t[0] - k, t[1] - k], [t[0] + k, t[1] + k]];
-    }
-    clipExtent(_);
-    return m;
+    var k = pi * scale(),
+        t = translate(),
+        x0 = t[0] - k,
+        x1 = t[0] + k;
+    return clipExtent(clipAuto = _ == null
+        ? [[x0, t[1] - k], [x1, t[1] + k]]
+        : [[Math.max(x0, +_[0][0]), _[0][1]], [Math.min(x1, +_[1][0]), _[1][1]]]);
   };
 
   return m.clipExtent(null);
