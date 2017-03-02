@@ -30,10 +30,7 @@ export function mercatorProjection(project) {
   };
 
   m.clipExtent = function(_) {
-    if (!arguments.length) return x0 == null ? null : [[x0, y0], [x1, y1]];
-    if (_ == null) x0 = y0 = x1 = y1 = null;
-    else x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1];
-    return reclip();
+    return arguments.length ? ((_ == null ? x0 = y0 = x1 = y1 = null : (x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1])), reclip()) : x0 == null ? null : [[x0, y0], [x1, y1]];
   };
 
   function reclip() {
