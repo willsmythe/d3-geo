@@ -16,10 +16,15 @@ export default function() {
 
 export function mercatorProjection(project) {
   var m = projection(project),
+      center = m.center,
       scale = m.scale,
       translate = m.translate,
       clipExtent = m.clipExtent,
       x0 = null, y0, x1, y1; // clip extent
+
+  m.center = function(_) {
+    return arguments.length ? (center(_), reclip()) : center();
+  };
 
   m.scale = function(_) {
     return arguments.length ? (scale(_), reclip()) : scale();
@@ -35,7 +40,7 @@ export function mercatorProjection(project) {
 
   function reclip() {
     var k = pi * scale(),
-        t = translate();
+        t = m([0, 0]);
     return clipExtent(x0 == null
         ? [[t[0] - k, t[1] - k], [t[0] + k, t[1] + k]]
         : [[Math.max(t[0] - k, x0), y0], [Math.min(t[0] + k, x1), y1]]);
