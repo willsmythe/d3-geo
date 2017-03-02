@@ -19,26 +19,30 @@ export function mercatorProjection(project) {
       scale = m.scale,
       translate = m.translate,
       clipExtent = m.clipExtent,
-      clipAuto;
+      x0 = null, y0, x1, y1; // clip extent
 
   m.scale = function(_) {
-    return arguments.length ? (scale(_), clipAuto ? m.clipExtent(null) : m) : scale();
+    return arguments.length ? (scale(_), reclip()) : scale();
   };
 
   m.translate = function(_) {
-    return arguments.length ? (translate(_), clipAuto ? m.clipExtent(null) : m) : translate();
+    return arguments.length ? (translate(_), reclip()) : translate();
   };
 
   m.clipExtent = function(_) {
-    if (!arguments.length) return clipAuto ? null : clipExtent();
-    var k = pi * scale(),
-        t = translate(),
-        x0 = t[0] - k,
-        x1 = t[0] + k;
-    return clipExtent(clipAuto = _ == null
-        ? [[x0, t[1] - k], [x1, t[1] + k]]
-        : [[Math.max(x0, +_[0][0]), _[0][1]], [Math.min(x1, +_[1][0]), _[1][1]]]);
+    if (!arguments.length) return x0 == null ? null : [[x0, y0], [x1, y1]];
+    if (_ == null) x0 = y0 = x1 = y1 = null;
+    else x0 = +_[0][0], y0 = +_[0][1], x1 = +_[1][0], y1 = +_[1][1];
+    return reclip();
   };
 
-  return m.clipExtent(null);
+  function reclip() {
+    var k = pi * scale(),
+        t = translate();
+    return clipExtent(x0 == null
+        ? [[t[0] - k, t[1] - k], [t[0] + k, t[1] + k]]
+        : [[Math.max(t[0] - k, x0), y0], [Math.min(t[0] + k, x1), y1]]);
+  }
+
+  return reclip();
 }
