@@ -55,7 +55,7 @@ The geographic path generator, [d3.geoPath](#geoPath), is similar to the shape g
 
 Creates a new geographic path generator with the default settings. If *projection* is specified, sets the [current projection](#path_projection). If *context* is specified, sets the [current context](#path_context).
 
-<a href="_path" name="_path">#</a> <i>path</i>(<i>object</i>[, <i>arguments…</i>]) [<>](https://github.com/d3/d3-geo/blob/master/src/path/index.js#L15 "Source")
+<a href="#_path" name="_path">#</a> <i>path</i>(<i>object</i>[, <i>arguments…</i>]) [<>](https://github.com/d3/d3-geo/blob/master/src/path/index.js#L15 "Source")
 
 Renders the given *object*, which may be any GeoJSON feature or geometry object:
 
