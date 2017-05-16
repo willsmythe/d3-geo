@@ -185,18 +185,18 @@ tape("geoPath.projection(null)(…) does not transform coordinates", function(te
   test.end();
 });
 
-tape("geoPath.context(null)(null) returns undefined", function(test) {
+tape("geoPath.context(null)(null) returns null", function(test) {
   var path = d3_geo.geoPath();
-  test.strictEqual(path(), undefined);
-  test.strictEqual(path(null), undefined);
-  test.strictEqual(path(undefined), undefined);
+  test.strictEqual(path(), null);
+  test.strictEqual(path(null), null);
+  test.strictEqual(path(undefined), null);
   test.end();
 });
 
-tape("geoPath.context(null)(Unknown) returns undefined", function(test) {
+tape("geoPath.context(null)(Unknown) returns null", function(test) {
   var path = d3_geo.geoPath();
-  test.strictEqual(path({type: "Unknown"}), undefined);
-  test.strictEqual(path({type: "__proto__"}), undefined);
+  test.strictEqual(path({type: "Unknown"}), null);
+  test.strictEqual(path({type: "__proto__"}), null);
   test.end();
 });
 
