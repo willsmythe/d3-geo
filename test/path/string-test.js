@@ -21,6 +21,16 @@ tape("geoPath(Point) renders a point", function(test) {
   test.end();
 });
 
+tape("geoPath.pointRadius(radius)(Point) renders a point of the given radius", function(test) {
+  test.pathEqual(d3_geo.geoPath()
+      .projection(equirectangular)
+      .pointRadius(10)({
+    type: "Point",
+    coordinates: [-63, 18]
+  }), "M165,160m0,10a10,10 0 1,1 0,-20a10,10 0 1,1 0,20z");
+  test.end();
+});
+
 tape("geoPath(MultiPoint) renders a point", function(test) {
   test.pathEqual(testPath(equirectangular, {
     type: "MultiPoint",
