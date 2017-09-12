@@ -204,17 +204,6 @@ projection.fitExtent([[0, 0], [width, height]], object);
 projection.fitSize([width, height], object);
 ```
 
-#### The Natural Earth projection
-
-The Natural Earth projection is a pseudo-cylindrical map projection designed by Tom Patterson in [2007](http://cartography.oregonstate.edu/pdf/2011_Savric_etal_PolynomialNaturalEarth.pdf). It is neither conformal nor equal-area, but appealing to the eye for small-scale maps of the whole world.
-
-<a href="#geoNaturalEarth1" name="geoNaturalEarth1">#</a> d3.<b>geoNaturalEarth1</b>() [<>](https://github.com/d3/d3-geo/blob/master/src/projection/naturalEarth1.js "Source")
-<br><a href="#geoNaturalEarth1Raw" name="geoNaturalEarth1Raw">#</a> d3.<b>geoNaturalEarth1Raw</b>
-
-[<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/naturalEarth1.png" width="480" height="250">](https://bl.ocks.org/mbostock/4479477)
-
-The Natural Earth projection.
-
 #### Azimuthal Projections
 
 Azimuthal projections project the sphere directly onto a plane.
@@ -305,7 +294,7 @@ The conic equidistant projection. See also [*conic*.parallels](#conic_parallels)
 
 #### Cylindrical Projections
 
-Cylindrical projections project the sphere onto a containing cylinder, and then unroll the cylinder onto the plane.
+Cylindrical projections project the sphere onto a containing cylinder, and then unroll the cylinder onto the plane. [Pseudocylindrical projections](http://www.progonos.com/furuti/MapProj/Normal/ProjPCyl/projPCyl.html) are a generalization of cylindrical projections.
 
 <a href="#geoEquirectangular" name="geoEquirectangular">#</a> d3.<b>geoEquirectangular</b>() [<>](https://github.com/d3/d3-geo/blob/master/src/projection/equirectangular.js "Source")
 <br><a href="#geoEquirectangularRaw" name="geoEquirectangularRaw">#</a> d3.<b>geoEquirectangularRaw</b>
@@ -327,6 +316,13 @@ The spherical Mercator projection. Defines a default [*projection*.clipExtent](#
 [<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/transverseMercator.png" width="480" height="250">](https://bl.ocks.org/mbostock/4695821)
 
 The transverse spherical Mercator projection. Defines a default [*projection*.clipExtent](#projection_clipExtent) such that the world is projected to a square, clipped to approximately ±85° latitude.
+
+<a href="#geoNaturalEarth1" name="geoNaturalEarth1">#</a> d3.<b>geoNaturalEarth1</b>() [<>](https://github.com/d3/d3-geo/blob/master/src/projection/naturalEarth1.js "Source")
+<br><a href="#geoNaturalEarth1Raw" name="geoNaturalEarth1Raw">#</a> d3.<b>geoNaturalEarth1Raw</b>
+
+[<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/naturalEarth1.png" width="480" height="250">](https://bl.ocks.org/mbostock/4479477)
+
+The Natural Earth projection is a pseudocylindrical map projection designed by Tom Patterson in [2007](http://cartography.oregonstate.edu/pdf/2011_Savric_etal_PolynomialNaturalEarth.pdf). It is neither conformal nor equal-area, but appealing to the eye for small-scale maps of the whole world.
 
 ### Raw Projections
 
