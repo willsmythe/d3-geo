@@ -322,7 +322,7 @@ The transverse spherical Mercator projection. Defines a default [*projection*.cl
 
 [<img src="https://raw.githubusercontent.com/d3/d3-geo/master/img/naturalEarth1.png" width="480" height="250">](https://bl.ocks.org/mbostock/4479477)
 
-The Natural Earth projection is a pseudocylindrical map projection designed by Tom Patterson in [2007](http://cartography.oregonstate.edu/pdf/2011_Savric_etal_PolynomialNaturalEarth.pdf). It is neither conformal nor equal-area, but appealing to the eye for small-scale maps of the whole world.
+The [Natural Earth projection](http://www.shadedrelief.com/NE_proj/) is a pseudocylindrical projection designed by Tom Patterson. It is neither conformal nor equal-area, but appealing to the eye for small-scale maps of the whole world.
 
 ### Raw Projections
 
