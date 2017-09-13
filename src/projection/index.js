@@ -15,6 +15,15 @@ var transformRadians = transformer({
   }
 });
 
+function transformRotate(rotate) {
+  return transformer({
+    point: function(x, y) {
+      var r = rotate(x, y);
+      return this.stream.point(r[0], r[1]);
+    }
+  });
+}
+
 export default function projection(project) {
   return projectionMutator(function() { return project; })();
 }
@@ -45,17 +54,8 @@ export function projectionMutator(projectAt) {
     return x = project(x, y), [x[0] * k + dx, dy - x[1] * k];
   }
 
-  function rotateTransform(rotate) {
-    return transformer({
-        point: function(x,y) {
-          var r = rotate(x,y);
-          return this.stream.point(r[0],r[1]);
-        }
-    });
-  }
-
   projection.stream = function(stream) {
-    return cache && cacheStream === stream ? cache : cache = transformRadians(rotateTransform(rotate)(preclip(projectResample(postclip(cacheStream = stream)))));
+    return cache && cacheStream === stream ? cache : cache = transformRadians(transformRotate(rotate)(preclip(projectResample(postclip(cacheStream = stream)))));
   };
 
   projection.preclip = function(_) {
