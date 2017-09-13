@@ -633,6 +633,8 @@ If *reflect* is specified, sets whether or not the *y*-dimension is reflected (n
 
 ### Clipping
 
+… Something about how clipping is implemented in projections.
+
 <a name="preclip" href="#preclip">#</a> <i>preclip</i>(<i>rotate</i>, <i>stream</i>)
 
 … See [*projection*.preclip](#projection_preclip).
