@@ -2,7 +2,10 @@ export {default as geoArea} from "./src/area";
 export {default as geoBounds} from "./src/bounds";
 export {default as geoCentroid} from "./src/centroid";
 export {default as geoCircle} from "./src/circle";
+export {default as geoClipAntimeridian} from "./src/clip/antimeridian";
+export {default as geoClipCircle} from "./src/clip/circle";
 export {default as geoClipExtent} from "./src/clip/extent"; // DEPRECATED! Use d3.geoIdentity().clipExtent(…).
+export {default as geoClipRectangle} from "./src/clip/rectangle";
 export {default as geoContains} from "./src/contains";
 export {default as geoDistance} from "./src/distance";
 export {default as geoGraticule, graticule10 as geoGraticule10} from "./src/graticule";
