@@ -1,5 +1,5 @@
 import clipBuffer from "./buffer";
-import clipPolygon from "./polygon";
+import clipRejoin from "./rejoin";
 import {epsilon, halfPi} from "../math";
 import polygonContains from "../polygonContains";
 import {merge} from "d3-array";
@@ -33,7 +33,7 @@ export default function(pointVisible, clipLine, interpolate, start) {
         var startInside = polygonContains(polygon, start);
         if (segments.length) {
           if (!polygonStarted) sink.polygonStart(), polygonStarted = true;
-          clipPolygon(segments, compareIntersection, startInside, interpolate, sink);
+          clipRejoin(segments, compareIntersection, startInside, interpolate, sink);
         } else if (startInside) {
           if (!polygonStarted) sink.polygonStart(), polygonStarted = true;
           sink.lineStart();
