@@ -156,11 +156,11 @@ Returns a [projection stream](#streams) for the specified output *stream*. Any i
 
 <a href="#projection_preclip" name="projection_preclip">#</a> <i>projection</i>.<b>preclip</b>([<i>preclip</i>])
 
-…
+If *preclip* is specified, sets the projection’s spherical clipping to the specified function and returns the projection. If *preclip* is not specified, returns the current spherical clipping function (see [preclip](#preclip)).
 
 <a href="#projection_postclip" name="projection_postclip">#</a> <i>projection</i>.<b>postclip</b>([<i>postclip</i>])
 
-…
+If *postclip* is specified, sets the projection’s cartesian clipping to the specified function and returns the projection. If *postclip* is not specified, returns the current cartesian clipping function (see [postclip](#postclip)).
 
 <a href="#projection_clipAngle" name="projection_clipAngle">#</a> <i>projection</i>.<b>clipAngle</b>([<i>angle</i>]) [<>](https://github.com/d3/d3-geo/blob/master/src/projection/index.js#L52 "Source")
 
@@ -633,28 +633,30 @@ If *reflect* is specified, sets whether or not the *y*-dimension is reflected (n
 
 ### Clipping
 
-… Something about how clipping is implemented in projections.
+Projections perform cutting or clipping of geometries in two stages.
 
 <a name="preclip" href="#preclip">#</a> <i>preclip</i>(<i>stream</i>)
 
-… See [*projection*.preclip](#projection_preclip).
+Pre-clipping occurs in geographic coordinates. Cutting along the antimeridian line, or clipping along a small circle are the most common strategies.
+
+See [*projection*.preclip](#projection_preclip).
 
 <a name="postclip" href="#postclip">#</a> <i>postclip</i>(<i>stream</i>)
 
-… See [*projection*.postclip](#projection_postclip).
+Post-clipping occurs on the plane, when a projection is bounded to a certain extent such as a rectangle.
+
+See [*projection*.postclip](#projection_postclip).
+
+Clipping functions are implemented as transformations of a [projection stream](#streams). Pre-clipping operates on spherical coordinates, in radians. Post-clipping operates on planar coordinates, in pixels.
 
 <a name="geoClipAntimeridian" href="#geoClipAntimeridian">#</a> d3.<b>geoClipAntimeridian</b>
 
-…
+Returns a stream where geometries (lines or polygons) that cross the antimeridian line are cut in two, one on each side. Typically used for pre-clipping.
 
 <a name="geoClipCircle" href="#geoClipCircle">#</a> d3.<b>geoClipCircle</b>(<i>angle</i>)
 
-…
-
-<a name="geoClipCircle" href="#geoClipCircle">#</a> d3.<b>geoClipCircle</b>(<i>angle</i>)
-
-…
+Returns a stream where geometries are bounded by a small circle of radius *angle* around the projection’s [center](#projection_center). Typically used for pre-clipping.
 
 <a name="geoClipRectangle" href="#geoClipRectangle">#</a> d3.<b>geoClipRectangle</b>(<i>x0</i>, <i>y0</i>, <i>x1</i>, <i>y1</i>)
 
-…
+Returns a stream where geometries are bounded by a rectangle of coordinates [[<i>x0</i>, <i>y0</i>], [<i>x1</i>, <i>y1</i>]]. Typically used for post-clipping.
