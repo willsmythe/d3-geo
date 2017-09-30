@@ -2,8 +2,10 @@ var tape = require("tape"),
     rollup = require("rollup"),
     d3_geo = require("../");
 
-rollup.rollup({entry: "src/polygon-contains.js"}).then(function(bundle) {
-  var contains = new Function(bundle.generate({format: "iife", moduleName: "_"}).code + " return _;")();
+rollup.rollup({input: "src/polygonContains.js"})
+    .then(bundle => bundle.generate({format: "iife", name: "_"}))
+    .then(bundle => {
+  var contains = new Function(bundle.code + " return _;")();
 
   function polygonContains(polygon, point) {
     return contains(polygon.map(ringRadians), pointRadians(point));

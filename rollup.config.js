@@ -1,15 +1,14 @@
+const definition = require("./package.json");
+const dependencies = Object.keys(definition.dependencies);
+
 export default {
   input: "index",
-  external: [
-    "d3-array"
-  ],
+  external: dependencies,
   output: {
     extend: true,
-    file: "build/d3-geo.js",
+    file: `build/${definition.name}.js`,
     format: "umd",
-    globals: {
-      "d3-array": "d3"
-    },
+    globals: dependencies.reduce((p, v) => (p[v] = "d3", p), {}),
     name: "d3"
   }
 };
