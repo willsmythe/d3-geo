@@ -224,3 +224,35 @@ tape("projection.fitSize(…) resampling - world mercator", function(test) {
   test.inDelta(t1[1], t2[1], 1e-6);
   test.end();
 });
+
+tape("projection.fitWidth(…) world equirectangular", function(test) {
+  var projection = d3.geoEquirectangular();
+  projection.fitWidth(900, world);
+  test.inDelta(projection.scale(), 143.239449, 1e-6);
+  test.inDelta(projection.translate(), [450, 208.999023], 1e-6);
+  test.end();
+});
+
+tape("projection.fitWidth(…) world transverseMercator", function(test) {
+  var projection = d3.geoTransverseMercator();
+  projection.fitWidth(900, world);
+  test.inDelta(projection.scale(), 166.239315, 1e-6);
+  test.inDelta(projection.translate(), [419.627613, 522.256211], 1e-6);
+  test.end();
+});
+
+tape("projection.fitHeight(…) world equirectangular", function(test) {
+  var projection = d3.geoEquirectangular();
+  projection.fitHeight(900, world);
+  test.inDelta(projection.scale(), 297.040999, 1e-6);
+  test.inDelta(projection.translate(), [933.181823, 433.409088], 1e-6);
+  test.end();
+});
+
+tape("projection.fitHeight(…) world transverseMercator", function(test) {
+  var projection = d3.geoTransverseMercator();
+  projection.fitHeight(900, world);
+  test.inDelta(projection.scale(), 143.239449, 1e-6);
+  test.inDelta(projection.translate(), [361.570474, 450], 1e-6);
+  test.end();
+});
