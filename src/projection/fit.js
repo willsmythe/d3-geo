@@ -29,3 +29,11 @@ export function fitExtent(projection, extent, object) {
 export function fitSize(projection, size, object) {
   return fitExtent(projection, [[0, 0], size], object);
 }
+
+export function fitWidth(projection, width, object) {
+  // TODO
+}
+
+export function fitHeight(projection, height, object) {
+  // TODO
+}
