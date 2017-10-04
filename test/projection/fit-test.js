@@ -241,6 +241,14 @@ tape("projection.fitWidth(…) world transverseMercator", function(test) {
   test.end();
 });
 
+tape("projection.fitWidth(…) USA albersUsa", function(test) {
+  var projection = d3.geoAlbersUsa();
+  projection.fitWidth(900, us);
+  test.inDelta(projection.scale(), 1152.889035, 1e-6);
+  test.inDelta(projection.translate(), [483.52541, 257.736905], 1e-6);
+  test.end();
+});
+
 tape("projection.fitHeight(…) world equirectangular", function(test) {
   var projection = d3.geoEquirectangular();
   projection.fitHeight(900, world);
@@ -254,5 +262,13 @@ tape("projection.fitHeight(…) world transverseMercator", function(test) {
   projection.fitHeight(900, world);
   test.inDelta(projection.scale(), 143.239449, 1e-6);
   test.inDelta(projection.translate(), [361.570474, 450], 1e-6);
+  test.end();
+});
+
+tape("projection.fitHeight(…) USA albersUsa", function(test) {
+  var projection = d3.geoAlbersUsa();
+  projection.fitHeight(900, us);
+  test.inDelta(projection.scale(), 1983.902059, 1e-6);
+  test.inDelta(projection.translate(), [832.054974, 443.516038], 1e-6);
   test.end();
 });
