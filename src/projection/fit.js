@@ -1,7 +1,7 @@
 import {default as geoStream} from "../stream";
 import boundsStream from "../path/bounds";
 
-function fit(projection, extent, object) {
+export function fitExtent(projection, extent, object) {
   var w = extent[1][0] - extent[0][0],
       h = extent[1][1] - extent[0][1],
       clip = projection.clipExtent && projection.clipExtent();
@@ -28,18 +28,14 @@ function fit(projection, extent, object) {
       .translate([x, y]);
 }
 
-export function fitExtent(projection, extent, object) {
-  return fit(projection, extent, object)
-}
-
 export function fitSize(projection, size, object) {
-  return fit(projection, [[0, 0], size], object);
+  return fitExtent(projection, [[0, 0], size], object);
 }
 
 export function fitWidth(projection, width, object) {
-  return fit(projection, [[0, 0], [width, Infinity]], object);
+  return fitExtent(projection, [[0, 0], [width, Infinity]], object);
 }
 
 export function fitHeight(projection, height, object) {
-  return fit(projection, [[0, 0], [Infinity, height]], object);
+  return fitExtent(projection, [[0, 0], [Infinity, height]], object);
 }
