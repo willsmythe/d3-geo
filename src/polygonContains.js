@@ -1,6 +1,6 @@
 import adder from "./adder";
 import {cartesian, cartesianCross, cartesianNormalizeInPlace} from "./cartesian";
-import {asin, atan2, cos, epsilon, pi, quarterPi, sin, tau} from "./math";
+import {asin, atan2, cos, epsilon, halfPi, pi, quarterPi, sin, tau} from "./math";
 
 var sum = adder();
 
@@ -12,6 +12,9 @@ export default function(polygon, point) {
       winding = 0;
 
   sum.reset();
+
+  if (phi === halfPi) phi += epsilon;
+  else if (phi === -halfPi) phi -= epsilon;
 
   for (var i = 0, n = polygon.length; i < n; ++i) {
     if (!(m = (ring = polygon[i]).length)) continue;
@@ -46,8 +49,6 @@ export default function(polygon, point) {
         var intersection = cartesianCross(normal, arc);
         cartesianNormalizeInPlace(intersection);
         var phiArc = (antimeridian ^ delta >= 0 ? -1 : 1) * asin(intersection[2]);
-        var pole = sin(phi);
-        if (pole == -1 || pole == 1) phi += pole * epsilon;
         if (phi > phiArc || phi === phiArc && (arc[0] || arc[1])) {
           winding += antimeridian ^ delta >= 0 ? 1 : -1;
         }
