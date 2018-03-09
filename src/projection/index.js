@@ -3,7 +3,7 @@ import clipCircle from "../clip/circle";
 import clipRectangle from "../clip/rectangle";
 import compose from "../compose";
 import identity from "../identity";
-import {degrees, radians, sqrt} from "../math";
+import {cos, degrees, radians, sin, sqrt} from "../math";
 import {rotateRadians} from "../rotation";
 import {transformer} from "../transform";
 import {fitExtent, fitSize, fitWidth, fitHeight} from "./fit";
@@ -24,6 +24,14 @@ function transformRotate(rotate) {
   });
 }
 
+function angleTransform(angle) {
+  angle *= radians;
+  return {
+    c: cos(angle),
+    s: sin(angle)
+  };
+}
+
 export default function projection(project) {
   return projectionMutator(function() { return project; })();
 }
@@ -34,6 +42,7 @@ export function projectionMutator(projectAt) {
       x = 480, y = 250, // translate
       dx, dy, lambda = 0, phi = 0, // center
       deltaLambda = 0, deltaPhi = 0, deltaGamma = 0, rotate, projectRotate, // rotate
+      angle = 0, t = angleTransform(angle), // angle
       theta = null, preclip = clipAntimeridian, // clip angle
       x0 = null, y0, x1, y1, postclip = identity, // clip extent
       delta2 = 0.5, projectResample = resample(projectTransform, delta2), // precision
@@ -42,6 +51,7 @@ export function projectionMutator(projectAt) {
 
   function projection(point) {
     point = projectRotate(point[0] * radians, point[1] * radians);
+    if (t.s) point = [point[0] * t.c + point[1] * t.s, -point[0] * t.s + point[1] * t.c];
     return [point[0] * k + dx, dy - point[1] * k];
   }
 
@@ -51,7 +61,9 @@ export function projectionMutator(projectAt) {
   }
 
   function projectTransform(x, y) {
-    return x = project(x, y), [x[0] * k + dx, dy - x[1] * k];
+    var point = project(x, y);
+    if (t.s) point = [point[0] * t.c + point[1] * t.s, -point[0] * t.s + point[1] * t.c];
+    return [point[0] * k + dx, dy - point[1] * k];
   }
 
   projection.stream = function(stream) {
@@ -88,6 +100,10 @@ export function projectionMutator(projectAt) {
 
   projection.rotate = function(_) {
     return arguments.length ? (deltaLambda = _[0] % 360 * radians, deltaPhi = _[1] % 360 * radians, deltaGamma = _.length > 2 ? _[2] % 360 * radians : 0, recenter()) : [deltaLambda * degrees, deltaPhi * degrees, deltaGamma * degrees];
+  };
+
+  projection.angle = function(_) {
+    return arguments.length ? (angle = ((+_ % 360) + 360 + 180) % 360 - 180, t = angleTransform(angle), recenter()) : angle;
   };
 
   projection.precision = function(_) {
