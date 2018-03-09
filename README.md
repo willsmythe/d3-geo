@@ -227,7 +227,7 @@ A convenience method for [*projection*.fitSize](#projection_fitSize) where the w
 
 <a href="#projection_angle" name="projection_angle">#</a> <i>projection</i>.<b>angle</b>([<i>angle</i>]) [<>](https://github.com/d3/d3-geo/blob/master/src/projection/index.js#L109 "Source")
 
-If *angle* is specified, sets the projection’s angle to the specified *angle* in degrees and returns the projection. This parameter defines the orientation of the map (usually, the East direction at the *center* — disregarding the projection’s *rotate*). If *angle* is not specified, returns the projection’s current angle (between -180 and 180 degrees).
+If *angle* is specified, sets the projection’s angle to the specified *angle* in degrees and returns the projection. This global orientation of the map —usually, the East direction at its *center*— is applied after projecting. If *angle* is not specified, returns the projection’s current angle (between -180° and 180°).
 
 #### Azimuthal Projections
 
