@@ -24,14 +24,6 @@ function transformRotate(rotate) {
   });
 }
 
-function angleTransform(angle) {
-  angle *= radians;
-  return {
-    c: cos(angle),
-    s: sin(angle)
-  };
-}
-
 export default function projection(project) {
   return projectionMutator(function() { return project; })();
 }
@@ -42,7 +34,8 @@ export function projectionMutator(projectAt) {
       x = 480, y = 250, // translate
       dx, dy, lambda = 0, phi = 0, // center
       deltaLambda = 0, deltaPhi = 0, deltaGamma = 0, rotate, projectRotate, // rotate
-      angle = 0, t = angleTransform(angle), // angle
+      angle = 0, a, b, // angle
+      linearTransform, // center + scale + angle
       theta = null, preclip = clipAntimeridian, // clip angle
       x0 = null, y0, x1, y1, postclip = identity, // clip extent
       delta2 = 0.5, projectResample = resample(projectTransform, delta2), // precision
@@ -50,20 +43,54 @@ export function projectionMutator(projectAt) {
       cacheStream;
 
   function projection(point) {
-    point = projectRotate(point[0] * radians, point[1] * radians);
-    if (t.s) point = [point[0] * t.c + point[1] * t.s, -point[0] * t.s + point[1] * t.c];
-    return [point[0] * k + dx, dy - point[1] * k];
+    return linearTransform(projectRotate(point[0] * radians, point[1] * radians));
   }
 
   function invert(point) {
-    point = projectRotate.invert((point[0] - dx) / k, (dy - point[1]) / k);
+    point = linearTransform.invert(point);
+    point = projectRotate.invert(point[0], point[1]);
     return point && [point[0] * degrees, point[1] * degrees];
   }
 
   function projectTransform(x, y) {
-    var point = project(x, y);
-    if (t.s) point = [point[0] * t.c + point[1] * t.s, -point[0] * t.s + point[1] * t.c];
-    return [point[0] * k + dx, dy - point[1] * k];
+    return linearTransform(project(x, y));
+  }
+
+  function recenter() {
+    projectRotate = compose(rotate = rotateRadians(deltaLambda, deltaPhi, deltaGamma), project);
+    var center = project(lambda, phi),
+        ar = angle * radians;
+    dx = x - center[0] * k;
+    dy = y + center[1] * k;
+    a = cos(ar),
+    b = sin(ar);
+    linearTransform = setTransform();
+    return reset();
+  }
+
+  function setTransform() {
+    var f;
+    if (a === 1) {
+      f = function(point) {
+        return [ dx + k * point[0], dy - k * point[1] ];
+      };
+      f.invert = function (point) {
+        return [ (point[0] - dx) / k, (dy - point[1]) / k ];
+      }
+    }
+    else {
+      f = function(point) {
+        var x = point[0],
+            y = point[1];
+        return [ dx + k * (x * a + y * b), dy + k * (x * b - y * a) ];
+      };
+      f.invert = function (point) {
+        var x = (point[0] - dx) / k,
+            y = (dy - point[1]) / k;
+        return [ a * x - b * y, b * x + a * y ];
+      }
+    }
+    return f;
   }
 
   projection.stream = function(stream) {
@@ -103,7 +130,7 @@ export function projectionMutator(projectAt) {
   };
 
   projection.angle = function(_) {
-    return arguments.length ? (angle = ((+_ % 360) + 360 + 180) % 360 - 180, t = angleTransform(angle), recenter()) : angle;
+    return arguments.length ? (angle = ((+_ % 360) + 360 + 180) % 360 - 180, recenter()) : angle;
   };
 
   projection.precision = function(_) {
@@ -125,14 +152,6 @@ export function projectionMutator(projectAt) {
   projection.fitHeight = function(height, object) {
     return fitHeight(projection, height, object);
   };
-
-  function recenter() {
-    projectRotate = compose(rotate = rotateRadians(deltaLambda, deltaPhi, deltaGamma), project);
-    var center = project(lambda, phi);
-    dx = x - center[0] * k;
-    dy = y + center[1] * k;
-    return reset();
-  }
 
   function reset() {
     cache = cacheStream = null;
