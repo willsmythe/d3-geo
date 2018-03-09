@@ -7,14 +7,15 @@ var sum = adder();
 export default function(polygon, point) {
   var lambda = point[0],
       phi = point[1],
+      sinPhi = sin(phi),
       normal = [sin(lambda), -cos(lambda), 0],
       angle = 0,
       winding = 0;
 
   sum.reset();
 
-  if (phi === halfPi) phi += epsilon;
-  else if (phi === -halfPi) phi -= epsilon;
+  if (sinPhi === 1) phi = halfPi + epsilon;
+  else if (sinPhi === -1) phi = -halfPi - epsilon;
 
   for (var i = 0, n = polygon.length; i < n; ++i) {
     if (!(m = (ring = polygon[i]).length)) continue;
