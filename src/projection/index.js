@@ -58,13 +58,14 @@ export function projectionMutator(projectAt) {
 
   function recenter() {
     projectRotate = compose(rotate = rotateRadians(deltaLambda, deltaPhi, deltaGamma), project);
-    var center = project(lambda, phi),
-        ar = angle * radians;
-    dx = x - center[0] * k;
-    dy = y + center[1] * k;
-    a = cos(ar),
+    var ar = angle * radians;
+    a = cos(ar);
     b = sin(ar);
     linearTransform = setTransform();
+    dx = 0; dy = 0;
+    var center = linearTransform(project(lambda, phi));
+    dx = x - center[0];
+    dy = y - center[1];
     return reset();
   }
 
