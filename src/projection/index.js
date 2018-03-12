@@ -60,7 +60,7 @@ export function projectionMutator(projectAt) {
     projectRotate = compose(rotate = rotateRadians(deltaLambda, deltaPhi, deltaGamma), project);
     var ar = angle * radians;
     a = cos(ar);
-    b = sin(ar);
+    b = -sin(ar);
     linearTransform = setTransform();
     dx = 0; dy = 0;
     var center = linearTransform(project(lambda, phi));
