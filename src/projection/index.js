@@ -65,8 +65,8 @@ export function projectionMutator(projectAt) {
       alpha = 0, // post-rotate
       theta = null, preclip = clipAntimeridian, // pre-clip angle
       x0 = null, y0, x1, y1, postclip = identity, // post-clip extent
-      delta2 = 0.5,
-      projectResample, // precision
+      delta2 = 0.5, // precision
+      projectResample,
       projectTransform,
       projectRotateTransform,
       cache,
@@ -122,7 +122,7 @@ export function projectionMutator(projectAt) {
   };
 
   projection.precision = function(_) {
-    return arguments.length ? (delta2 = _ * _, reset()) : sqrt(delta2);
+    return arguments.length ? (projectResample = resample(projectTransform, delta2 = _ * _), reset()) : sqrt(delta2);
   };
 
   projection.fitExtent = function(extent, object) {
@@ -147,12 +147,12 @@ export function projectionMutator(projectAt) {
     rotate = rotateRadians(deltaLambda, deltaPhi, deltaGamma);
     projectTransform = compose(project, transform);
     projectRotateTransform = compose(rotate, projectTransform);
+    projectResample = resample(projectTransform, delta2);
     return reset();
   }
 
   function reset() {
     cache = cacheStream = null;
-    projectResample = resample(projectTransform, delta2);
     return projection;
   }
 
