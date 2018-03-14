@@ -34,14 +34,20 @@ function scaleTranslate(k, dx, dy) {
   return transform;
 }
 
-// TODO Optimize.
 function scaleTranslateRotate(k, dx, dy, alpha) {
-  var a = cos(alpha), b = -sin(alpha);
+  var cosAlpha = cos(alpha),
+      sinAlpha = sin(alpha),
+      a = cosAlpha * k,
+      b = sinAlpha * k,
+      ai = cosAlpha / k,
+      bi = sinAlpha / k,
+      ci = (sinAlpha * dy - cosAlpha * dx) / k,
+      fi = (sinAlpha * dx + cosAlpha * dy) / k;
   function transform(x, y) {
-    return [dx + k * (x * a + y * b), dy + k * (x * b - y * a)];
+    return [a * x - b * y + dx, dy - b * x - a * y];
   }
   transform.invert = function(x, y) {
-    return x = (x - dx) / k, y = (dy - y) / k, [a * x - b * y, b * x + a * y];
+    return [ai * x - bi * y + ci, fi - bi * x - ai * y];
   };
   return transform;
 }
