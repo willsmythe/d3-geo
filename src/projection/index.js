@@ -59,7 +59,8 @@ export function projectionMutator(projectAt) {
       alpha = 0, // post-rotate
       theta = null, preclip = clipAntimeridian, // pre-clip angle
       x0 = null, y0, x1, y1, postclip = identity, // post-clip extent
-      delta2 = 0.5, projectResample = resample(projectTransform, delta2), // precision
+      delta2 = 0.5,
+      projectResample, // precision
       projectTransform,
       projectRotateTransform,
       cache,
@@ -115,7 +116,7 @@ export function projectionMutator(projectAt) {
   };
 
   projection.precision = function(_) {
-    return arguments.length ? (projectResample = resample(projectTransform, delta2 = _ * _), reset()) : sqrt(delta2);
+    return arguments.length ? (delta2 = _ * _, reset()) : sqrt(delta2);
   };
 
   projection.fitExtent = function(extent, object) {
@@ -135,16 +136,17 @@ export function projectionMutator(projectAt) {
   };
 
   function recenter() {
-    var projectRotate = compose(rotate = rotateRadians(deltaLambda, deltaPhi, deltaGamma), project),
-        center = scaleTranslateRotate(k, 0, 0, alpha).apply(null, project(lambda, phi)),
+    var center = scaleTranslateRotate(k, 0, 0, alpha).apply(null, project(lambda, phi)),
         transform = (alpha ? scaleTranslateRotate : scaleTranslate)(k, x - center[0], y - center[1], alpha);
+    rotate = rotateRadians(deltaLambda, deltaPhi, deltaGamma);
     projectTransform = compose(project, transform);
-    projectRotateTransform = compose(projectRotate, transform);
+    projectRotateTransform = compose(rotate, projectTransform);
     return reset();
   }
 
   function reset() {
     cache = cacheStream = null;
+    projectResample = resample(projectTransform, delta2);
     return projection;
   }
 
