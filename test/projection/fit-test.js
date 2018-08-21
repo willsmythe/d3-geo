@@ -4,7 +4,7 @@ var tape = require("tape"),
 
 var usTopo = require("../data/us-10m.json"),
     us = topojson.feature(usTopo, usTopo.objects.land),
-    worldTopo = require("../data/world-50m.json"),
+    worldTopo = require("world-atlas/world/50m.json"),
     world = topojson.feature(worldTopo, worldTopo.objects.land);
 
 require("../inDelta");
@@ -21,31 +21,31 @@ tape("projection.fitExtent(…) world equirectangular", function(test) {
   var projection = d3.geoEquirectangular();
   projection.fitExtent([[50, 50], [950, 950]], world);
   test.inDelta(projection.scale(), 143.239449, 1e-6);
-  test.inDelta(projection.translate(), [500, 491.999512], 1e-6);
+  test.inDelta(projection.translate(), [500, 492.000762], 1e-6);
   test.end();
 });
 
 tape("projection.fitExtent(…) world azimuthalEqualArea", function(test) {
   var projection = d3.geoAzimuthalEqualArea();
   projection.fitExtent([[50, 50], [950, 950]], world);
-  test.inDelta(projection.scale(), 228.357167, 1e-6);
-  test.inDelta(projection.translate(), [496.353437, 479.684335], 1e-6);
+  test.inDelta(projection.scale(), 228.357229, 1e-6);
+  test.inDelta(projection.translate(), [496.353618, 479.684353], 1e-6);
   test.end();
 });
 
 tape("projection.fitExtent(…) world azimuthalEquidistant", function(test) {
   var projection = d3.geoAzimuthalEquidistant();
   projection.fitExtent([[50, 50], [950, 950]], world);
-  test.inDelta(projection.scale(), 153.559157, 1e-6);
-  test.inDelta(projection.translate(), [485.272655, 452.093361], 1e-6);
+  test.inDelta(projection.scale(), 153.559317, 1e-6);
+  test.inDelta(projection.translate(), [485.272493, 452.093375], 1e-6);
   test.end();
 });
 
 tape("projection.fitExtent(…) world conicConformal", function(test) {
   var projection = d3.geoConicConformal().clipAngle(30).parallels([30, 60]).rotate([0, -45]);
   projection.fitExtent([[50, 50], [950, 950]], world);
-  test.inDelta(projection.scale(), 626.111017, 1e-6);
-  test.inDelta(projection.translate(), [444.395872, 410.223792], 1e-6);
+  test.inDelta(projection.scale(), 626.111027, 1e-6);
+  test.inDelta(projection.translate(), [444.395951, 410.223799], 1e-6);
   test.end();
 });
 
@@ -60,8 +60,8 @@ tape("projection.fitExtent(…) world conicEqualArea", function(test) {
 tape("projection.fitExtent(…) world conicEquidistant", function(test) {
   var projection = d3.geoConicEquidistant();
   projection.fitExtent([[50, 50], [950, 950]], world);
-  test.inDelta(projection.scale(), 123.085, 1e-6);
-  test.inDelta(projection.translate(), [500, 498.5973334], 1e-6);
+  test.inDelta(projection.scale(), 123.085587, 1e-6);
+  test.inDelta(projection.translate(), [500, 498.598401], 1e-6);
   test.end();
 });
 
@@ -69,7 +69,7 @@ tape("projection.fitExtent(…) world equirectangular", function(test) {
   var projection = d3.geoEquirectangular();
   projection.fitExtent([[50, 50], [950, 950]], world);
   test.inDelta(projection.scale(), 143.239449, 1e-6);
-  test.inDelta(projection.translate(), [500, 491.999512], 1e-6);
+  test.inDelta(projection.translate(), [500, 492.000762], 1e-6);
   test.end();
 });
 
@@ -77,15 +77,15 @@ tape("projection.fitSize(…) world equirectangular", function(test) {
   var projection = d3.geoEquirectangular();
   projection.fitSize([900, 900], world);
   test.inDelta(projection.scale(), 143.239449, 1e-6);
-  test.inDelta(projection.translate(), [450, 441.999512], 1e-6);
+  test.inDelta(projection.translate(), [450, 442.000762], 1e-6);
   test.end();
 });
 
 tape("projection.fitExtent(…) world gnomonic", function(test) {
   var projection = d3.geoGnomonic().clipAngle(45);
   projection.fitExtent([[50, 50], [950, 950]], world);
-  test.inDelta(projection.scale(), 450.348236, 1e-6);
-  test.inDelta(projection.translate(), [500.115152, 556.52294], 1e-6);
+  test.inDelta(projection.scale(), 450.348233, 1e-6);
+  test.inDelta(projection.translate(), [500.115138, 556.522620], 1e-6);
   test.end();
 });
 
@@ -100,24 +100,24 @@ tape("projection.fitExtent(…) world mercator", function(test) {
 tape("projection.fitExtent(…) world orthographic", function(test) {
   var projection = d3.geoOrthographic();
   projection.fitExtent([[50, 50], [950, 950]], world);
-  test.inDelta(projection.scale(), 451.428643, 1e-6);
-  test.inDelta(projection.translate(), [503.769378, 498.61496], 1e-6);
+  test.inDelta(projection.scale(), 451.406773, 1e-6);
+  test.inDelta(projection.translate(), [503.769179, 498.593227], 1e-6);
   test.end();
 });
 
 tape("projection.fitSize(…) world orthographic", function(test) {
   var projection = d3.geoOrthographic();
   projection.fitSize([900, 900], world);
-  test.inDelta(projection.scale(), 451.428643, 1e-6);
-  test.inDelta(projection.translate(), [453.769378, 448.61496], 1e-6);
+  test.inDelta(projection.scale(), 451.406773, 1e-6);
+  test.inDelta(projection.translate(), [453.769179, 448.593227], 1e-6);
   test.end();
 });
 
 tape("projection.fitExtent(…) world stereographic", function(test) {
   var projection = d3.geoStereographic();
   projection.fitExtent([[50, 50], [950, 950]], world);
-  test.inDelta(projection.scale(), 162.934518, 1e-6);
-  test.inDelta(projection.translate(), [478.546849, 432.922426], 1e-6);
+  test.inDelta(projection.scale(), 162.934379, 1e-6);
+  test.inDelta(projection.translate(), [478.546293, 432.922534], 1e-6);
   test.end();
 });
 
@@ -125,7 +125,7 @@ tape("projection.fitExtent(…) world transverseMercator", function(test) {
   var projection = d3.geoTransverseMercator();
   projection.fitExtent([[50, 50], [950, 950]], world);
   test.inDelta(projection.scale(), 143.239449, 1e-6);
-  test.inDelta(projection.translate(), [473.829753, 500], 1e-6);
+  test.inDelta(projection.translate(), [473.829551, 500], 1e-6);
   test.end();
 });
 
@@ -180,8 +180,8 @@ tape("projection.fitExtent(…) null geometries - MultiPolygon", function(test) 
 tape("projection.fitExtent(…) custom projection", function(test) {
   var projection = d3.geoProjection(function(x, y) { return [x, Math.pow(y, 3)]; });
   projection.fitExtent([[50, 50], [950, 950]], world);
-  test.inDelta(projection.scale(), 128.901140, 1e-6);
-  test.inDelta(projection.translate(), [500, 450.406949], 1e-6);
+  test.inDelta(projection.scale(), 128.903525, 1e-6);
+  test.inDelta(projection.translate(), [500, 450.414357], 1e-6);
   test.end();
 });
 
@@ -204,7 +204,7 @@ tape("projection.fitSize(…) ignore clipExtent - world equirectangular", functi
 tape("projection.fitExtent(…) chaining - world transverseMercator", function(test) {
   var projection = d3.geoTransverseMercator().fitExtent([[50, 50], [950, 950]], world).scale(500);
   test.equal(projection.scale(), 500);
-  test.inDelta(projection.translate(), [473.829753, 500], 1e-6);
+  test.inDelta(projection.translate(), [473.829551, 500], 1e-6);
   test.end();
 });
 
@@ -236,8 +236,8 @@ tape("projection.fitWidth(…) world equirectangular", function(test) {
 tape("projection.fitWidth(…) world transverseMercator", function(test) {
   var projection = d3.geoTransverseMercator();
   projection.fitWidth(900, world);
-  test.inDelta(projection.scale(), 166.239315, 1e-6);
-  test.inDelta(projection.translate(), [419.627613, 522.256211], 1e-6);
+  test.inDelta(projection.scale(), 166.239257, 1e-6);
+  test.inDelta(projection.translate(), [419.627390, 522.256029], 1e-6);
   test.end();
 });
 
@@ -252,8 +252,8 @@ tape("projection.fitWidth(…) USA albersUsa", function(test) {
 tape("projection.fitHeight(…) world equirectangular", function(test) {
   var projection = d3.geoEquirectangular();
   projection.fitHeight(900, world);
-  test.inDelta(projection.scale(), 297.040999, 1e-6);
-  test.inDelta(projection.translate(), [933.181823, 433.409088], 1e-6);
+  test.inDelta(projection.scale(), 297.042711, 1e-6);
+  test.inDelta(projection.translate(), [933.187199, 433.411585], 1e-6);
   test.end();
 });
 
@@ -261,7 +261,7 @@ tape("projection.fitHeight(…) world transverseMercator", function(test) {
   var projection = d3.geoTransverseMercator();
   projection.fitHeight(900, world);
   test.inDelta(projection.scale(), 143.239449, 1e-6);
-  test.inDelta(projection.translate(), [361.570474, 450], 1e-6);
+  test.inDelta(projection.translate(), [361.570408, 450], 1e-6);
   test.end();
 });
 
