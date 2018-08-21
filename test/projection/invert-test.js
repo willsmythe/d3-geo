@@ -20,6 +20,7 @@ require("./projectionEqual");
   function conicEquidistant() { return d3.geoConicEquidistant().parallels([30, 30]); },
   function conicEquidistant() { return d3.geoConicEquidistant().parallels([-35, -50]); },
   d3.geoEquirectangular,
+  d3.geoEqualEarth,
   d3.geoGnomonic,
   d3.geoMercator,
   d3.geoOrthographic,
