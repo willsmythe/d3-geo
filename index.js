@@ -19,6 +19,7 @@ export {default as geoAzimuthalEquidistant, azimuthalEquidistantRaw as geoAzimut
 export {default as geoConicConformal, conicConformalRaw as geoConicConformalRaw} from "./src/projection/conicConformal";
 export {default as geoConicEqualArea, conicEqualAreaRaw as geoConicEqualAreaRaw} from "./src/projection/conicEqualArea";
 export {default as geoConicEquidistant, conicEquidistantRaw as geoConicEquidistantRaw} from "./src/projection/conicEquidistant";
+export {default as geoEqualEarth, equalEarthRaw as geoEqualEarthRaw} from "./src/projection/equalEarth";
 export {default as geoEquirectangular, equirectangularRaw as geoEquirectangularRaw} from "./src/projection/equirectangular";
 export {default as geoGnomonic, gnomonicRaw as geoGnomonicRaw} from "./src/projection/gnomonic";
 export {default as geoIdentity} from "./src/projection/identity";
