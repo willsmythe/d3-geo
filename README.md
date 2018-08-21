@@ -277,7 +277,6 @@ The stereographic projection.
 
 The Equal Earth projection, by Bojan Šavrič _et al._, 2018.
 
-
 #### Composite Projections
 
 Composite consist of several projections that are composed into a single display. The constituent projections have fixed clip, center and rotation, and thus composite projections do not support [*projection*.center](#projection_center), [*projection*.rotate](#projection_rotate), [*projection*.clipAngle](#projection_clipAngle), or [*projection*.clipExtent](#projection_clipExtent).
