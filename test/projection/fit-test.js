@@ -4,7 +4,7 @@ var tape = require("tape"),
 
 var usTopo = require("../data/us-10m.json"),
     us = topojson.feature(usTopo, usTopo.objects.land),
-    worldTopo = require("../../node_modules/world-atlas/world/50m.json"),
+    worldTopo = require("world-atlas/world/50m.json"),
     world = topojson.feature(worldTopo, worldTopo.objects.land);
 
 require("../inDelta");
