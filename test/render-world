@@ -15,7 +15,7 @@ var fs = require("fs"),
 var canvas = new Canvas(width, height),
     context = canvas.getContext("2d");
 
-var world = require("./data/world-50m.json"),
+var world = require("../node_modules/world-atlas/world/50m.json"),
     graticule = d3_geo.geoGraticule(),
     outline = {type: "Sphere"};
 

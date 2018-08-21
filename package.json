@@ -39,6 +39,7 @@
     "rollup": "0.52",
     "tape": "4",
     "topojson-client": "3",
-    "uglify-js": "3.2"
+    "uglify-js": "3.2",
+    "world-atlas": "1"
   }
 }
