@@ -1,5 +1,7 @@
 # d3-geo
 
+[![Build Status](https://dev.azure.com/d3/d3/_apis/build/status/d3.d3-geo)](https://dev.azure.com/d3/d3/_build/definition?definitionId=17)
+
 Map projections are sometimes implemented as point transformations. For instance, spherical Mercator:
 
 ```js
