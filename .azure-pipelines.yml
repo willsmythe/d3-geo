@@ -5,10 +5,19 @@ jobs:
   pool:
     vmImage: ubuntu-16.04
   steps:
+  - script: |
+      sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+    displayName: 'Install platform dependencies'  
   - template: '.azure-pipelines-steps.yml'
 
 - job: 'Windows'
   pool:
     vmImage: vs2017-win2016
   steps:
+  - bash: |
+      npm config set msvs_version 2017
+      npm install -g node-gyp      
+      curl http://ftp.gnome.org/pub/GNOME/binaries/win64/gtk+/2.22/gtk+-bundle_2.22.1-20101229_win64.zip -L -o "$(Build.SourcesDirectory)\GTK.zip"
+  - powershell: |            
+      Expand-Archive -Path $(Build.SourcesDirectory)\GTK.zip -DestinationPath C:\GTK    
   - template: '.azure-pipelines-steps.yml'
